@@ -1,0 +1,30 @@
+{
+  "name": "bios",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "bios": "bin/bios.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salt42/bios.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/salt42/bios/issues"
+  },
+  "homepage": "https://github.com/salt42/bios#readme",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "hbs": "^4.0.1",
+    "prettyjson": "^1.2.1",
+    "serve-favicon": "^2.4.5"
+  }
+}
