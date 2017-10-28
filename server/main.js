@@ -22,7 +22,7 @@ var log = require('./log')('main');
 console.log(img);
 log("Start Bios");
 try {
-    require('./config')(__dirname + "/conf.json");
+    require('./config')(__dirname + "/../conf.json");
     require('./express.js');
 } catch(e) {
     log(e.message.red);

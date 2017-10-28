@@ -9,7 +9,9 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res) {
-    res.render('index');
+    res.render('index', {
+        title: "login"
+    });
 });
 // router.post('/', function(req, res, next) {
 //     //do login

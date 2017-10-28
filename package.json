@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/salt42/bios#readme",
   "dependencies": {
+    "better-sqlite3": "^4.0.3",
     "colors": "^1.1.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
