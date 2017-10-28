@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 // ****************** routes *************************
 
 var indexRoutes = require('./routes/index');
+var petRoutes = require('./routes/pet');
 // var usersRoute = require('./routes/users');
 // var dataRoute = require('./routes/data');
 
@@ -37,6 +38,7 @@ app.use(function(req, res, next) {
     //@todo check if user is logged in
     next();
 });
+app.use('/pet', petRoutes);
 
 // app.use('/users', usersRoute);
 // app.use('/data', dataRoute);
