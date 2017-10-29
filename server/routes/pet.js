@@ -9,7 +9,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/:name', function(req, res) {
-    var pet = DB.getPets(req.params.name);
+    var pet = DB.getOwner(req.params.name);
     res.render('pet', {
         petName: JSON.stringify(pet)
     });
