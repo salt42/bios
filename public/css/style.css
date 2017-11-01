@@ -10,6 +10,11 @@
     --header-hight: 4em;
     --sidebar-width: 4em;
 }
+/* color lib */
+/*
+    first-color: #3eb9a0; form bg
+    second-color: #718eaa
+ */
 .color-red {
     color: #d4563d;
 }
@@ -276,5 +281,33 @@ header search input[type=text]:focus {
 ::-webkit-scrollbar-corner {
     background: transparent;
 }
+logo {
+    margin-left: 5px;
+    float: left;
+    height: 100%;
+}
+logo>img {
+    height: 100%;
+}
+company {
+    font-size: large;
+    float: left;
+    color: #718eaa;
+}
+vendor_prg_name {
+    margin-left: 5px;
+    float: left;
+    color: #718eaa;
+}
+vendor_prg_name>v_style {
+    font-size: xx-large;
+}
+userlist {
+    float: right;
+}
+userlist>ul {
+    background-color: #3eb9a0;
+}
+
 /*endregion*/
 
