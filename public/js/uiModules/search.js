@@ -5,12 +5,26 @@ defineUI("search", function(bios, $element){
         .attr("type", "text")
         .attr("name", "search")
         .attr("placeholder", "Search...")
-        .append($element);
+        .appendTo($element);
 
-    //gut nacht
-    console.log($element );
-    // $input.on("change", function() {
-    //     console.log("search changed");
-    //     bios.server.liveSearch();
+    let searchQuery = "";
+
+    // $input.on("input", function(e,a) {
+    //     console.log("search changed", a, e);
+    //
     // });
+    $input.on("keypress", function(e) {
+        switch (e.keyCode) {
+            case 13:
+                //enter
+                searchQuery += e;
+                break;
+            default:
+                console.log(e.key);
+                searchQuery = $input.val();
+                bios.server.liveSearch(searchQuery, function(data) {
+                    console.log(data);
+                });
+        }
+    });
 });
