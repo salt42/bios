@@ -24,6 +24,7 @@
     "colors": "^1.1.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
+    "express-hbs": "^1.0.4",
     "hbs": "^4.0.1",
     "prettyjson": "^1.2.1",
     "serve-favicon": "^2.4.5"

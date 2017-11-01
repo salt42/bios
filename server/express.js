@@ -10,12 +10,38 @@ var favicon = require('serve-favicon');
 // var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var hbs = require('express-hbs');
 
 var app = express();
 
 // view engine setup
+app.engine('hbs', hbs.express4({
+    // partialsDir: __dirname + '../views/partials', //{String/Array} [Required] Path to partials templates, one or several directories
+
+    // // OPTIONAL settings
+    // blockHelperName: "{String} Override 'block' helper name.",
+    // contentHelperName: "{String} Override 'contentFor' helper name.",
+    defaultLayout: path.join(__dirname, '../views/layout.hbs'),//{String} Absolute path to default layout template
+    // extname: "{String} Extension for templates & partials, defaults to `.hbs`",
+    // handlebars: "{Module} Use external handlebars instead of express-hbs dependency",
+    // i18n: "{Object} i18n object",
+    // layoutsDir: "{String} Path to layout templates",
+    // templateOptions: "{Object} options to pass to template()",
+    // beautify: "{Boolean} whether to pretty print HTML, see github.com/einars/js-beautify .jsbeautifyrc,
+    //
+    // // override the default compile
+    // onCompile: function(exhbs, source, filename) {
+    //     var options;
+    //     if (filename && filename.indexOf('partials') > -1) {
+    //         options = {preventIndent: true};
+    //     }
+    //     return exhbs.handlebars.compile(source, options);
+    // }
+}));
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'hbs');
+hbs.express4({
+});
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

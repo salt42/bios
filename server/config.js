@@ -8,8 +8,8 @@ var prettyJSON = require('prettyjson');
 var confPath = "";
 var conf = {};
 var defaults = {
-    httpPort: 666,
-    dbFile: "../db/data.sqlite3"
+    httpPort: 777,
+    dbFile: "/../db/data.sqlite3"
 };
 
 module.exports = function(path) {

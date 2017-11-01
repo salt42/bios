@@ -225,74 +225,17 @@ body > sidebar > .config span {
 }
 
 /*endregion*/
-/*region form*/
-form {
-    overflow: auto;
-}
-fieldset {
-    background-color: rgba(0, 0, 0, 0.15);
-    border: 2px solid #217dbb;
-    border-width: 2px 0 0 0;
-    /*border-radius: 5px;*/
-    /*overflow: auto;*/
-    margin-top: 12px;
-    /*padding-top: 10px;*/
-    padding: 0 0 10px 5px;
-}
-fieldset > legend {
-    font-size: 0.8em;
-    font-weight: bold;
-    font-family: Bahnschrift;
-
-    /*padding-top: 5px;*/
-    text-align: right;
-    padding-right: 10px;
-    /*float: right;*/
-    width: auto;
-    /*padding: 0;*/
-    /*margin-left: -50px;*/
-}
-label {
-    display: flex;
-    align-items: center;
-    width: 98%;
-    height: 22px;
-    line-height: 40px;
-    border: 1px dashed #217dbb;
-    border-width: 0 0 1px 0;
-    justify-content: space-between;
-}
-label > span {
-    float: left;
-    font-size: 0.7em;
-}
-label > input {
-    float: right;
-}
-input {
-    color: #cccccc;
-    background-color: rgba(255, 242, 189, 0.11);
-    border: 0px;
-    border-radius: 2px;
-    box-shadow: inset 2px 2px 5px 0px rgba(0,0,0,0.75);
-    padding: 3px;
-    margin: 2px;
-    font-size: 0.7em;
-    width: 120px;
-}
-select {
-    color: #cccccc;
-    background-color: rgba(255, 242, 189, 0.11);
-    border: 0px;
-    border-radius: 2px;
-    box-shadow: inset 2px 2px 5px 0px rgba(0,0,0,0.75);
-    padding: 3px;
-    margin: 2px;
-    font-size: 0.7em;
-    width: 126px;
+/*region header */
+header search input[type=text] {
+    width: 130px;
+    transition: width 0.4s ease-in-out;
 }
 
-/*endregion*/
+/* When the input field gets focus, change its width to 100% */
+header search input[type=text]:focus {
+    width: 500px;
+}
+/*endregion header */
 /*region util*/
 .break:after {
     content:"\000A";
@@ -335,30 +278,3 @@ select {
 }
 /*endregion*/
 
-
-.report {
-    position: relative;
-    width: 40px;
-    height: 15px;
-    background-color: #3a383a;
-    overflow: hidden;
-}
-#result-list {
-}
-body > content > .result-stats {
-    float: left;
-}
-body > content > .result-list-wrapper {
-    float: left;
-    width: 50%;
-    min-height: calc(100vh - var(--header-hight));
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-/*.report:hover {*/
-/*position: absolute;*/
-/*top: 0px;*/
-/*left: 0px;*/
-/*width: auto;*/
-/*height: auto;*/
-/*}*/
