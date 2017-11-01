@@ -298,9 +298,13 @@ vendor_prg_name {
     margin-left: 5px;
     float: left;
     color: #718eaa;
+    height: 100%;
 }
 vendor_prg_name>v_style {
     font-size: xx-large;
+}
+vendor_prg_name>img {
+    height: 100%;
 }
 userlist {
     float: right;
