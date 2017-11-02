@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 var indexRoutes = require('./routes/index');
 var petRoutes = require('./routes/pet');
-// var usersRoute = require('./routes/users');
+var searchRoute = require('./routes/search');
 // var dataRoute = require('./routes/data');
 
 app.use('/', indexRoutes);
@@ -45,6 +45,7 @@ app.use(function(req, res, next) {
 });
 app.use('/pet', petRoutes);
 
+app.use('/search', searchRoute);
 // app.use('/users', usersRoute);
 // app.use('/data', dataRoute);
 
