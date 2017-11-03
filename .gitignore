@@ -58,6 +58,6 @@ typings/
 .env
 
 # images for design
-Ideas/images/
+/Ideas/images/
 
-.idea/
+/.idea/
