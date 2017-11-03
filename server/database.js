@@ -59,11 +59,17 @@ module.exports = {
         else return alive_animals;
     },
 
-    getSpeciesImages(){
-        let row = DB.prepare('select * from species').all();
+    getIcons(select){
+        let row = DB.prepare('select * from icons_hash where (type) like @query').all({
+            query: select
+        });
         return row;
     },
 
+
+
+
+/*
     getOwner(NameOrID) {
         if (typeof NameOrID === "string" && !parseInt(NameOrID)) {
             //string
@@ -123,7 +129,7 @@ module.exports = {
     getTreatmentByGOT(gotNr) {},
     getTreatmentByName(string) {},
 
-
+*/
 };
 
 function exitHandler(options, err) {

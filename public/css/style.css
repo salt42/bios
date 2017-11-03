@@ -244,17 +244,22 @@ header company {
     float: left;
     color: #718eaa;
 }
-header vendor_prg_name {
+header vendor {
     margin-left: 5px;
     float: left;
     color: #718eaa;
     height: 100%;
 }
-header vendor_prg_name>v_style {
+header vendor>v_style {
     font-size: xx-large;
 }
-header vendor_prg_name>img {
-    height: 100%;
+header vendor>img {
+    margin-top: 5%;
+    height: 90%;
+    background-image: radial-gradient(white, gray);
+    border-radius: 10px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 header userlist {
     float: right;
