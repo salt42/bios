@@ -14,23 +14,5 @@ define("server", function(bios){
                     fn(resData);
             }
         });
-
-        // let result = {
-        //     query: searchQuery,
-        //     results: [
-        //         {
-        //             type: "owner",
-        //             name: "Salty Salt",
-        //             addr: "Mondweg 3"
-        //         },
-        //         {
-        //             type: "animal",
-        //             name: "Tüte"
-        //         }
-        //     ]
-        // };
-        //callback result
-        // if (searchQuery != "")
-        //     fn();
     }
 });

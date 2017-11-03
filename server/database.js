@@ -11,12 +11,55 @@ console.log(__dirname + config.dbFile);
 var DB = new Database(__dirname + config.dbFile, {});
 
 module.exports = {
-    searchOwner(query) {
-        let row = DB.prepare('select * from owner where (name || address) like @query').all({
+    // live search
+    liveSearchOwner(query){
+        return this.searchOwnersWith(query);
+    },
+    liveSearchAnimal(query){
+        return this.searchAnimalsWith(query);
+        },
+    liveSearchArticle(query){
+        let row = DB.prepare('select * from articles where (name || vendor) like @query').all({
+            query: "%"+query+"%"
+        });
+        return row;
+        },
+    // details search
+    searchOwnersWith(query) {
+        let row = DB.prepare('select * from owner where (name || address || owner_id) like @query').all({
             query: "%"+query+"%"
         });
         return row;
     },
+    searchAnimalsWith(query){
+        let row = DB.prepare('select * from animal where (name || birthday) like @query').all({
+            query: "%"+query+"%"
+        });
+        return row;
+    },
+    searchArticlesWith(query){
+        let row = DB.prepare('select * from articles where (name || birthday) like @query').all({
+            query: "%"+query+"%"
+        });
+        return row;
+    },
+
+    sortOutDeadAnimals(result, invert = false){
+        let died_animals = [];
+        let alive_animals = [];
+        for (let i = 0; i< result.length; i++){
+            if (result[i].died == 1 || result[i].died == "True"){
+                died_animals.push(result[i]);
+            }
+            else {
+                alive_animals.push(result[i]);
+            }
+        }
+        if (invert == true) return died_animals ;
+        else return alive_animals;
+    },
+
+
     getOwner(NameOrID) {
         if (typeof NameOrID === "string" && !parseInt(NameOrID)) {
             //string

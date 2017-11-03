@@ -9,23 +9,20 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/all/:query', function(req, res) {
-    // let foundA = DB.getAnimalById(5);
-    // console.log(foundA);
-    let foundOwners = DB.searchOwner(req.params.query);
+    let foundOwners = DB.liveSearchOwner(req.params.query);
+    let foundAnimals = DB.liveSearchAnimal(req.params.query);
+    let foundAnimalsSorted = {
+            alives: DB.sortOutDeadAnimals(foundAnimals),
+            dead: DB.sortOutDeadAnimals(foundAnimals, true)
+        }
+    let foundArticles = DB.liveSearchArticle(req.params.query);
+
     let result = {
         query: req.params.query,
         owners: foundOwners,
-        // results: [
-        //     {
-        //         type: "owner",
-        //         name: "Salty Salt",
-        //         addr: "Mondweg 3"
-        //     },
-        //     {
-        //         type: "animal",
-        //         name: "Tüte"
-        //     }
-        // ]
+        animals: foundAnimalsSorted.alives,
+        deadAnimals: foundAnimalsSorted.dead,
+        articles: foundArticles,
     };
 
 
