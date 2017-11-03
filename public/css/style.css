@@ -288,6 +288,9 @@ header .liveResults > li{
     border-radius: 10px;
     padding: 5px;
 }
+header .liveSearchIcon {
+    height: 20px;
+}
 /*endregion header */
 /*region util*/
 .break:after {

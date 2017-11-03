@@ -15,4 +15,17 @@ define("server", function(bios){
             }
         });
     }
+    // this.getSpeciesImages(fn){
+    //     $.ajax({
+    //         url: "/search/all/" + searchQuery,
+    //         type: "GET",
+    //         // contentType: "application/json",
+    //         // data: JSON.stringify(conf),
+    //         success: function (resData) {
+    //             console.log(resData)
+    //             if (searchQuery != "")
+    //                 fn(resData);
+    //         }
+    //     });
+    // }
 });

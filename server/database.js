@@ -59,6 +59,10 @@ module.exports = {
         else return alive_animals;
     },
 
+    getSpeciesImages(){
+        let row = DB.prepare('select * from species').all();
+        return row;
+    },
 
     getOwner(NameOrID) {
         if (typeof NameOrID === "string" && !parseInt(NameOrID)) {
