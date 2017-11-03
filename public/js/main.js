@@ -9,6 +9,10 @@
         UIModules = {};
 
 
+    function createNewUI(name, $parent) {
+        //neues ele in parent
+        //UIModules[module].call(context, global, $(ele) );
+    }
     //defines a core module
     window.define = function(moduleName, initMethod) {
         if(Modules.hasOwnProperty(moduleName)) {

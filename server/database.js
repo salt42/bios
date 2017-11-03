@@ -10,9 +10,13 @@ var config = require('./config');
 console.log(__dirname + config.dbFile);
 var DB = new Database(__dirname + config.dbFile, {});
 
-
-
 module.exports = {
+    searchOwner(query) {
+        let row = DB.prepare('select * from owner where (name || address) like @query').all({
+            query: "%"+query+"%"
+        });
+        return row;
+    },
     getOwner(NameOrID) {
         if (typeof NameOrID === "string" && !parseInt(NameOrID)) {
             //string

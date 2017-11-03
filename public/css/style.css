@@ -10,10 +10,11 @@
     --header-hight: 4em;
     --sidebar-width: 4em;
 }
-/* color lib */
-/*
-    first-color: #3eb9a0; form bg
-    second-color: #718eaa
+/* color lib
+.color_lib{
+    color: #3eb9a0;
+    color: #718eaa;
+}
  */
 .color-red {
     color: #d4563d;
@@ -263,6 +264,7 @@ header userlist>ul {
     background-color: #3eb9a0;
 }
 header search {
+    margin-top: 38px;
     float: right;
     margin-right: 5px;
 }
@@ -274,6 +276,15 @@ header search input[type=text] {
 /* When the input field gets focus, change its width to 100% */
 header search input[type=text]:focus {
     width: 500px;
+}
+
+header .liveResults {
+    margin-top: 5px;
+    background-color: #3eb9a0;
+    width: 100%;
+    float: left;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 /*endregion header */
 /*region util*/
