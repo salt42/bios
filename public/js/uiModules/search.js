@@ -95,14 +95,16 @@ defineUI("search", function(bios, $element){
                 break;
             default:
                 // console.log(e.key);
-                bios.server.liveSearch(searchQuery, function(data) {
-                    console.log(data);
-                    console.log(data.query != searchQuery);
-                    if (data.query != searchQuery) {
-                        return;
-                    }
-                    updateResults(data);
-                });
+                if (!(searchQuery == "")){
+                    bios.server.liveSearch(searchQuery, function(data) {
+                        console.log(data);
+                        console.log(data.query != searchQuery);
+                        if (data.query != searchQuery) {
+                            return;
+                        }
+                        updateResults(data);
+                    });
+                }
         }
     });
 });
