@@ -42,7 +42,7 @@ defineUI("search", function(bios, $element){
                         bgColor = "#718eaa";
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
-                            let htmlText = " " + a.name + ", " + trans(denumS(a.species_id));
+                            let htmlText = " " + a.name + ", " + trans(decodeS(a.species_id));
                             $('<li data-imgInfo = "' + a.species_id + '"></li>')
                                 .addClass(entryClass + property + " fa fa-stethoscope")
                                 // .setAttribute("info","test")
@@ -58,7 +58,7 @@ defineUI("search", function(bios, $element){
                         color = "white";
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
-                            let htmlText = " " + a.name + ", " + trans(denumS(a.species_id)) + ", " + a.died_on;
+                            let htmlText = " " + a.name + ", " + trans(decodeS(a.species_id)) + ", " + a.died_on;
                             $('<li data-imgInfo = "' + a.species_id + '"></li>')
                                 .addClass(entryClass + "animals-dead" + " fa fa-circle")
                                 .html(htmlText)
@@ -136,8 +136,8 @@ defineUI("search", function(bios, $element){
         }
     }
 
-    function denumS(value){
-        return bios.trans.denumSpecies(value);
+    function decodeS(value){
+        return bios.trans.decode.species(value);
     }
 
     $input.on("keyup", function(e) {

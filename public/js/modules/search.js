@@ -15,9 +15,9 @@ define("search", function(bios){
             }
         });
     }
-    this.getSpecies = function (searchQuery, fn){
+    this.getList = function (searchQuery, fn){
         $.ajax({
-            url: "/search/species/" + searchQuery,
+            url: "/search/list/" + searchQuery,
             type: "GET",
             success: function (resData) {
                 // console.log(resData)

@@ -53,12 +53,16 @@ router.get('/user', function(req, res) {
 
     res.json(result);
 });
-router.get('/species/:query', function(req, res) {
+router.get('/list/:query', function(req, res) {
     let result = {};
-    if (req.params.query == "all"){
+    if (req.params.query == "species"){
         result.list = DB.getSpeciesList();
     }
+    if(req.params.query == "userRoles"){
+        result.list = DB.getUserRolesList();
+    }
     else {
+        result = DB.getAllLists();
     }
 
     res.json(result);

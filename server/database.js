@@ -29,8 +29,18 @@ module.exports = {
         return row;
     },
     // details search
+    getAllLists(){
+        let result = {};
+        result.listSpecies = this.getSpeciesList();
+        result.listUserRoles = this.getUserRolesList();
+        return result;
+    },
     getSpeciesList(){
         let row = DB.prepare('select * from species').all();
+        return row;
+    },
+    getUserRolesList(){
+        let row = DB.prepare('select * from user_roles').all();
         return row;
     },
     searchOwnersWith(query) {
@@ -51,7 +61,13 @@ module.exports = {
         });
         return row;
     },
-
+    exampleJoin(){
+        let testa = "SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate" +
+        "FROM Orders" +
+        "INNER JOIN colors ON animal.color=color.id"+
+        "INNER JOIN species ON animal.species_id=species.id"+
+        "INNER JOIN race ON animal.race_id=race.id"
+    },
     /**
      * Sorts out the dead animals
      * @param {Object}  result   - db result rows
