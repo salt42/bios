@@ -15,39 +15,24 @@ module.exports = {
         return this.liveSearchOwner("e");
     },
 
-    /**
-     *  Limit results
-     * @param   {Object|Array}  data        - db result rows or array
-     * @param   {int}           [limit = 5]
-     * @returns {Array}
-     */
-    limitResults(data, limit = 5) {
-    let limitedResults = [];
-    let i = 0;
-    while (i < limit){
-        if (i in data){
-            limitedResults.push(data[i]);
-        }
-        i++;
-    }
-    return limitedResults;
-},
-
     // live search
     liveSearchOwner(query){
-        this.replaceEnums("owner", this.searchOwnersWith(query));
         return this.searchOwnersWith(query);
     },
     liveSearchAnimal(query){
         return this.searchAnimalsWith(query);
-        },
+    },
     liveSearchArticle(query){
         let row = DB.prepare('select * from articles where (name || vendor) like @query').all({
             query: "%"+query+"%"
-        });
+    });
         return row;
-        },
+    },
     // details search
+    getSpeciesList(){
+        let row = DB.prepare('select * from species').all();
+        return row;
+    },
     searchOwnersWith(query) {
         let row = DB.prepare('select * from owner where (name || address || owner_id) like @query').all({
             query: "%"+query+"%"

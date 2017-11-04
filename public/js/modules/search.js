@@ -9,8 +9,18 @@ define("search", function(bios){
             // contentType: "application/json",
             // data: JSON.stringify(conf),
             success: function (resData) {
-                console.log(resData)
+                // console.log(resData)
                 if (searchQuery != "")
+                    fn(resData);
+            }
+        });
+    }
+    this.getSpecies = function (searchQuery, fn){
+        $.ajax({
+            url: "/search/species/" + searchQuery,
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
                     fn(resData);
             }
         });
@@ -20,7 +30,7 @@ define("search", function(bios){
             url: "/search/user",
             type: "GET",
             success: function (resData) {
-                console.log(resData)
+                // console.log(resData)
                     fn(resData);
             }
         });

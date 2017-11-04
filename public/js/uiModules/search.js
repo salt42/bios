@@ -1,6 +1,6 @@
 defineUI("search", function(bios, $element){
     "use strict";
-    console.log("start search UI module");
+    if (window.startUpLogLevel >= 2) console.log("start search UI module");
 
     let $input = $('<input />')
         .attr("type", "text")
@@ -22,26 +22,28 @@ defineUI("search", function(bios, $element){
             let $fragment = $(document.createDocumentFragment());
             let bgColor = "#3eb9a0";
             let color = "black";
-            let entryClass = "liveSearchEntry ";
+            let entryClass = "live-Search-";
             // add entries
             if (data.hasOwnProperty(property)) {
                 switch (property){
                     case "owners":
                         for (let i = 0; i < data[property].length; i++) {
-                            let htmlText = " " + data[property][i].first_name + " " + data[property][i].name + ", " + data[property][i].address;
+                            let a = data[property][i];
+                            let htmlText = " " + a.first_name + " " + a.name + ", " + a.address;
                             $('<li></li>')
                                 .addClass(entryClass + property + " fa fa-user")
                                 .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
                         }
-                        console.log("here " + property, data[property]);
+                        // console.log("here " + property, data[property]);
                         break;
                     case "animals":
                         bgColor = "#718eaa";
                         for (let i = 0; i < data[property].length; i++) {
-                            let htmlText = " " + data[property][i].name + ", " + data[property][i].species;
-                            $('<li data-imgInfo = "' + data[property][i].species_id + '"></li>')
+                            let a = data[property][i];
+                            let htmlText = " " + a.name + ", " + trans(denumS(a.species_id));
+                            $('<li data-imgInfo = "' + a.species_id + '"></li>')
                                 .addClass(entryClass + property + " fa fa-stethoscope")
                                 // .setAttribute("info","test")
                                 // .dataset.info = "test"
@@ -49,20 +51,21 @@ defineUI("search", function(bios, $element){
                                 .appendTo($fragment)
                                 .show();
                         }
-                        console.log("here " + property, data[property]);
+                        // console.log("here " + property, data[property]);
                         break;
                     case "deadAnimals":
                         bgColor = "#2d6987";
                         color = "white";
                         for (let i = 0; i < data[property].length; i++) {
-                            let htmlText = " " + data[property][i].name + ", " + data[property][i].species + ", " + data[property][i].died_on;
-                            $('<li data-imgInfo = "' + data[property][i].species_id + '"></li>')
-                                .addClass(entryClass + property + " animals dead" + " fa fa-circle")
+                            let a = data[property][i];
+                            let htmlText = " " + a.name + ", " + trans(denumS(a.species_id)) + ", " + a.died_on;
+                            $('<li data-imgInfo = "' + a.species_id + '"></li>')
+                                .addClass(entryClass + "animals-dead" + " fa fa-circle")
                                 .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
                         }
-                        console.log("here " + property, data[property]);
+                        // console.log("here " + property, data[property]);
                         break;
                     case "articles":
                         bgColor = "#ffa115";
@@ -78,11 +81,7 @@ defineUI("search", function(bios, $element){
                     default:
                 }
             }
-            $li.css("background-color", bgColor)
-                .css("color", color)
-                .css("text-align", "right");
             $ul.append($fragment)
-                .css("text-align", "left")
                 .appendTo($li);
             $liveResults.append($li);
         }
@@ -137,6 +136,10 @@ defineUI("search", function(bios, $element){
         }
     }
 
+    function denumS(value){
+        return bios.trans.denumSpecies(value);
+    }
+
     $input.on("keyup", function(e) {
         $liveResults.empty();
         searchQuery = $input.val();
@@ -148,9 +151,9 @@ defineUI("search", function(bios, $element){
                 // console.log(e.key);
                 if (!(searchQuery == "")){
                     bios.search.liveSearch(searchQuery, function(data) {
-                        console.log(data);
-                        console.log(data.query != searchQuery);
+                        // console.log(data);
                         if (data.query != searchQuery) {
+                            console.log("returned query is wrong");
                             return;
                         }
                         updateResults(data);

@@ -1,6 +1,6 @@
 defineUI("userlist", function(bios, $element){
     "use strict";
-    console.log("start userlist UI module");
+    if (window.startUpLogLevel >= 2) console.log("start userlist UI module");
 
     let $list = $('<ul></ul>');
 

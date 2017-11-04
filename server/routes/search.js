@@ -6,6 +6,8 @@
 var DB = require('../database');
 var express = require('express');
 var router = express.Router();
+let func = {};
+
 
 /* GET home page. */
 router.get('/all/:query', function(req, res) {
@@ -20,10 +22,10 @@ router.get('/all/:query', function(req, res) {
 
     let result = {
         query: req.params.query,
-        owners: DB.limitResults(dbResults.owner),
-        animals: DB.limitResults(dbResults.animals.alive),
-        deadAnimals: DB.limitResults(dbResults.animals.dead),
-        articles: DB.limitResults(dbResults.articles),
+        owners: func.limitResults(dbResults.owner),
+        animals: func.limitResults(dbResults.animals.alive),
+        deadAnimals: func.limitResults(dbResults.animals.dead),
+        articles: func.limitResults(dbResults.articles),
     };
 
 
@@ -51,4 +53,31 @@ router.get('/user', function(req, res) {
 
     res.json(result);
 });
+router.get('/species/:query', function(req, res) {
+    let result = {};
+    if (req.params.query == "all"){
+        result.list = DB.getSpeciesList();
+    }
+    else {
+    }
+
+    res.json(result);
+});
 module.exports = router;
+
+
+/**
+ *  Limit results
+ * @param   {Object|Array}  data        - db result rows or array
+ * @param   {int}           [limit = 5]
+ * @returns {Array}
+ */
+func.limitResults = function (data, limit = 5) {
+    let limitedResults = [];
+    for (let i = 0; i < limit; i++){
+        if (i in data){
+            limitedResults.push(data[i]);
+        }
+    }
+    return limitedResults;
+};

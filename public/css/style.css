@@ -9,14 +9,48 @@
 
     --header-hight: 4em;
     --sidebar-width: 4em;
+
+    --live-Search-owners: #3eb9a0;
+    --live-Search-owners-hover: #718eaa;
+    --live-Search-animals: #718eaa;
+    --live-Search-animals-hover: #2d6987;
+    --live-Search-animals-dead: #2d6987;
+    --live-Search-animals-dead-hover: #ffa115;
+    --live-Search-articles: #ffa115;
+    --live-Search-articles-hover: #3eb9a0;
+
+    --form-field-background: #718eaa;
+}
+li.live-Search-owners{
+    background-color: var(--live-Search-owners);
+}
+li.live-Search-owners:hover{
+    background-color: var(--live-Search-owners-hover);
+}
+li.live-Search-animals{
+    background-color: var(--live-Search-animals);
+}
+li.live-Search-animals:hover{
+    background-color: var(--live-Search-animals-hover);
+}
+li.live-Search-animals-dead{
+    background-color: var(--live-Search-animals-dead);
+    color: white;
+}
+li.live-Search-animals-dead:hover{
+    background-color: var(--live-Search-animals-dead-hover);
+    color: black;
+}
+li.live-Search-articles{
+    background-color: var(--live-Search-articles);
+}
+li.live-Search-articles:hover{
+    background-color: var(--live-Search-articles-hover);
+}
+form-field-background{
+    background-color: var(--form-field-background);
 }
 
-color lib {
-    color: #3eb9a0;
-    color: #718eaa;
-    color: #2d6987;
-    color: #ffa115;
-}
 .color-red {
     color: #d4563d;
 }
@@ -267,7 +301,7 @@ header ul.userList {
     margin-left: 25px;
 }
 header ul.userList li.userEntry {
-    background-color: #3eb9a0;
+    background-color: var(--form-field-background);
     float: right;
     margin-right: 5px;
     margin-left: 5px;

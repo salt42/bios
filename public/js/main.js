@@ -2,15 +2,16 @@
 (function() {
     "use strict";
 
-    let startUpLog = true;
+    window.startUpLogLevel = 1; // {1-4}
+
     const global = {
         UIModules: {}
     };
     let Modules = {},
         UIModules = {};
 
-    function sLog(value1, value2 = null, value3 = null){
-        if (startUpLog){
+    function sLog(level, value1, value2 = null, value3 = null){
+        if (window.startUpLogLevel >= level){
             if (value3 !== null)
                 console.log(value1, value2, value3);
             else if (value2 !== null)
@@ -30,7 +31,7 @@
             console.error("Module name '"+ moduleName +"' taken");
         }
         Modules[moduleName] = initMethod;
-        sLog("module attached: ", moduleName)
+        sLog(4, "module attached: ", moduleName)
     };
     //defines a UI module
     window.defineUI = function(uiName, initMethod) {
@@ -40,10 +41,10 @@
         UIModules[uiName] = initMethod;
     };
     window.onload = function() {
-        sLog("init system");
+        sLog(1, "init system");
         //init modules
         for(let module in Modules) {
-            sLog("init module: ", module);
+            sLog(2, "init module: ", module);
             if (!Modules.hasOwnProperty(module)) continue;
             let context = {};
             Modules[module].call(context, global);
@@ -52,12 +53,12 @@
 
         // -> document ready
         // //init UI modules
-        sLog("uiModules: ", UIModules);
+        sLog(3, "uiModules: ", UIModules);
         for(let module in UIModules) {
             if (!UIModules.hasOwnProperty(module)) continue;
-            sLog("search uiModule: ", module);
+            sLog(3, "search uiModule: ", module);
             $(module).each(function(index, ele) {
-                sLog("init uiModule", ele);
+                sLog(4, "init uiModule", ele);
                 let context = {};
                 UIModules[module].call(context, global, $(ele) );
                 // global.UIModules[module] = context;

@@ -1,8 +1,8 @@
 defineUI("test", function(bios, $element){
     "use strict";
-    console.log("start test UI module");
+    if (window.startUpLogLevel >= 2) console.log("start test UI module");
 
-    let resultText = "Test <br/>";
+    let resultText = "";
     let end = "<br/>";
     let i = 0;
 
@@ -22,6 +22,9 @@ defineUI("test", function(bios, $element){
             resultText += (typeof result !== "string") ? "error on " + i + end : "success on " + i + " = " + result + end;
         }
     }
+
+    if(resultText !== "")
+        resultText = "Test <br/>" + resultText;
 
     $element
         .css("background-color", "yellow")
