@@ -71,7 +71,7 @@ h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
+b, u, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 caption,
@@ -261,13 +261,16 @@ header vendor>img {
     border-top-right-radius: 0;
     border-bottom-left-radius: 0;
 }
-header userlist {
+header ul.userList {
     float: right;
     margin-right: 15px;
-    margin-left: 15px;
+    margin-left: 25px;
 }
-header userlist>ul {
+header ul.userList li.userEntry {
     background-color: #3eb9a0;
+    float: right;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 header search {
     margin-top: 38px;
@@ -290,12 +293,17 @@ header .liveResults {
     float: left;
 }
 header .liveResults > li{
-    border-radius: 10px;
     padding: 5px;
+    float: none;
 }
-header .liveSearchIcon {
-    height: 20px;
+header .liveResults li.fa{
+    display: block;
+    padding: 3px;
 }
+
+header .userIcon {
+     height: 20px;
+ }
 /*endregion header */
 /*region util*/
 .break:after {
@@ -344,4 +352,13 @@ logo {
 }
 
 /*endregion*/
-
+/* region icons */
+.bios-icon-user-0::before {
+    height: 20px;
+    background-image: url("/img/ui-kit/default/employ_male.png");
+}
+.bios-icon-user-1::before {
+    height: 20px;
+    background-image: url("/img/ui-kit/default/employ_female.png");
+}
+/* endregion */

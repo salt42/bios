@@ -11,8 +11,31 @@ console.log(__dirname + config.dbFile);
 var DB = new Database(__dirname + config.dbFile, {});
 
 module.exports = {
+    testResults(){
+        return this.liveSearchOwner("e");
+    },
+
+    /**
+     *  Limit results
+     * @param   {Object|Array}  data        - db result rows or array
+     * @param   {int}           [limit = 5]
+     * @returns {Array}
+     */
+    limitResults(data, limit = 5) {
+    let limitedResults = [];
+    let i = 0;
+    while (i < limit){
+        if (i in data){
+            limitedResults.push(data[i]);
+        }
+        i++;
+    }
+    return limitedResults;
+},
+
     // live search
     liveSearchOwner(query){
+        this.replaceEnums("owner", this.searchOwnersWith(query));
         return this.searchOwnersWith(query);
     },
     liveSearchAnimal(query){
@@ -44,6 +67,12 @@ module.exports = {
         return row;
     },
 
+    /**
+     * Sorts out the dead animals
+     * @param {Object}  result   - db result rows
+     * @param {boolean} [invert = false] - inverts the result: true for dead animals, false for alive animals
+     * @returns {Array}
+     */
     sortOutDeadAnimals(result, invert = false){
         let died_animals = [];
         let alive_animals = [];
@@ -59,13 +88,12 @@ module.exports = {
         else return alive_animals;
     },
 
-    getIcons(select){
-        let row = DB.prepare('select * from icons_hash where (type) like @query').all({
-            query: select
-        });
-        return row;
-    },
 
+    // Employes / User
+    getEmployesList(){
+        let row = DB.prepare('select * from user').all();
+        return row;
+    }
 
 
 

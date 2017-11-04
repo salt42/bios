@@ -1,20 +1,27 @@
 defineUI("userlist", function(bios, $element){
     "use strict";
+    console.log("start userlist UI module");
 
-
-    console.log("start search UI module");
     let $list = $('<ul></ul>');
 
-    let $users = '<li>|_| Salt</li>\n' +
-        '    <li>|_| Fry</li>\n';
+    bios.search.userSearch(function(data){
+        getUserList(data.users);
+    });
 
-    $users.appendTo($list);
     $list
         .addClass("userList")
         .appendTo($element);
 
-    function getUserData(){}
-    function getUserIcons(){
-        DB.getIcons("user");
+
+
+    function getUserList(users){
+        let $fragment  = $(document.createDocumentFragment());
+        for (let i = 0; i < users.length; i++){
+           $('<li></li>')
+             .addClass('userEntry fa fa-user-md bios-icon-user-' + users[i].gender)
+             .html(users[i].first_name + " " + users[i].name)
+             .appendTo($fragment);
+        }
+        $fragment.appendTo($list);
     }
 });

@@ -39,9 +39,12 @@
 
         // -> document ready
         // //init UI modules
+        console.log(UIModules);
         for(let module in UIModules) {
             if (!UIModules.hasOwnProperty(module)) continue;
+            console.log("search uiModule: ", module);
             $(module).each(function(index, ele) {
+                console.log("init module", ele);
                 let context = {};
                 UIModules[module].call(context, global, $(ele) );
                 // global.UIModules[module] = context;

@@ -9,7 +9,8 @@ var confPath = "";
 var conf = {};
 var defaults = {
     httpPort: 777,
-    dbFile: "/../db/data.sqlite3"
+    dbFile: "/../db/data.sqlite3",
+    settingsFile: "/settings/settings.conf",
 };
 
 module.exports = function(path) {

@@ -8,10 +8,13 @@
 	<!-- jsonForm -->
 	<!--<link href="/libs/jsonForm/src/jsonForm.css" rel="stylesheet">-->
 	<!--<script src="/libs/jsonForm/src/jsonForm.js"></script>-->
-
+    <link rel="stylesheet" href="libs/font-awesome-4.7.0/css/font-awesome.min.css">
+	<script src="/language/english.js"></script>
 	<script src="/js/main.js"></script>
-	<script src="/js/modules/server.js"></script>
+	<script src="/js/modules/search.js"></script>
 	<script src="/js/uiModules/search.js"></script>
+	<script src="/js/uiModules/userlist.js"></script>
+	<script src="/js/uiModules/test.js"></script>
 
 </head>
 <body>
@@ -34,9 +37,9 @@
     <company_logo>
         <img alt="logo" src="/img/vendor/bios.png" style="background-color: lightgray"/>
     </company_logo>
-    <userlist>
-    </userlist>
+    <userlist></userlist>
 	<search></search>
+    <test></test>
 </header>
 
 <sidebar>
@@ -56,6 +59,7 @@
 	</div>
 </sidebar>
 <content>
+    <div class="fa fa-info"></div>
 	<p>content</p>
 	{{{body}}}
 </content>

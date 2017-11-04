@@ -1,1 +1,1 @@
-{"httpPort":666,"dbFile":"/../db/bios.sqlite3"}
+{"httpPort":666,"dbFile":"/../db/bios.sqlite3","settingsFile":"/settings/settings.conf"}

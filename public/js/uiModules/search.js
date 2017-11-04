@@ -1,8 +1,7 @@
 defineUI("search", function(bios, $element){
     "use strict";
-
-
     console.log("start search UI module");
+
     let $input = $('<input />')
         .attr("type", "text")
         .attr("name", "search")
@@ -14,11 +13,6 @@ defineUI("search", function(bios, $element){
         .appendTo($element);
 
     let searchQuery = "";
-
-    // $input.on("input", function(e,a) {
-    //     console.log("search changed", a, e);
-    //
-    // });
 
     function updateResults(data){
         for (let property in data) {
@@ -34,9 +28,10 @@ defineUI("search", function(bios, $element){
                 switch (property){
                     case "owners":
                         for (let i = 0; i < data[property].length; i++) {
+                            let htmlText = " " + data[property][i].first_name + " " + data[property][i].name + ", " + data[property][i].address;
                             $('<li></li>')
-                                .addClass(entryClass + property)
-                                .html(data[property][i].name)
+                                .addClass(entryClass + property + " fa fa-user")
+                                .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
                         }
@@ -45,11 +40,12 @@ defineUI("search", function(bios, $element){
                     case "animals":
                         bgColor = "#718eaa";
                         for (let i = 0; i < data[property].length; i++) {
+                            let htmlText = " " + data[property][i].name + ", " + data[property][i].species;
                             $('<li data-imgInfo = "' + data[property][i].species_id + '"></li>')
-                                .addClass(entryClass + property)
+                                .addClass(entryClass + property + " fa fa-stethoscope")
                                 // .setAttribute("info","test")
                                 // .dataset.info = "test"
-                                .html(data[property][i].name)
+                                .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
                         }
@@ -59,9 +55,10 @@ defineUI("search", function(bios, $element){
                         bgColor = "#2d6987";
                         color = "white";
                         for (let i = 0; i < data[property].length; i++) {
+                            let htmlText = " " + data[property][i].name + ", " + data[property][i].species + ", " + data[property][i].died_on;
                             $('<li data-imgInfo = "' + data[property][i].species_id + '"></li>')
-                                .addClass(entryClass + property + " animals dead")
-                                .html(data[property][i].name)
+                                .addClass(entryClass + property + " animals dead" + " fa fa-circle")
+                                .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
                         }
@@ -70,12 +67,12 @@ defineUI("search", function(bios, $element){
                     case "articles":
                         bgColor = "#ffa115";
                         for (let i = 0; i < data[property].length; i++) {
+                            let htmlText = " " + data[property][i].name;
                             $('<li></li>')
-                                .addClass(entryClass + property)
-                                .html(data[property][i].name)
+                                .addClass(entryClass + property + " fa fa-archive")
+                                .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
-                            $li.html(property);
                         }
                         break;
                     default:
@@ -89,7 +86,6 @@ defineUI("search", function(bios, $element){
                 .appendTo($li);
             $liveResults.append($li);
         }
-        addIcons();
         highlight(data["query"]);
     }
 
@@ -151,7 +147,7 @@ defineUI("search", function(bios, $element){
             default:
                 // console.log(e.key);
                 if (!(searchQuery == "")){
-                    bios.server.liveSearch(searchQuery, function(data) {
+                    bios.search.liveSearch(searchQuery, function(data) {
                         console.log(data);
                         console.log(data.query != searchQuery);
                         if (data.query != searchQuery) {
