@@ -12,8 +12,9 @@ define("trans", function(bios){
     });
 
     this.language = function(str) {
-        if (str in transStrings)
-            str = transStrings[str];
+        let s = str.toLowerCase();
+        if (s in transStrings)
+            str = transStrings[s];
         return str;
     };
 
