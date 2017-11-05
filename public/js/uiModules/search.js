@@ -106,6 +106,7 @@ defineUI("search", function(bios, $element){
     $input.on("keyup", function(e) {
         $liveResults.empty();
         searchQuery = $input.val();
+        // console.log (e.keyCode);
         switch (e.keyCode) {
             case 13:
                 //enter
@@ -115,7 +116,8 @@ defineUI("search", function(bios, $element){
                 if (!(searchQuery == "")){
                     bios.search.liveSearch(searchQuery, function(data) {
                         // console.log(data);
-                        if (data.query != searchQuery) {
+                        // console.log(e.keyCode);
+                        if (e.keyCode !== 32 && data.query != searchQuery) {
                             console.log("returned query is wrong");
                             return;
                         }
