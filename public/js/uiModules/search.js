@@ -30,7 +30,8 @@ defineUI("search", function(bios, $element){
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
                             let htmlText = " " + a.first_name + " " + a.name + ", " + a.address;
-                            $('<li></li>')
+                            let htmlData = 'data-id ="' + a.id + '"';
+                            $('<li ' + htmlData + '></li>')
                                 .addClass(entryClass + property + " fa fa-user")
                                 .html(htmlText)
                                 .appendTo($fragment)
@@ -43,7 +44,9 @@ defineUI("search", function(bios, $element){
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
                             let htmlText = " " + a.name + ", " + trans(decodeS(a.species_id));
-                            $('<li data-imgInfo = "' + a.species_id + '"></li>')
+                            let htmlData =  'data-id ="' + a.id + '"'+
+                                            'data-imgInfo = "' + a.species_id + '" ';
+                            $('<li ' + htmlData + '></li>')
                                 .addClass(entryClass + property + " fa fa-stethoscope")
                                 .html(htmlText)
                                 .appendTo($fragment)
@@ -56,8 +59,10 @@ defineUI("search", function(bios, $element){
                         color = "white";
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
-                            let htmlText = " " + a.name + ", " + trans(decodeS(a.species_id)) + ", " + a.died_on;
-                            $('<li data-imgInfo = "' + a.species_id + '"></li>')
+                            let htmlText = " " + a.name + ", " + trans(decodeS(a.species_id)) + ", " +trans("died on ") + a.died_on;
+                            let htmlData =  'data-id ="' + a.id + '"'+
+                                'data-imgInfo = "' + a.species_id + '" ';
+                            $('<li ' + htmlData + '></li>')
                                 .addClass(entryClass + "animals-dead" + " fa fa-circle")
                                 .html(htmlText)
                                 .appendTo($fragment)
@@ -68,8 +73,10 @@ defineUI("search", function(bios, $element){
                     case "articles":
                         bgColor = "#ffa115";
                         for (let i = 0; i < data[property].length; i++) {
+                            let a = data[property][i];
                             let htmlText = " " + data[property][i].name;
-                            $('<li></li>')
+                            let htmlData =  'data-id ="' + a.id + '"';
+                            $('<li ' + htmlData + '></li>')
                                 .addClass(entryClass + property + " fa fa-archive")
                                 .html(htmlText)
                                 .appendTo($fragment)

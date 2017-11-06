@@ -11,4 +11,4 @@ trans.set(helper + "_" + "2", "unbekannt");
 // translations default in lowercase
 trans.set("gender", "geschlecht");
 trans.set("first name", "Vorname");
-trans.set("died", "verstorben");
+trans.set("died on", "verstorben am");

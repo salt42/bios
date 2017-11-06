@@ -8,7 +8,6 @@ define("trans", function(bios){
     bios.search.getList("all", function(data){
         speciesList = setSimpleList(data.listSpecies);
         userRolesList = setSimpleList(data.listUserRoles);
-        console.log("after init part", userRolesList);
     });
 
     this.language = function(str) {

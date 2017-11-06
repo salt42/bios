@@ -14,112 +14,279 @@ module.exports = {
     testResults(){
         return this.liveSearchArticle("e");
     },
+    test(){},
 
     // live search
+    liveSearchAll(query){
+        let dbResults = {};
+        dbResults.animals = {};
+
+        dbResults.owner = this.liveSearchOwner(query);
+        dbResults.animals.all = this.liveSearchAnimal(query);
+        dbResults.animals.alive = this.sortOutDeadAnimals(dbResults.animals.all, 5);
+        dbResults.animals.dead = this.sortOutDeadAnimals(dbResults.animals.all, 3, true);
+        dbResults.articles = this.liveSearchArticle(query);
+
+        return dbResults;
+    },
     liveSearchOwner(query){
+        //todo rebuild query to get a sorted string
+
         let select = 'owner.owner_id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, owner.City, owner.address_2, owner.Zip_2, owner.City_2';
-        let likes = '(owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)';
-        let orderPrio = ',case when '+likes+' = \''+query+'\' then 1 ' +
-                              'when '+likes+' like \''+query+'%\' then 2 ' +
-                              'when '+likes+' like \'%'+query+'\' then 3 ' +
-                              'when '+likes+' like \'%'+query+'%\' then 4 ' +
-                            'end as [priority]';
-        let order = 'order by [priority]';
-        let row = DB.prepare('select ' + select + orderPrio + ' from owner where  ' + likes + ' like @query or ' + likes + ' is null ' + order).all({
-            query: "%"+query+"%"
-        });
-        console.log(row);
-        return row;
+        let where = 'owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www';
+        let order = '(CASE ' +
+            'WHEN ' + where + ' = \' ' + query +' \' \t THEN 1 ' +
+            'WHEN ' + where + ' like \' ' + query +'% \' \t THEN 2 ' +
+            'WHEN ' + where + ' like \' %' + query +' \' \t THEN 3 ' +
+            'WHEN ' + where + ' like \' %' + query +'% \' \t THEN 4 ' +
+            'ELSE 100 END) ASC';
+        let search ={ query: "%"+query+"%" };
+
+        SQL .create('owner')
+            .setSELECTColumns(select)
+            .setWHEREColumns(where)
+            .setOperator("like")
+            .setSearchQuery("@query")
+            .setORDERString(order)
+            .setLIMIT(5)
+        ;
+
+        return DB.prepare(SQL.getSQLStatement()).all(search);
     },
     liveSearchAnimal(query){
         let select = 'animal.id, animal.species_id, animal.race_id, animal.name, animal.birthday, animal.gender, animal.color_description, animal.died, animal.died_on';
-        let likes = '(owner_id || species_id || race_id || chip || tattoo || name || birthday || color_description || died_on)';
-        let row = DB.prepare('select ' + select + ' from animal where ' + likes + ' like @query or ' + likes + ' is null').all({
-            query: "%"+query+"%"
-        });
-        return row;
+        let where = 'owner_id || species_id || race_id || chip || tattoo || name || birthday || color_description || died_on';
+        let search ={ query: "%"+query+"%" };
+
+        SQL .create('animal')
+            .setSELECTColumns(select)
+            .setWHEREColumns(where)
+            .setOperator("like")
+            .setSearchQuery("@query")
+            .setORDERString('died_on DESC');
+
+        return DB.prepare(SQL.getSQLStatement()).all(search);
     },
     liveSearchArticle(query){
         let select = 'articles.id, articles.article_number, articles.name, articles.got, articles.vendor, articles.article_target';
-        let likes = '(article_number || name || volume || got || vendor || charge_number || invoice_id || tax_rate || sub_unit_1 || sub_unit_2 || sub_unit_3 || article_target)';
-        let row = DB.prepare('select ' + select + ' from articles where ' + likes + ' like @query or ' + likes + ' is null').all({
-            query: "%"+query+"%"
-    });
-        return row;
+        let where = 'article_number || name || volume || got || vendor || charge_number || invoice_id || tax_rate || sub_unit_1 || sub_unit_2 || sub_unit_3 || article_target';
+        let search ={ query: "%"+query+"%" };
+        SQL .create('articles')
+            .setSELECTColumns(select)
+            .setWHEREColumns(where)
+            .setOperator("like")
+            .setSearchQuery("@query")
+            .setORDERString('name ASC')
+            .setLIMIT(5);
+
+        return DB.prepare(SQL.getSQLStatement()).all(search);
     },
-    // details search
+
+    // get lists
     getAllLists(){
         let result = {};
-        result.listSpecies = this.getSpeciesList();
-        result.listUserRoles = this.getUserRolesList();
+        result.listSpecies = this.getList("species");
+        result.listUserRoles = this.getList("user_roles");
+        result.users = this.getList("user");
         return result;
     },
     getSpeciesList(){
-        let row = DB.prepare('select * from species').all();
-        return row;
+        return this.getList("species");
     },
     getUserRolesList(){
-        let row = DB.prepare('select * from user_roles').all();
-        return row;
+        return this.getList("user_roles");
     },
-    searchOwnersWith(query) {
-        let likes = '(id || owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)';
-        let row = DB.prepare('select * from owner where  '+ likes + ' like @query').all({
-            query: "%"+query+"%"
-        });
-        console.log(row);
-        return row;
+    getUserList(){
+        return this.getList("user");
     },
-    searchAnimalsWith(query){
-        let likes = '(owner_id || species_id || race_id || chip || tattoo || name || birthday || color_description || died_on)';
-        let row = DB.prepare('select * from animal where ' + likes + ' like @query').all({
-            query: "%"+query+"%"
-        });
-        console.log(row);
-        return row;
+    getList(table){
+        return DB.prepare('select * from ' + table).all();
     },
-    searchArticlesWith(query){
-        let row = DB.prepare('select * from articles where (name || birthday) like @query').all({
-            query: "%" + query + "%"
-        });
-        return row;
-    },
-    exampleJoin(){
-        let testa = "SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate" +
-        "FROM Orders" +
-        "INNER JOIN colors ON animal.color=color.id"+
-        "INNER JOIN species ON animal.species_id=species.id"+
-        "INNER JOIN race ON animal.race_id=race.id"
-    },
+
+    // helper
     /**
      * Sorts out the dead animals
      * @param {Object}  result   - db result rows
+     * @param {int}     [limit]  - limit number of results
      * @param {boolean} [invert = false] - inverts the result: true for dead animals, false for alive animals
      * @returns {Array}
      */
-    sortOutDeadAnimals(result, invert = false){
-        let died_animals = [];
-        let alive_animals = [];
-        for (let i = 0; i< result.length; i++){
-            if (result[i].died == 1 || result[i].died == "True"){
-                died_animals.push(result[i]);
+    sortOutDeadAnimals(result, limit = 0, invert = false){
+        if (typeof limit === "boolean"){
+            invert = limit;
+            limit = 0;
+        }
+        let count = 0;
+        let res = [];
+
+        for (let i = 0; i < result.length; i++){
+            if (invert === true){
+                // dead animals
+                if (result[i].died == 1 || result[i].died == "True"){
+                    res.push(result[i]);
+                    count++;
+                    if (count === limit) break;
+                }
             }
             else {
-                alive_animals.push(result[i]);
+                if (!(result[i].died == 1 || result[i].died == "True")){
+                    res.push(result[i]);
+                    count++;
+                    if (count === limit) break;
+                }
             }
         }
-        if (invert == true) return died_animals ;
-        else return alive_animals;
+        return res;
     },
 
+    exampleJoin(){
+        let testa = "SELECT Orders.OrderID, Customers.CustomerName, Orders.OrderDate" +
+            "FROM Orders" +
+            "INNER JOIN colors ON animal.color=color.id"+
+            "INNER JOIN species ON animal.species_id=species.id"+
+            "INNER JOIN race ON animal.race_id=race.id"
+    },
+};
 
-    // Employes / User
-    getEmployesList(){
-        let row = DB.prepare('select * from user').all();
-        return row;
+function exitHandler(options, err) {
+    console.log("close");
+    DB.close();
+    // process.exit();
+}
+//do something when app is closing
+process.on('exit', exitHandler);
+//catches ctrl+c event
+process.on('SIGINT', exitHandler);
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler);
+
+
+var SQL = {
+    create (tablename = null) {
+        this._table = "";
+        this._selectColumns = "";
+        this._where = "";
+        this._operator = "";
+        this._searchQuery = "";
+        this._limit = "";
+        this._order = "";
+        this._statement = "";
+        if (tablename !== null)
+            this._table = tablename;
+        return this;
+    },
+    setTable (tablename){
+        this._table = tablename;
+        this._columns = "";
+        return this;
+    },
+    setSELECTColumns (columns){
+        if (this._table === "") console.log("specify table before!!!");
+        else if (columns === "" || columns === null) { }
+        else if (columns === "*") {
+            this._selectColumns = "*";
+        }
+        else {
+            this._selectColumns = columns;
+        }
+        return this;
+    },
+    addSELECTColumns (columnName){
+        if (this._table === "") console.log("specify table before!!!");
+        else if (columnName === "" || columnName === null || columnName === "*") { }
+        else if (columnName.indexOf(".") > -1) {
+            if (this._selectColumns === "") this._selectColumns = columnName;
+            else this._selectColumns += ", " + columnName;
+        }
+        else {
+            if (this._selectColumns === "") this._selectColumns = this._table + "." + columnName;
+            else this._selectColumns += ", " + this._table + "." + columnName;
+        }
+        return this;
+    },
+    setWHEREColumns (whereColumns) {
+        if (this._table === "") console.log("specify table before!!!");
+        else if (whereColumns === "" || whereColumns === null) { }
+        else if (whereColumns === "*") {
+            this._where = "";
+        }
+        else {
+            this._where = whereColumns;
+        }
+        return this;
+    },
+    addWHEREColumn (whereColumns) {
+        if (this._table === "") console.log("specify table before!!!");
+        else if (whereColumns === "" || whereColumns === null || whereColumns === "*") { }
+        else {
+            if (this._where === "") this._where = whereColumns;
+            else this._where += " || " + whereColumns;
+        }
+        return this;
+    },
+    setOperator (operator) {
+        if (this._table === "") console.log("specify table before!!!");
+        else this._operator = operator;
+        return this;
+    },
+    setSearchQuery (query) {
+        if (this._table === "") console.log("specify table before!!!");
+        else this._searchQuery = query;
+        return this;
+    },
+    setLIMIT (limit) {
+        if (this._table === "") console.log("specify table before!!!");
+        else this._limit = limit;
+        return this;
+    },
+    setORDERString (orderString) {
+        if (this._table === "") console.log("specify table before!!!");
+        else {
+            if (orderString.toLowerCase().indexOf("order by") > -1)
+                this._order = orderString;
+            else this._order = 'ORDER BY ' + orderString
+        }
+        return this;
+    },
+    getSQLStatement () {
+        if ( this._table === "" || (this._where !== "" && this._searchQuery ==="")){
+            let msg = "SQLStatement set up is incorrect";
+            console.log (msg);
+            return msg;
+        } // query+ where, table,
+        this._statement = "SELECT ";
+        this._statement += (this._selectColumns === "") ? "* " : this._selectColumns.trim() + " ";
+        this._statement += 'FROM ' + this._table.trim() + " ";
+        if (this._where !== ""){
+            this._statement += 'WHERE (' + this._where.trim() + ') ';
+            this._statement += (this._operator === "")? '= ' : this._operator.trim() + " ";
+            if (typeof this._searchQuery === "string") {
+                if (this._searchQuery.trim().indexOf("@") > 2) {
+                    this._statement += '"' + this._searchQuery.trim() + '" ';
+                }
+                else {
+                    this._statement += this._searchQuery + ' ';
+                }
+            }
+            else {
+                this._statement += this._searchQuery + ' ';
+            }
+            // fix null-in-field-error
+            this._statement += 'or (' + this._where.trim() + ') IS NULL ';
+            //is null
+        }
+        this._statement += (this._order === "") ? "" : this._order.trim() + " ";
+        this._statement += (this._limit === "") ? "" : "LIMIT " + this._limit + " ";
+
+        return this._statement;
     }
-/*  fields of tables
-TABLE `animal` (
+};
+
+
+//================================================= TABLES =============================================================
+//======================================================================================================================
+/*
+// ============================= TABLE `animal`
 `id`	            INTEGER PRIMARY KEY AUTOINCREMENT,.     animal.id
 `owner_id`	        INTEGER,                          .     animal.owner_id
 `species_id`	    INTEGER,                          .     animal.species_id
@@ -144,14 +311,10 @@ TABLE `animal` (
 `reminder`	        TEXT,                             .     animal.reminder
 `reminder_date`	    INTEGER,                          .     animal.reminder_date
 `died_on`	        INTEGER                           .     animal.died_on
-);
-likes:
-owner_id || species_id || race_id || chip || tattoo || name || birthday || color_description || died_on
-select:
-animal.id, animal.species_id, animal.race_id, animal.name, animal.birthday, animal.gender, animal.color_description, animal.died, animal.died_on
 
 
-TABLE `owner` (
+
+// ============================= TABLE `owner`
 `id`	        INTEGER PRIMARY KEY AUTOINCREMENT,.     owner.id
 `owner_id`	    INTEGER,                          .     owner.owner_id
 `salutation`	INTEGER,                          .     owner.salutation
@@ -184,14 +347,10 @@ TABLE `owner` (
 `inkasso`	    INTEGER)                          .     owner.inkasso
 `first_name_2`	TEXT                              .     owner.first_name_2
 
-for live search:
-likes
-id || owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www
 
-select:
-owner.owner_id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, owner.City, owner.address_2, owner.Zip_2, owner.City_2
 
-TABLE `articles` (
+
+// ============================= TABLE `articles`
 `id`	                    INTEGER PRIMARY KEY AUTOINCREMENT, .   articles.id
 `article_number`	        INTEGER,                           .   articles.article_number
 `name`	                    TEXT,                              .   articles.name
@@ -218,86 +377,4 @@ TABLE `articles` (
 `stored`	                REAL,                              .   articles.stored
 `article_target`	        INTEGER DEFAULT 1                  .   articles.article_target
 );
-like:
-article_number || name || volume || got || vendor || charge_number || invoice_id || tax_rate || sub_unit_1 || sub_unit_2 || sub_unit_3 || article_target
-
-select:
-articles.id, articles.article_number, articles.name, articles.got, articles.vendor, articles.article_target
-
  */
-
-
-/*
-    getOwner(NameOrID) {
-        if (typeof NameOrID === "string" && !parseInt(NameOrID)) {
-            //string
-            console.log('string');
-            this.getOwnerByName(NameOrID);
-        } else {
-            //int
-            console.log('int');
-            this.getOwnerByName(NameOrID);
-        }
-        return NameOrID;
-    },
-    getOwnerById(id) {},
-    getOwnerByName(name) {
-        //can be first or last name
-    },
-    getOwnerByAnimalId(id) {},
-
-    getAnimal(NameOrID) {
-        if (typeof NameOrID === "string" && !parseInt(NameOrID)) {
-            //string
-            console.log('string');
-            this.getAnimalByName(NameOrID);
-        } else {
-            //int
-            console.log('int');
-            this.getAnimalById(NameOrID);
-        }
-        return NameOrID;
-    },
-    getAnimalById(id) {
-        var row = DB.prepare('SELECT * FROM T_HonorarNotenDetails WHERE "Rechnung-Nr"=?').get(id);
-
-        console.log(row);
-        return row;
-    },
-    getAnimalByName(name) {},
-    getAnimalByDiagnosis(diagnosis) {},
-    getAnimalByTreatment(treatment) {},
-
-    getArticles(string = null) {
-        if (string == null){
-            // get all
-        } else {
-            //get if contains string
-        }
-    },
-
-    getTreatments(string = null) {
-        if (string == null){
-            // get all
-        } else {
-            //get by GOT int
-            //get if contains string
-        }
-    },
-    getTreatmentByGOT(gotNr) {},
-    getTreatmentByName(string) {},
-
-*/
-};
-
-function exitHandler(options, err) {
-    console.log("close");
-    DB.close();
-    // process.exit();
-}
-//do something when app is closing
-process.on('exit', exitHandler);
-//catches ctrl+c event
-process.on('SIGINT', exitHandler);
-//catches uncaught exceptions
-process.on('uncaughtException', exitHandler);
