@@ -40,14 +40,14 @@ module.exports = {
             'WHEN ' + where + ' like \' %' + query +' \' \t THEN 3 ' +
             'WHEN ' + where + ' like \' %' + query +'% \' \t THEN 4 ' +
             'ELSE 100 END) ASC';
-        let search ={ query: "%"+query+"%" };
+        let search ={ query: query+"%" };
 
         SQL .create('owner')
             .setSELECTColumns(select)
             .setWHEREColumns(where)
             .setOperator("like")
             .setSearchQuery("@query")
-            .setORDERString(order)
+            // .setORDERString(order)
             .setLIMIT(5)
         ;
 
