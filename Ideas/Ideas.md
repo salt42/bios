@@ -8,6 +8,12 @@
 
 * Email client
 
+* Push Notifikations (PC Names)
+
+* NDG notification
+    * für Besitzer
+    * für Tiere (CAVE! , Probleme, Chronisches, etc...)
+
 * Skizzen mit Canvas einbinden
    * Schemazeichnung v. Tier -> click erzeugt nummer
    * neben dran Textfeld mit nummer 

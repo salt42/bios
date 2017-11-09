@@ -33,53 +33,34 @@ module.exports = {
         //todo rebuild query to get a sorted string
 
         let select = 'owner.owner_id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, owner.City, owner.address_2, owner.Zip_2, owner.City_2';
-        let where = 'owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www';
-        let order = '(CASE ' +
-            'WHEN ' + where + ' = \' ' + query +' \' \t THEN 1 ' +
-            'WHEN ' + where + ' like \' ' + query +'% \' \t THEN 2 ' +
-            'WHEN ' + where + ' like \' %' + query +' \' \t THEN 3 ' +
-            'WHEN ' + where + ' like \' %' + query +'% \' \t THEN 4 ' +
-            'ELSE 100 END) ASC';
-        let search ={ query: query+"%" };
-
-        SQL .create('owner')
-            .setSELECTColumns(select)
-            .setWHEREColumns(where)
-            .setOperator("like")
-            .setSearchQuery("@query")
-            // .setORDERString(order)
-            .setLIMIT(5)
-        ;
-
-        return DB.prepare(SQL.getSQLStatement()).all(search);
+        let where = '(owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)';
+        let orderPrio = '(case when name = \''+query+'\' then 1 ' +
+                              'when name like \''+query+'%\' then 2 ' +
+                              'when name like \'%'+query+'\' then 3 ' +
+                              'when name like \'%'+query+'%\' then 4 ' +
+                            'end) ASC';
+        let order = 'order by ';
+        let row = DB.prepare('select ' + select + ' from owner where  ' + where + ' like @query or ' + where + ' is null ' + order + orderPrio ).all({
+            query: "%"+query+"%"
+        });
+        console.log(row);
+        return row;
     },
     liveSearchAnimal(query){
         let select = 'animal.id, animal.species_id, animal.race_id, animal.name, animal.birthday, animal.gender, animal.color_description, animal.died, animal.died_on';
-        let where = 'owner_id || species_id || race_id || chip || tattoo || name || birthday || color_description || died_on';
-        let search ={ query: "%"+query+"%" };
-
-        SQL .create('animal')
-            .setSELECTColumns(select)
-            .setWHEREColumns(where)
-            .setOperator("like")
-            .setSearchQuery("@query")
-            .setORDERString('died_on DESC');
-
-        return DB.prepare(SQL.getSQLStatement()).all(search);
+        let where = '(owner_id || species_id || race_id || chip || tattoo || name || birthday || color_description || died_on)';
+        let row = DB.prepare('select ' + select + ' from animal where ' + where + ' like @query or ' + where + ' is null').all({
+            query: "%"+query+"%"
+        });
+        return row;
     },
     liveSearchArticle(query){
         let select = 'articles.id, articles.article_number, articles.name, articles.got, articles.vendor, articles.article_target';
-        let where = 'article_number || name || volume || got || vendor || charge_number || invoice_id || tax_rate || sub_unit_1 || sub_unit_2 || sub_unit_3 || article_target';
-        let search ={ query: "%"+query+"%" };
-        SQL .create('articles')
-            .setSELECTColumns(select)
-            .setWHEREColumns(where)
-            .setOperator("like")
-            .setSearchQuery("@query")
-            .setORDERString('name ASC')
-            .setLIMIT(5);
-
-        return DB.prepare(SQL.getSQLStatement()).all(search);
+        let likes = '(article_number || name || volume || got || vendor || charge_number || invoice_id || tax_rate || sub_unit_1 || sub_unit_2 || sub_unit_3 || article_target)';
+        let row = DB.prepare('select ' + select + ' from articles where ' + likes + ' like @query or ' + likes + ' is null').all({
+            query: "%"+query+"%"
+    });
+        return row;
     },
 
     // get lists
