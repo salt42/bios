@@ -30,7 +30,8 @@ defineUI("search", function(bios, $element){
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
                             let htmlText = " " + a.first_name + " " + a.name + ", " + a.address;
-                            $('<li></li>')
+                            let htmlData = 'data-id ="' + a.id + '"';
+                            $('<li ' + htmlData + '></li>')
                                 .addClass(entryClass + property + " fa fa-user")
                                 .html(htmlText)
                                 .appendTo($fragment)
@@ -42,11 +43,11 @@ defineUI("search", function(bios, $element){
                         bgColor = "#718eaa";
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
-                            let htmlText = " " + a.name + ", " + trans(denumS(a.species_id));
-                            $('<li data-imgInfo = "' + a.species_id + '"></li>')
+                            let htmlText = " " + a.name + ", " + trans(decodeS(a.species_id));
+                            let htmlData =  'data-id ="' + a.id + '"'+
+                                            'data-imgInfo = "' + a.species_id + '" ';
+                            $('<li ' + htmlData + '></li>')
                                 .addClass(entryClass + property + " fa fa-stethoscope")
-                                // .setAttribute("info","test")
-                                // .dataset.info = "test"
                                 .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
@@ -58,8 +59,10 @@ defineUI("search", function(bios, $element){
                         color = "white";
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
-                            let htmlText = " " + a.name + ", " + trans(denumS(a.species_id)) + ", " + a.died_on;
-                            $('<li data-imgInfo = "' + a.species_id + '"></li>')
+                            let htmlText = " " + a.name + ", " + trans(decodeS(a.species_id)) + ", " +trans("died on ") + a.died_on;
+                            let htmlData =  'data-id ="' + a.id + '"'+
+                                'data-imgInfo = "' + a.species_id + '" ';
+                            $('<li ' + htmlData + '></li>')
                                 .addClass(entryClass + "animals-dead" + " fa fa-circle")
                                 .html(htmlText)
                                 .appendTo($fragment)
@@ -70,8 +73,10 @@ defineUI("search", function(bios, $element){
                     case "articles":
                         bgColor = "#ffa115";
                         for (let i = 0; i < data[property].length; i++) {
+                            let a = data[property][i];
                             let htmlText = " " + data[property][i].name;
-                            $('<li></li>')
+                            let htmlData =  'data-id ="' + a.id + '"';
+                            $('<li ' + htmlData + '></li>')
                                 .addClass(entryClass + property + " fa fa-archive")
                                 .html(htmlText)
                                 .appendTo($fragment)
@@ -88,41 +93,6 @@ defineUI("search", function(bios, $element){
         highlight(data["query"]);
     }
 
-    function addIcons() {
-        let $elements = $('.liveSearchEntry.owners');
-        $('<img src="/img/ui-kit/default/owner.png" alt="o">')
-            .addClass("liveSearchIcon")
-            .prependTo($elements);
-
-        $elements = $('.liveSearchEntry.articles');
-        $('<img src="/img/ui-kit/default/article.png" alt="o">')
-            .addClass("liveSearchIcon")
-            .prependTo($elements);
-
-        $elements = $('.liveSearchEntry.animals');
-        for (let i = 0; i < $elements.length; i++){
-            let dataInfo = parseInt($elements[i].getAttribute("data-imgInfo"));
-            let imgPath;
-            // bios.server.getSpeciesImages()
-            switch (dataInfo){
-                case 1:
-                    // @toDo get string from db
-                    imgPath = "/img/ui-kit/default/dog.png";
-                    console.log('ss');
-                    break;
-                case 2:
-                    imgPath = "/img/ui-kit/default/cat.png";
-                    break;
-                default:
-                    imgPath = "/img/ui-kit/default/animal.png";
-                    console.log(dataInfo);
-            }
-            $('<img src="' + imgPath + '" alt="o">')
-                .addClass("liveSearchIcon")
-                .prependTo($elements[i]);
-        }
-    }
-
     /*geht nich */
     function highlight(query) {
         let $srcElements = $(".liveSearchEntry > ul > li");
@@ -136,13 +106,14 @@ defineUI("search", function(bios, $element){
         }
     }
 
-    function denumS(value){
-        return bios.trans.denumSpecies(value);
+    function decodeS(value){
+        return bios.trans.decode.species(value);
     }
 
     $input.on("keyup", function(e) {
         $liveResults.empty();
         searchQuery = $input.val();
+        // console.log (e.keyCode);
         switch (e.keyCode) {
             case 13:
                 //enter
@@ -152,7 +123,8 @@ defineUI("search", function(bios, $element){
                 if (!(searchQuery == "")){
                     bios.search.liveSearch(searchQuery, function(data) {
                         // console.log(data);
-                        if (data.query != searchQuery) {
+                        // console.log(e.keyCode);
+                        if (e.keyCode !== 32 && data.query != searchQuery) {
                             console.log("returned query is wrong");
                             return;
                         }
