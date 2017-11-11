@@ -8,7 +8,7 @@
 
 * Email client
 
-* Push Notifikations (PC Names)
+* Push Notifikations (via PC Names)
 
 * NDG notification
     * für Besitzer
