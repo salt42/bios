@@ -11,14 +11,7 @@ let func = {};
 
 /* GET home page. */
 router.get('/all/:query', function(req, res) {
-    let dbResults = {};
-
-    dbResults.owner = DB.liveSearchOwner(req.params.query);
-    dbResults.animals = {};
-    dbResults.animals.all = DB.liveSearchAnimal(req.params.query);
-    dbResults.animals.alive = DB.sortOutDeadAnimals(dbResults.animals.all);
-    dbResults.animals.dead = DB.sortOutDeadAnimals(dbResults.animals.all, true);
-    dbResults.articles = DB.liveSearchArticle(req.params.query);
+    let dbResults = DB.liveSearchAll(req.params.query);
 
     let result = {
         query: req.params.query,
@@ -32,7 +25,7 @@ router.get('/all/:query', function(req, res) {
     res.json(result);
 });
 router.get('/user', function(req, res) {
-    let userList = DB.getEmployesList();
+    let userList = DB.getUserList();
     let userListActive = [];
     let userListInactive = [];
 
@@ -53,12 +46,16 @@ router.get('/user', function(req, res) {
 
     res.json(result);
 });
-router.get('/species/:query', function(req, res) {
+router.get('/list/:query', function(req, res) {
     let result = {};
-    if (req.params.query == "all"){
+    if (req.params.query == "species"){
         result.list = DB.getSpeciesList();
     }
+    if(req.params.query == "userRoles"){
+        result.list = DB.getUserRolesList();
+    }
     else {
+        result = DB.getAllLists();
     }
 
     res.json(result);

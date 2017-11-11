@@ -2,70 +2,143 @@
 (function() {
     "use strict";
 
-    window.startUpLogLevel = 1; // {1-4}
-
     const global = {
-        UIModules: {}
+        // UIModules: {}
     };
     let Modules = {},
-        UIModules = {};
+        UIModules = {},
+        Components = {};
 
-    function sLog(level, value1, value2 = null, value3 = null){
-        if (window.startUpLogLevel >= level){
-            if (value3 !== null)
-                console.log(value1, value2, value3);
-            else if (value2 !== null)
-                console.log(value1, value2);
-            else console.log(value1);
-        }
-
-    }
-
-    function createNewUI(name, $parent) {
-        //neues ele in parent
-        //UIModules[module].call(context, global, $(ele) );
-    }
     //defines a core module
     window.define = function(moduleName, initMethod) {
         if(Modules.hasOwnProperty(moduleName)) {
-            console.error("Module name '"+ moduleName +"' taken");
+            console.error("Module name '"+ moduleName +"' already taken");
         }
         Modules[moduleName] = initMethod;
-        sLog(4, "module attached: ", moduleName)
+    };
+    //defines a component
+    window.defineComp = function(compName, initMethod) {
+        if(Components.hasOwnProperty(compName)) {
+            console.error("Component name '"+ compName +"' already taken");
+        }
+        Components[compName] = initMethod;
     };
     //defines a UI module
     window.defineUI = function(uiName, initMethod) {
         if(UIModules.hasOwnProperty(uiName)) {
-            console.error("UI Module name '"+ uiName +"' taken");
+            console.error("UI Module name '"+ uiName +"' already taken");
         }
         UIModules[uiName] = initMethod;
     };
+
+
+
+
+    global.getActiveComponent = function(sectionName) {
+        let $section = $('section[name="'+ sectionName +'"]');
+        if ($section.length < 0) {
+            throw new Error("section with name '"+ sectionName+"' not found");
+        }
+        return $section.data("context");
+    };
+
+    global.loadComponent = function(componentName, sectionName, args) {
+        if (!Components.hasOwnProperty(componentName)) {
+            throw Error("component with name '"+ componentName +"' not found");
+        }
+        let $section = $('section[name="'+ sectionName +'"]');
+        if ($section.length === 0) {
+            throw Error("section with name '"+ sectionName +"' not found");
+        }
+        //unload current component
+        let oldCtx = $section.data("context");
+        if (oldCtx && oldCtx.hasOwnProperty("onDiscard") && typeof oldCtx.onDiscard === "function") {
+            oldCtx.onDiscard.call(oldCtx);
+        }
+        $section.empty();
+        let ctx = {};
+        $section.data("context", ctx);
+        Components[componentName].call(ctx, global, $($section[0]), args);
+    };
+
+    function initUIModule(moduleName, $ele) {
+        if (!UIModules.hasOwnProperty(moduleName)) return;
+        let ctx = {};
+
+        $ele.data("context", ctx);
+        UIModules[moduleName].call(ctx, global, $ele);
+    }
+    //@todo die 2 funktionen fertig bauen und bessere namen finden
+    global.initUI = function($element) {
+        let moduleName = $element.tagName;
+        if (!UIModules.hasOwnProperty(moduleName)) {
+            //@todo error "element is not a uiModule"
+            return;
+        }
+        initUIModule(moduleName, $element);
+    };
+    global.initAllUI = function($parent) {
+        for(let moduleName in UIModules) {
+            if (!UIModules.hasOwnProperty(moduleName)) continue;
+            $(moduleName, $parent).each(function(index, ele) {
+                initUIModule(moduleName, $(ele));
+            });
+        }
+    };
+
+    //@todo overwriteable error functions    think through
+    global.error = function(id, title, msg) {
+        throw new Error(msg);
+    };
+    global.fatalError = function(msg) {
+        throw new Error(msg);
+    };
+
+
     window.onload = function() {
-        sLog(1, "init system");
         //init modules
         for(let module in Modules) {
-            sLog(2, "init module: ", module);
             if (!Modules.hasOwnProperty(module)) continue;
             let context = {};
             Modules[module].call(context, global);
             global[module] = context;
         }
-
         // -> document ready
+
         // //init UI modules
-        sLog(3, "uiModules: ", UIModules);
-        for(let module in UIModules) {
-            if (!UIModules.hasOwnProperty(module)) continue;
-            sLog(3, "search uiModule: ", module);
-            $(module).each(function(index, ele) {
-                sLog(4, "init uiModule", ele);
-                let context = {};
-                UIModules[module].call(context, global, $(ele) );
-                // global.UIModules[module] = context;
-            });
-        }
+        global.initAllUI($("body"));
 
+        //search sections with default comp and load component's
+        let sections = [];
+        $("section").each(function () {
+            let sectionName = $(this).attr("name"),
+                defaultComp = $(this).attr("default");
 
+            if (!sectionName) {
+                //@todo show error "section's need a name attribute"
+                return;
+            }
+            //check if section name is already taken
+            if (sections.indexOf(sectionName) > -1) {
+                //@todo error "there are duplicate sections with name ''"
+                return;
+            }
+            sections.push(sectionName);
+            if (defaultComp) {
+                if (!Components.hasOwnProperty(defaultComp)) {
+                    //@todo show error "no component with this name"
+                    return;
+                }
+                //loadComp
+                global.loadComponent(defaultComp, sectionName, {});
+            }
+        });
+
+        setTimeout(function() {
+            let comp = global.getActiveComponent("mainSection");
+            console.log(comp);
+            comp.doSomething();
+        }, 1000);
 
         // $.ajax({
         //     url: "/pet/1",

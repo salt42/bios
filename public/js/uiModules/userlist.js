@@ -12,8 +12,6 @@ defineUI("userlist", function(bios, $element){
         .addClass("userList")
         .appendTo($element);
 
-
-
     function getUserList(users){
         let $fragment  = $(document.createDocumentFragment());
         for (let i = 0; i < users.length; i++){
