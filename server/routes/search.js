@@ -60,6 +60,11 @@ router.get('/list/:query', function(req, res) {
 
     res.json(result);
 });
+router.get('/owner/:query', function(req, res) {
+    let result = DB.searchOwners(req.params.query);
+
+    res.json(result);
+});
 module.exports = router;
 
 

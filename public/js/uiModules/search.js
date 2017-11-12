@@ -23,7 +23,7 @@ defineUI("search", function(bios, $element){
             let $fragment = $(document.createDocumentFragment());
             let bgColor = "#3eb9a0";
             let color = "black";
-            let entryClass = "live-Search-";
+            let entryClass = "live-search";
             // add entries
             if (data.hasOwnProperty(property)) {
                 switch (property){
@@ -32,7 +32,8 @@ defineUI("search", function(bios, $element){
                             let a = data[property][i];
                             let htmlText = " " + a.first_name + " " + a.name + ", " + a.address;
                             $('<li></li>')
-                                .addClass(entryClass + property + " fa fa-user")
+                                .addClass(entryClass + " fa fa-user")
+                                .attr("type", property)
                                 .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
@@ -45,7 +46,8 @@ defineUI("search", function(bios, $element){
                             let a = data[property][i];
                             let htmlText = " " + a.name + ", " + trans(denumS(a.species_id));
                             $('<li data-imgInfo = "' + a.species_id + '"></li>')
-                                .addClass(entryClass + property + " fa fa-stethoscope")
+                                .addClass(entryClass + " fa fa-stethoscope")
+                                .attr("type", property)
                                 // .setAttribute("info","test")
                                 // .dataset.info = "test"
                                 .html(htmlText)
@@ -62,6 +64,7 @@ defineUI("search", function(bios, $element){
                             let htmlText = " " + a.name + ", " + trans(denumS(a.species_id)) + ", " + a.died_on;
                             $('<li data-imgInfo = "' + a.species_id + '"></li>')
                                 .addClass(entryClass + "animals-dead" + " fa fa-circle")
+                                .attr("type", property)
                                 .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
@@ -73,7 +76,8 @@ defineUI("search", function(bios, $element){
                         for (let i = 0; i < data[property].length; i++) {
                             let htmlText = " " + data[property][i].name;
                             $('<li></li>')
-                                .addClass(entryClass + property + " fa fa-archive")
+                                .addClass(entryClass + " fa fa-archive")
+                                .attr("type", property)
                                 .html(htmlText)
                                 .appendTo($fragment)
                                 .show();
@@ -138,8 +142,19 @@ defineUI("search", function(bios, $element){
     }
 
     function denumS(value){
-        return bios.trans.denumSpecies(value);
+        return bios.trans.decode.species(value);
     }
+
+    $liveResults.on("click", function(e) {
+        let $target = $(e.target),
+            type = $target.attr("type");
+
+        if (!$target.hasClass("live-search")) return;
+
+        bios.loadComponent(type, "mainSection", {
+            query: searchQuery
+        });
+    });
 
     $input.on("keyup", function(e) {
         $liveResults.empty();

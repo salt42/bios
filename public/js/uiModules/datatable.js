@@ -1,7 +1,4 @@
 (function() {
-
-    var listOfAllTables = [];
-    let helper = {};
     let dtconf = {};
     // get config;
     $.getScript("/js/config/dtc.js", function (data, textStatus, jqxhr) {
@@ -14,37 +11,158 @@
         "use strict";
         console.log ('dtconf: ',dtconf);
 
-        let dataTable = {};
+        let dataTable = {
+            data: null,
+            allColumns: [],
+            columns: [],
+            translateColumns: [],
+            config: {
+                ordering: true,
+                select: true,
+            }
+        };
 
-        let table = ($element.data("table"));
-        if ( table in dtconf.table) {
-            dataTable = dtconf.table[table];
-        } else {
-            dataTable = dtconf.table["default"];
+        this.setData = function(data, options = null) {
+            if (Object.keys(options).length === 0){
+                dataTable = dtconf["default"];
+                console.log('getting default config; ', dtconf["default"]);
+            } else {
+                if (options.name){
+                    console.log('getting special config; ', options.name);
+                    dataTable = dtconf[options.name];
+                }
+            }
+            dataTable.data = data;
+            dataTable.allColumns = this.getAllColumns(dataTable.data);
+            console.log('##: ', dataTable);
+        };
+
+        this.setColumns = function (columns){
+            if ((typeof columns === "string") && columns === "all") {
+                dataTable.columns = dataTable.allColumns;
+                return;
+            }
+            if(Array.isArray(columns)) {
+                dataTable.columns = columns;
+            }
+        };
+        this.addColumns = function (name, columnNumber = null){
+            if (!(name in dataTable.allColumns)) return; // ERR Column not found
+            if (columnNumber === null) {
+                dataTable.columns.push(name);
+            } else {
+                dataTable.columns = this.insertInArray(columnNumber, name, dataTable.columns);
+            }
+        };
+        this.removeColumns = function (name) {
+            if (typeof name === "string") {
+                dataTable.columns = this.spliceArrayByValue(name, dataTable.columns);
+                return;
+            }
+            if(Array.isArray(name)) {
+                for (let i = 0; i < name.length; i++){
+                    dataTable.columns = this.spliceArrayByValue(name[i], dataTable.columns);
+                }
+            }
+        };
+        this.reorderColumn = function (columnName, columnNumber = null){
+            dataTable.columns = this.spliceArrayByValue(columnName, dataTable.columns);
+            dataTable.columns = this.insertInArray(columnNumber, columnName, dataTable.columns);
+        };
+        this.addButtonInColumns = function (columnName, buttonSetupArray, columnNumber = null){
+            if (columnName in dataTable.data) columnName += ' Action';
+            if (columnNumber === null){
+                dataTable.columns.push(columnName);
+                dataTable.data[columnName] = buttonSetupArray;
+            }
+        };
+        this.setColumnTranslation = function (columnName, translation){
+            dataTable.translateColumns[columnName] = translation;
+        };
+        this.translateColumn = function (columnName){
+            if (!dataTable.translateColumns[columnName]){
+                console.log('no transCol');
+                console.log(columnName);
+                console.log(trans(columnName));
+                return trans(columnName);
+            } else {
+                console.log('transCol');
+                return dataTable.translateColumns[columnName];
+            }
         }
-
-        // $element.append(list);
-
-        this.updateData = function () {
-            // updatedata;
-            dataTable.data = null;  // @todo get data by dataTable.name
-            dataTable.allColumns = helper.getAllColumns(dataTable.data);
-            listOfAllTables[dataTable.name] = dataTable;
-        },
 
         this.getHTML = function () {
             // validation
             if (dataTable.data === null) return;
-            if (dataTable.columns.isEmpty()) setColumns("all");
-            // save
-            listOfAllTables[dataTable.name] = dataTable;
+            if (dataTable.columns.length < 1) this.setColumns("all");
+
             // create HTML
-            let headsHTML = helper.getHTMLHead(dataTable);
+            let headsHTML = this.getHTMLHead(dataTable);
             let html = '<table class="display" cellspacing="0" width="100%"><thead>' + headsHTML + '</thead><tbody>';
-            html += helper.getHTMLData(dataTable);
+            html += this.getHTMLData(dataTable);
             html += '</tbody><tfoot>' + headsHTML + '</tfoot></table>';
 
             return html;
-        }
+        };
+
+        // helper
+        this.insertInArray = function (index, value, inArray) {
+            let max = inArray.length;
+            for (let i = max; i > index; i--){
+                inArray[i] = inArray[i-1]
+            }
+            inArray[index] = value;
+            return inArray;
+        };
+        this.spliceArrayByValue = function (name, arr) {
+            if (name in arr) {
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] === name) {
+                        arr.splice(i, 1);
+                        return arr;
+                    }
+                }
+            }
+        };
+        this.getKeyByValue = function (name, arr) {
+            if (name in arr) {
+                for (let i = 0; i < arr.length; i++) {
+                    if (arr[i] === name) {
+                        return i;
+                    }
+                }
+            }
+        };
+
+        this.getAllColumns = function (data){
+            "use strict";
+            let names = [];
+            for(let property in data[0]){
+                names.push(property);
+            }
+            return names;
+        };
+
+        this.getHTMLHead = function (dataTable){
+            "use strict";
+            let html = "<tr>";
+            for(let i = 0; i < dataTable.columns.length; i++) {
+                html += '<th>' + this.translateColumn(dataTable.columns[i]) + '</th>';
+            };
+            html += '</tr>';
+            return html;
+        };
+        this.getHTMLData = function (dataTable){
+            "use strict";
+            let html = "";
+            for (let i = 0 ; i < dataTable.data.length; i++){
+                html += '<tr>';
+                for (let ii = 0; ii < dataTable.columns.length; ii++) {
+                    html +=  '<td>' + dataTable.data[i][dataTable.columns[ii]] + '</td>';
+                }
+                html += '</tr>';
+            }
+            return html;
+        };
     });
 })();

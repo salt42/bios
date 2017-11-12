@@ -84,6 +84,25 @@ module.exports = {
         return DB.prepare('select * from ' + table).all();
     },
 
+
+    searchOwners(query){
+        //todo rebuild query to get a sorted string
+
+        let select = '*';
+        let where = '(owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)';
+        let orderPrio = '(case when name = \''+query+'\' then 1 ' +
+            'when name like \''+query+'%\' then 2 ' +
+            'when name like \'%'+query+'\' then 3 ' +
+            'when name like \'%'+query+'%\' then 4 ' +
+            'end) ASC';
+        let order = 'order by ';
+        let row = DB.prepare('select ' + select + ' from owner where  ' + where + ' like @query or ' + where + ' is null ' + order + orderPrio ).all({
+            query: "%"+query+"%"
+        });
+        console.log(row);
+        return row;
+    },
+
     // helper
     /**
      * Sorts out the dead animals

@@ -37,8 +37,8 @@ defineUI("test", function(bios, $element){
     $element
         .css("background-color", "yellow")
         .css("position","absolute")
-        .css("top", "70px")
-        .css("left", "400px")
+        .css("top", "150px")
+        .css("left", "0px")
         .css("padding", "10px")
         .html(resultText);
     }, 1000)

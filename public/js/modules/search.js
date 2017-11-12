@@ -10,11 +10,11 @@ define("search", function(bios){
             // data: JSON.stringify(conf),
             success: function (resData) {
                 // console.log(resData)
-                if (searchQuery != "")
+                if (searchQuery !== "")
                     fn(resData);
             }
         });
-    }
+    };
     this.getList = function (searchQuery, fn){
         $.ajax({
             url: "/search/list/" + searchQuery,
@@ -24,7 +24,7 @@ define("search", function(bios){
                     fn(resData);
             }
         });
-    }
+    };
     this.userSearch = function (fn){
         $.ajax({
             url: "/search/user",
@@ -34,5 +34,15 @@ define("search", function(bios){
                     fn(resData);
             }
         });
-    }
+    };
+    this.findOwners = function (searchQuery, fn){
+        $.ajax({
+            url: "/search/owner/" + searchQuery,
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
+                    fn(resData);
+            }
+        });
+    };
 });

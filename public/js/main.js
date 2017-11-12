@@ -64,7 +64,7 @@
     function initUIModule(moduleName, $ele) {
         if (!UIModules.hasOwnProperty(moduleName)) return;
         let ctx = {};
-
+        // if (!$ele.data("context") ) return;
         $ele.data("context", ctx);
         UIModules[moduleName].call(ctx, global, $ele);
     }
@@ -133,12 +133,6 @@
                 global.loadComponent(defaultComp, sectionName, {});
             }
         });
-
-        setTimeout(function() {
-            let comp = global.getActiveComponent("mainSection");
-            console.log(comp);
-            comp.doSomething();
-        }, 1000);
 
         // $.ajax({
         //     url: "/pet/1",
