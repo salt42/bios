@@ -15,6 +15,8 @@ function dtc() {
             select: true,
         }
     };
+
+    /*region example*/
     // example usage of tableSettings.translateColumns
     // tableSettings.translateColumns["country"] = trans("country");
     // tableSettings.translateColumns["Zip"] = trans("Zip");
@@ -35,6 +37,7 @@ function dtc() {
         }
     };
     dtc[name] = tableSettings;
+    /*endregion*/
 
     window.dtc = dtc;
 }

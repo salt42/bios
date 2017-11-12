@@ -11,10 +11,12 @@ console.log(__dirname + config.dbFile);
 var DB = new Database(__dirname + config.dbFile, {});
 
 module.exports = {
+    /*region internVars*/
     _SELECT: 'SELECT ',
     _FROM: ' FROM ',
     _WHERE: ' WHERE ',
     _ORDER: ' ORDER BY ',
+    /*endregion*/
 
     testResults(){
         return this.liveSearchArticle("e");

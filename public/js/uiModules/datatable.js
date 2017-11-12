@@ -11,6 +11,7 @@
         "use strict";
 
         let dataTable = {
+            /*region defaulVars*/
             data: null,
             allColumns: [],
             columns: [],
@@ -19,6 +20,7 @@
                 ordering: true,
                 select: true,
             }
+            /*endregion*/
         };
 
         this.setData = function(data, options = null) {
@@ -33,6 +35,21 @@
             dataTable.allColumns = this.getAllColumns(dataTable.data);
         };
 
+        this.getHTML = function () {
+            // validation
+            if (dataTable.data === null) return;
+            if (dataTable.columns.length < 1) this.setColumns("all");
+
+            // create HTML
+            let headsHTML = this.getHTMLHead(dataTable);
+            let html = '<table class="display" cellspacing="0" width="100%"><thead>' + headsHTML + '</thead><tbody>';
+            html += this.getHTMLData(dataTable);
+            html += '</tbody><tfoot>' + headsHTML + '</tfoot></table>';
+
+            return html;
+        };
+
+        /*region Columns*/
         this.setColumns = function (columns){
             if ((typeof columns === "string") && columns === "all") {
                 dataTable.columns = dataTable.allColumns;
@@ -83,22 +100,9 @@
                 return dataTable.renameColumns[columnName];
             }
         }
+        /*endregion*/
 
-        this.getHTML = function () {
-            // validation
-            if (dataTable.data === null) return;
-            if (dataTable.columns.length < 1) this.setColumns("all");
-
-            // create HTML
-            let headsHTML = this.getHTMLHead(dataTable);
-            let html = '<table class="display" cellspacing="0" width="100%"><thead>' + headsHTML + '</thead><tbody>';
-            html += this.getHTMLData(dataTable);
-            html += '</tbody><tfoot>' + headsHTML + '</tfoot></table>';
-
-            return html;
-        };
-
-        // helper
+        /*region helper*/
         this._insertInArray = function (index, value, inArray) {
             let max = inArray.length;
             for (let i = max; i > index; i--){
@@ -157,5 +161,6 @@
             }
             return html;
         };
+        /*endregion*/
     });
 })();
