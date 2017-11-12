@@ -64,7 +64,7 @@
     function initUIModule(moduleName, $ele) {
         if (!UIModules.hasOwnProperty(moduleName)) return;
         let ctx = {};
-        // if (!$ele.data("context") ) return;
+        if ($ele.data("context") ) return;
         $ele.data("context", ctx);
         UIModules[moduleName].call(ctx, global, $ele);
     }
