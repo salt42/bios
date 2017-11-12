@@ -11,10 +11,14 @@ console.log(__dirname + config.dbFile);
 var DB = new Database(__dirname + config.dbFile, {});
 
 module.exports = {
+    SELECT: 'SELECT ',
+    FROM: ' FROM ',
+    WHERE: ' WHERE ',
+    ORDER: ' ORDER BY ',
+
     testResults(){
         return this.liveSearchArticle("e");
     },
-    test(){},
 
     // live search
     liveSearchAll(query){
@@ -29,42 +33,64 @@ module.exports = {
 
         return dbResults;
     },
+
     liveSearchOwner(query){
         //todo rebuild query to get a sorted string
-
-        let select = 'owner.owner_id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, owner.City, owner.address_2, owner.Zip_2, owner.City_2';
-        let where = '(owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)';
-        let orderPrio = '\n CASE WHEN name = \''+query+'\' THEN 1 ' +
+        let search = {
+            query: "%"+query+"%"
+        },
+            select = 'owner.owner_id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, ' +
+                     'owner.City, owner.address_2, owner.Zip_2, owner.City_2',
+            from = 'owner',
+            where = '(owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || ' +
+                    'address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)',
+            Compare = ' ' + 'like @query',
+            orderStr = 'name ASC, \n CASE WHEN name = \''+query+'\' THEN 1 ' +
                               'WHEN name like \''+query+'%\' Then 2 ' +
                               'WHEN name like \'%'+query+'\' Then 3 ' +
                               'WHEN name like \'%'+query+'%\' THEN 4 ' +
                               'WHEN first_name like \'%'+query+'%\' THEN 5 ' +
                               'WHEN name_2 like \'%'+query+'%\' THEN 6 ' +
                               'WHEN first_name_2 like \'%'+query+'%\' THEN 7 ' +
-                            'END ASC';
-        let order = 'order by name ASC, ';
-        let statement = 'select ' + select + ' from owner where  ' + where + ' like @query or ' + where + ' is null ' + order + orderPrio;
-        let row = DB.prepare(statement).all({
-            query: "%"+query+"%"
-        });
-        console.log('####### \n QUERY: ', query);
-        console.log('####### \n STATEMENT: \n', statement);
+                            'END ASC',
+            statement = this.SELECT + select + this.FROM + from + this.WHERE + where + Compare + this.ORDER + orderStr
+        ;
+
+        // console.log('####### \n QUERY: ', query);
+        // console.log('####### \n STATEMENT: \n', statement);
+        let row = DB.prepare(statement).all(search);
         return row;
     },
     liveSearchAnimal(query){
-        let select = 'animal.id, animal.species_id, animal.race_id, animal.name, animal.birthday, animal.gender, animal.color_description, animal.died, animal.died_on';
-        let where = '(owner_id || species_id || race_id || chip || tattoo || name || birthday || color_description || died_on)';
-        let row = DB.prepare('select ' + select + ' from animal where ' + where + ' like @query or ' + where + ' is null').all({
-            query: "%"+query+"%"
-        });
+        let search = {
+                query: "%"+query+"%"
+            },
+            select = 'animal.id, animal.species_id, animal.race_id, animal.name, animal.birthday, animal.gender, animal.color_description, animal.died, animal.died_on',
+            from = 'animal',
+            where = '(owner_id || species_id || race_id || chip || tattoo || name || birthday || color_description || died_on)',
+            Compare = ' ' + 'like @query',
+            statement = this.SELECT + select + this.FROM + from + this.WHERE + where + Compare
+        ;
+
+        // console.log('####### \n QUERY: ', query);
+        // console.log('####### \n STATEMENT: \n', statement);
+        let row = DB.prepare(statement).all(search);
         return row;
     },
     liveSearchArticle(query){
-        let select = 'articles.id, articles.article_number, articles.name, articles.got, articles.vendor, articles.article_target';
-        let likes = '(article_number || name || volume || got || vendor || charge_number || invoice_id || tax_rate || sub_unit_1 || sub_unit_2 || sub_unit_3 || article_target)';
-        let row = DB.prepare('select ' + select + ' from articles where ' + likes + ' like @query or ' + likes + ' is null').all({
-            query: "%"+query+"%"
-    });
+        let search = {
+                query: "%"+query+"%"
+            },
+            select = 'articles.id, articles.article_number, articles.name, articles.got, articles.vendor, articles.article_target',
+            from = 'articles',
+            where = '(article_number || name || volume || got || vendor || charge_number || invoice_id || tax_rate || sub_unit_1 || sub_unit_2 || sub_unit_3 || article_target)',
+            Compare = ' ' + 'like @query',
+            statement = this.SELECT + select + this.FROM + from + this.WHERE + where + Compare
+        ;
+
+        // console.log('####### \n QUERY: ', query);
+        // console.log('####### \n STATEMENT: \n', statement);
+        let row = DB.prepare(statement).all(search);
         return row;
     },
 
@@ -92,18 +118,26 @@ module.exports = {
 
     searchOwners(query){
         //todo rebuild query to get a sorted string
-
-        let select = '*';
-        let where = '(owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)';
-        let orderPrio = '(case when name = \''+query+'\' then 1 ' +
+        let search = {
+                query: "%"+query+"%"
+            },
+            select = '*',
+            from = 'owner',
+            where = '(owner_id || salutation || first_name || first_name_2 || name || name_2 || address || ' +
+                    'Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || ' +
+                    'telephone_4 || e_mail || www)',
+            Compare = ' ' + 'like @query',
+            orderStr = '(case when name = \''+query+'\' then 1 ' +
             'when name like \''+query+'%\' then 2 ' +
             'when name like \'%'+query+'\' then 3 ' +
             'when name like \'%'+query+'%\' then 4 ' +
-            'end) ASC';
-        let order = 'order by ';
-        let row = DB.prepare('select ' + select + ' from owner where  ' + where + ' like @query or ' + where + ' is null ' + order + orderPrio ).all({
-            query: "%"+query+"%"
-        });
+            'end) ASC',
+            statement = this.SELECT + select + this.FROM + from + this.WHERE + where + Compare + this.ORDER + orderStr
+        ;
+
+        // console.log('####### \n QUERY: ', query);
+        // console.log('####### \n STATEMENT: \n', statement);
+        let row = DB.prepare(statement).all(search);
         return row;
     },
 
