@@ -312,13 +312,13 @@ header search {
     margin-right: 5px;
 }
 header search input[type=text] {
-    width: 130px;
-    transition: width 0.4s ease-in-out;
+    width: 300px;
+    /*transition: width 0.4s ease-in-out;*/
 }
 
 /* When the input field gets focus, change its width to 100% */
 header search input[type=text]:focus {
-    width: 500px;
+    width: 300px;
 }
 
 header .liveResults {
@@ -396,3 +396,7 @@ logo {
     background-image: url("/img/ui-kit/default/employ_female.png");
 }
 /* endregion */
+
+.hidden {
+    display: none;
+}

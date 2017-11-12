@@ -15,7 +15,7 @@
             data: null,
             allColumns: [],
             columns: [],
-            translateColumns: [],
+            renameColumns: [],
             config: {
                 ordering: true,
                 select: true,
@@ -76,18 +76,15 @@
                 dataTable.data[columnName] = buttonSetupArray;
             }
         };
-        this.setColumnTranslation = function (columnName, translation){
-            dataTable.translateColumns[columnName] = translation;
+
+        this.setColumnRename = function (columnName, renameColumns){
+            dataTable.renameColumns[columnName] = renameColumns;
         };
-        this.translateColumn = function (columnName){
-            if (!dataTable.translateColumns[columnName]){
-                console.log('no transCol');
-                console.log(columnName);
-                console.log(trans(columnName));
+        this._renameColumns = function (columnName){
+            if (!dataTable.renameColumns || !dataTable.renameColumns[columnName]){
                 return trans(columnName);
             } else {
-                console.log('transCol');
-                return dataTable.translateColumns[columnName];
+                return dataTable.renameColumns[columnName];
             }
         }
 
@@ -147,7 +144,7 @@
             "use strict";
             let html = "<tr>";
             for(let i = 0; i < dataTable.columns.length; i++) {
-                html += '<th>' + this.translateColumn(dataTable.columns[i]) + '</th>';
+                html += '<th>' + this._renameColumns(dataTable.columns[i]) + '</th>';
             };
             html += '</tr>';
             return html;

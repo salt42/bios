@@ -154,19 +154,24 @@ defineUI("search", function(bios, $element){
         bios.loadComponent(type, "mainSection", {
             query: searchQuery
         });
+        $liveResults.not("hidden").addClass("hidden");
     });
 
     $input.on("keyup", function(e) {
-        $liveResults.empty();
+        $liveResults.empty()
+            .removeClass("hidden");
         searchQuery = $input.val();
         switch (e.keyCode) {
             case 13:
                 //enter
-                bios.loadComponent("content", "mainSection", {});
+                bios.loadComponent("owners", "mainSection", {
+                    query: searchQuery
+                });
+                $liveResults.not("hidden").addClass("hidden");
                 break;
             default:
                 // console.log(e.key);
-                if (!(searchQuery == "")){
+                if (!(searchQuery === "")){
                     bios.search.liveSearch(searchQuery, function(data) {
                         // console.log(data);
                         if (data.query !== searchQuery) {
