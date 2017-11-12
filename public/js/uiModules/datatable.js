@@ -9,7 +9,6 @@
 
     defineUI("dataTable", function (bios, $element) {
         "use strict";
-        console.log ('dtconf: ',dtconf);
 
         let dataTable = {
             data: null,
@@ -25,16 +24,13 @@
         this.setData = function(data, options = null) {
             if (Object.keys(options).length === 0){
                 dataTable = dtconf["default"];
-                console.log('getting default config; ', dtconf["default"]);
             } else {
                 if (options.name){
-                    console.log('getting special config; ', options.name);
                     dataTable = dtconf[options.name];
                 }
             }
             dataTable.data = data;
             dataTable.allColumns = this.getAllColumns(dataTable.data);
-            console.log('##: ', dataTable);
         };
 
         this.setColumns = function (columns){
@@ -51,23 +47,23 @@
             if (columnNumber === null) {
                 dataTable.columns.push(name);
             } else {
-                dataTable.columns = this.insertInArray(columnNumber, name, dataTable.columns);
+                dataTable.columns = this._insertInArray(columnNumber, name, dataTable.columns);
             }
         };
         this.removeColumns = function (name) {
             if (typeof name === "string") {
-                dataTable.columns = this.spliceArrayByValue(name, dataTable.columns);
+                dataTable.columns = this._spliceArrayByValue(name, dataTable.columns);
                 return;
             }
             if(Array.isArray(name)) {
                 for (let i = 0; i < name.length; i++){
-                    dataTable.columns = this.spliceArrayByValue(name[i], dataTable.columns);
+                    dataTable.columns = this._spliceArrayByValue(name[i], dataTable.columns);
                 }
             }
         };
         this.reorderColumn = function (columnName, columnNumber = null){
-            dataTable.columns = this.spliceArrayByValue(columnName, dataTable.columns);
-            dataTable.columns = this.insertInArray(columnNumber, columnName, dataTable.columns);
+            dataTable.columns = this._spliceArrayByValue(columnName, dataTable.columns);
+            dataTable.columns = this._insertInArray(columnNumber, columnName, dataTable.columns);
         };
         this.addButtonInColumns = function (columnName, buttonSetupArray, columnNumber = null){
             if (columnName in dataTable.data) columnName += ' Action';
@@ -103,7 +99,7 @@
         };
 
         // helper
-        this.insertInArray = function (index, value, inArray) {
+        this._insertInArray = function (index, value, inArray) {
             let max = inArray.length;
             for (let i = max; i > index; i--){
                 inArray[i] = inArray[i-1]
@@ -111,7 +107,7 @@
             inArray[index] = value;
             return inArray;
         };
-        this.spliceArrayByValue = function (name, arr) {
+        this._spliceArrayByValue = function (name, arr) {
             if (name in arr) {
                 for (let i = 0; i < arr.length; i++) {
                     if (arr[i] === name) {
@@ -121,7 +117,7 @@
                 }
             }
         };
-        this.getKeyByValue = function (name, arr) {
+        this._getKeyByValue = function (name, arr) {
             if (name in arr) {
                 for (let i = 0; i < arr.length; i++) {
                     if (arr[i] === name) {

@@ -34,16 +34,21 @@ module.exports = {
 
         let select = 'owner.owner_id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, owner.City, owner.address_2, owner.Zip_2, owner.City_2';
         let where = '(owner_id || salutation || first_name || first_name_2 || name || name_2 || address || Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)';
-        let orderPrio = '(case when name = \''+query+'\' then 1 ' +
-                              'when name like \''+query+'%\' then 2 ' +
-                              'when name like \'%'+query+'\' then 3 ' +
-                              'when name like \'%'+query+'%\' then 4 ' +
-                            'end) ASC';
-        let order = 'order by ';
-        let row = DB.prepare('select ' + select + ' from owner where  ' + where + ' like @query or ' + where + ' is null ' + order + orderPrio ).all({
+        let orderPrio = '\n CASE WHEN name = \''+query+'\' THEN 1 ' +
+                              'WHEN name like \''+query+'%\' Then 2 ' +
+                              'WHEN name like \'%'+query+'\' Then 3 ' +
+                              'WHEN name like \'%'+query+'%\' THEN 4 ' +
+                              'WHEN first_name like \'%'+query+'%\' THEN 5 ' +
+                              'WHEN name_2 like \'%'+query+'%\' THEN 6 ' +
+                              'WHEN first_name_2 like \'%'+query+'%\' THEN 7 ' +
+                            'END ASC';
+        let order = 'order by name ASC, ';
+        let statement = 'select ' + select + ' from owner where  ' + where + ' like @query or ' + where + ' is null ' + order + orderPrio;
+        let row = DB.prepare(statement).all({
             query: "%"+query+"%"
         });
-        console.log(row);
+        console.log('####### \n QUERY: ', query);
+        console.log('####### \n STATEMENT: \n', statement);
         return row;
     },
     liveSearchAnimal(query){
@@ -99,7 +104,6 @@ module.exports = {
         let row = DB.prepare('select ' + select + ' from owner where  ' + where + ' like @query or ' + where + ' is null ' + order + orderPrio ).all({
             query: "%"+query+"%"
         });
-        console.log(row);
         return row;
     },
 

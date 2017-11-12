@@ -12,7 +12,6 @@ defineComp("owners", function(bios, $element, args) {
     bios.initAllUI($element);
 
     bios.search.findOwners(args.query, function(data) {
-        console.log(data);
         let table = $table.data("context");
         table.setData(data, {});
         $table.append(table.getHTML());

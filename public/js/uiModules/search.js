@@ -93,52 +93,17 @@ defineUI("search", function(bios, $element){
         highlight(data["query"]);
     }
 
-    function addIcons() {
-        let $elements = $('.liveSearchEntry.owners');
-        $('<img src="/img/ui-kit/default/owner.png" alt="o">')
-            .addClass("liveSearchIcon")
-            .prependTo($elements);
-
-        $elements = $('.liveSearchEntry.articles');
-        $('<img src="/img/ui-kit/default/article.png" alt="o">')
-            .addClass("liveSearchIcon")
-            .prependTo($elements);
-
-        $elements = $('.liveSearchEntry.animals');
-        for (let i = 0; i < $elements.length; i++){
-            let dataInfo = parseInt($elements[i].getAttribute("data-imgInfo"));
-            let imgPath;
-            // bios.server.getSpeciesImages()
-            switch (dataInfo){
-                case 1:
-                    // @toDo get string from db
-                    imgPath = "/img/ui-kit/default/dog.png";
-                    console.log('ss');
-                    break;
-                case 2:
-                    imgPath = "/img/ui-kit/default/cat.png";
-                    break;
-                default:
-                    imgPath = "/img/ui-kit/default/animal.png";
-                    console.log(dataInfo);
-            }
-            $('<img src="' + imgPath + '" alt="o">')
-                .addClass("liveSearchIcon")
-                .prependTo($elements[i]);
-        }
-    }
-
     /*geht nich */
     function highlight(query) {
-        let $srcElements = $(".liveSearchEntry > ul > li");
-        for (let i = 0; i < $srcElements.length; i++){
-            let eText = $srcElements[i].text();
-            query = query.replace(/(\s+)/,"(<[^>]+>)*$1(<[^>]+>)*");
-            let pattern = new RegExp("("+term+")", "gi");
-            eText = eText.replace(pattern, "<mark>$1</mark>");
-            eText = eText.replace(/(<mark>[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/,"$1</mark>$2<mark>$4");
-            $srcElements[i].html(eText);
-        }
+        // let $srcElements = $(".live-search");
+        // for (let i = 0; i < $srcElements.length; i++){
+        //     let eText = $srcElements[i].text();
+        //     query = query.replace(/(\s+)/,"(<[^>]+>)*$1(<[^>]+>)*");
+        //     let pattern = new RegExp("("+term+")", "gi");
+        //     eText = eText.replace(pattern, "<mark>$1</mark>");
+        //     eText = eText.replace(/(<mark>[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/,"$1</mark>$2<mark>$4");
+        //     $srcElements[i].html(eText);
+        // }
     }
 
     function denumS(value){
