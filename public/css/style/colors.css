@@ -1,0 +1,96 @@
+/*region variables*/
+:root {
+    font-family: Bahnschrift;
+    --bg-dark: #3a383a;
+    --bg-not-so-dark: #525052;
+
+    --color-dark: #121212;
+    --color-normal: #d4d4d4;
+
+    --header-hight: 4em;
+    --sidebar-width: 4em;
+
+    --live-Search-owners: #3eb9a0;
+    --live-Search-owners-hover: #718eaa;
+    --live-Search-animals: #718eaa;
+    --live-Search-animals-hover: #2d6987;
+    --live-Search-animals-dead: #2d6987;
+    --live-Search-animals-dead-hover: #ffa115;
+    --live-Search-articles: #ffa115;
+    --live-Search-articles-hover: #3eb9a0;
+
+    --form-field-background: #718eaa;
+}
+li.live-Search-owners{
+    background-color: var(--live-Search-owners);
+}
+li.live-Search-owners:hover{
+    background-color: var(--live-Search-owners-hover);
+}
+li.live-Search-animals{
+    background-color: var(--live-Search-animals);
+}
+li.live-Search-animals:hover{
+    background-color: var(--live-Search-animals-hover);
+}
+li.live-Search-animals-dead{
+    background-color: var(--live-Search-animals-dead);
+    color: white;
+}
+li.live-Search-animals-dead:hover{
+    background-color: var(--live-Search-animals-dead-hover);
+    color: black;
+}
+li.live-Search-articles{
+    background-color: var(--live-Search-articles);
+}
+li.live-Search-articles:hover{
+    background-color: var(--live-Search-articles-hover);
+}
+form-field-background{
+    background-color: var(--form-field-background);
+}
+
+.color-red {
+    color: #d4563d;
+}
+.bg-color-red {
+    background-color: #d4563d;
+}
+.color-orange {
+    color: #ffa115;
+}
+.bg-color-orange {
+    background-color: #ffa115;
+}
+.color-yellow {
+    color: #eeec53;
+}
+.bg-color-yellow {
+    background-color: #eeec53;
+}
+.color-green {
+    color: #22a92f;
+}
+.bg-color-green {
+    background-color: #22a92f;
+}
+.color-blue {
+    color: #36d1ff;
+}
+.bg-color-blue {
+    background-color: #36d1ff;
+}
+.color-dark-blue {
+    color: #5b43a5;
+}
+.bg-color-dark-blue {
+    background-color: #5b43a5;
+}
+.color-pink {
+    color: #ec4fff;
+}
+.bg-color-pink {
+    background-color: #ec4fff;
+}
+/*endregion*/

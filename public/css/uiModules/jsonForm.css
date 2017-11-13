@@ -1,0 +1,34 @@
+/*region owner*/
+button.save {
+    width: 90px;
+    height: 30px;
+}
+jsonform.owner-details fieldset[data-name="root"] fieldset {
+    width: 30%;
+    float: left;
+    margin: 5px;
+}
+
+jsonform.owner-details fieldset[data-name="root"] fieldset[data-name="hidden"] {
+    display: none;
+}
+
+jsonform.owner-details fieldset[data-name="root"] fieldset[data-name="person"] {
+}
+
+/*jsonform.owner-details label{*/
+    /*width: 30%;*/
+    /*display: block;*/
+    /*min-height: 35px;*/
+/*}*/
+/*jsonform.owner-details label span{*/
+    /*width: 15%;*/
+    /*text-align: right;*/
+/*}*/
+/*jsonform.owner-details label input{*/
+    /*float: left;*/
+/*}*/
+/*jsonform.owner-details label[name="salutation"]{*/
+    /*width: 30%;*/
+/*}*/
+/*endregion*/

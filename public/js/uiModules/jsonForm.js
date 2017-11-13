@@ -11,10 +11,10 @@ defineUI("jsonForm", function(bios, $element){
 
     let form = new jsonForm($form[0], {}, {
         meta: {
-            salutation: {
-                type: "select",
-                options: ["Herr", "Frau"]
-            }
+            // salutation: {
+            //     type: "select",
+            //     options: ["Herr", "Frau"]
+            // }
         }
     });
     this.setData = function(data){
