@@ -63,4 +63,4 @@ typings/
 /.idea/
 bios.iml
 
-/db/bios.sqlite3
+/db/
