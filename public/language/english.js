@@ -29,3 +29,5 @@ trans.set("cave_text", "CAVE description");
 trans.set("reminder_1", "reminder");
 trans.set("reminder_2", "reminder 2");
 trans.set("reminder_3", "reminder 3");
+trans.set("iban", "IBAN");
+trans.set("bic", "BIC");

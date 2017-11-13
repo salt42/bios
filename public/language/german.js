@@ -43,3 +43,5 @@ trans.set("reminder_1", "Erinnerung");
 trans.set("reminder_2", "Erinnerung 2");
 trans.set("reminder_3", "Erinnerung 3");
 trans.set("encashment", "Inkasso");
+trans.set("iban", "IBAN");
+trans.set("bic", "BIC");
