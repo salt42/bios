@@ -41,10 +41,10 @@ module.exports = {
         let search = {
             query: "%"+query+"%"
         },
-            select = 'owner.owner_id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, ' +
+            select = 'owner.id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, ' +
                      'owner.City, owner.address_2, owner.Zip_2, owner.City_2',
             from = 'owner',
-            where = '(owner_id || salutation || first_name || name || address || Zip || City || ' +
+            where = '(id || salutation || first_name || name || address || Zip || City || ' +
                     'first_name_2 || name_2 || address_2 || Zip_2 || City_2 || ' +
                     'telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)',
             Compare = ' ' + 'like @query',
@@ -130,7 +130,7 @@ module.exports = {
             },
             select = '*',
             from = 'owner',
-            where = '(owner_id || salutation || first_name || first_name_2 || name || name_2 || address || ' +
+            where = '(id || salutation || first_name || first_name_2 || name || name_2 || address || ' +
                     'Zip || City || address_2 || Zip_2 || City_2 || telephone_1 || telephone_2 || telephone_3 || ' +
                     'telephone_4 || e_mail || www)',
             Compare = ' ' + 'like @query',
@@ -146,6 +146,65 @@ module.exports = {
         // console.log('####### \n STATEMENT: \n', statement);
         let row = DB.prepare(statement).all(search);
         return row;
+    },
+    searchOwnerByID(query){
+        let search = {
+                query: query
+            },
+            select = '*',
+            from = 'owner',
+            where = 'id',
+            Compare = ' ' + '= @query',
+            statement = this._SELECT + select + this._FROM + from + this._WHERE + where + Compare
+        ;
+        // console.log('####### \n QUERY: ', query);
+        // console.log('####### \n STATEMENT: \n', statement);
+        let row = DB.prepare(statement).all(search);
+        // @todo error codes
+        if (row.length < 1) return {
+            error: "id not found",
+            code: 1,
+        };
+        return row[0];
+    },
+    searchAnimals(query){
+        //todo rebuild query to get a sorted string
+        let search = {
+                query: "%"+query+"%"
+            },
+            select = '*',
+            from = 'animal',
+            where = '(owner_id || ' +    // deprecated when owner-animal-hash implemented!!
+                    'species_id || race_id || chip || tattoo || name || birthday || color_description || died_on)',
+            Compare = ' ' + 'like @query',
+            statement = this._SELECT + select + this._FROM + from + this._WHERE + where + Compare
+        ;
+
+        // console.log('####### \n QUERY: ', query);
+        // console.log('####### \n STATEMENT: \n', statement);
+        let row = DB.prepare(statement).all(search);
+        return row;
+    },
+    searchAnimalByID(query){
+        let search = {
+                query: query
+            },
+            select = '*',
+            from = 'animal',
+            where = 'id',
+            Compare = ' ' + '= @query',
+            statement = this._SELECT + select + this._FROM + from + this._WHERE + where + Compare
+        ;
+
+        // console.log('####### \n QUERY: ', query);
+        // console.log('####### \n STATEMENT: \n', statement);
+        let row = DB.prepare(statement).all(search);
+        // @todo error codes
+        if (row.length < 1) return {
+            error: "id not found",
+            code: 1,
+        };
+        return row[0];
     },
     /*endregion*/
 

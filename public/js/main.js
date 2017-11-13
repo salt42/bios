@@ -56,7 +56,9 @@
             oldCtx.onDiscard.call(oldCtx);
         }
         $section.empty();
+        $section.removeClass();
         let ctx = {};
+        $section.addClass(componentName);
         $section.data("context", ctx);
         Components[componentName].call(ctx, global, $($section[0]), args);
     };

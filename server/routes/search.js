@@ -60,8 +60,23 @@ router.get('/list/:query', function(req, res) {
 
     res.json(result);
 });
-router.get('/owner/:query', function(req, res) {
+router.get('/owners/:query', function(req, res) {
     let result = DB.searchOwners(req.params.query);
+
+    res.json(result);
+});
+router.get('/owner/:query', function(req, res) {
+    let result = DB.searchOwnerByID(req.params.query);
+
+    res.json(result);
+});
+router.get('/animals/:query', function(req, res) {
+    let result = DB.searchAnimals(req.params.query);
+
+    res.json(result);
+});
+router.get('/animal/:query', function(req, res) {
+    let result = DB.searchAnimalByID(req.params.query);
 
     res.json(result);
 });

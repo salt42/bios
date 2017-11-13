@@ -35,11 +35,7 @@ defineUI("test", function(bios, $element){
     if(resultText !== "")
         resultText = "Test <br/> <br/>" + resultText;
     $element
-        .css("background-color", "yellow")
-        .css("position","absolute")
-        .css("top", "150px")
-        .css("left", "0px")
-        .css("padding", "10px")
+        .addClass("test-field")
         .html(resultText);
     }, 1000)
 });

@@ -1,25 +1,27 @@
-defineUI("userlist", function(bios, $element){
+defineUI("jsonForm", function(bios, $element){
     "use strict";
-    if (window.startUpLogLevel >= 2) console.log("start userlist UI module");
-
-    let $list = $('<ul></ul>');
-
-    bios.search.userSearch(function(data){
-        getUserList(data.users);
-    });
-
-    $list
-        .addClass("userList")
+    if (window.startUpLogLevel >= 2) console.log("start jsonForm UI module");
+    $('<h1>json Form</h1>')
         .appendTo($element);
 
-    function getUserList(users){
-        let $fragment  = $(document.createDocumentFragment());
-        for (let i = 0; i < users.length; i++){
-           $('<li></li>')
-             .addClass('userEntry fa fa-user-md bios-icon-user-' + users[i].gender)
-             .html(users[i].first_name + " " + users[i].name)
-             .appendTo($fragment);
+    let $form = $('<div></div>')
+        .appendTo($element);
+
+    let formData;
+
+    let form = new jsonForm($form[0], {}, {
+        meta: {
+            salutation: {
+                type: "select",
+                options: ["Herr", "Frau"]
+            }
         }
-        $fragment.appendTo($list);
+    });
+    this.setData = function(data){
+        formData = data;
+        form.setData(data);
+    };
+    this.getData = function(){
+        return form.getData();
     }
 });

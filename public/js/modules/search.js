@@ -37,7 +37,37 @@ define("search", function(bios){
     };
     this.findOwners = function (searchQuery, fn){
         $.ajax({
+            url: "/search/owners/" + searchQuery,
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
+                    fn(resData);
+            }
+        });
+    };
+    this.findOwner = function (searchQuery, fn){
+        $.ajax({
             url: "/search/owner/" + searchQuery,
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
+                    fn(resData);
+            }
+        });
+    };
+    this.findAnimals = function (searchQuery, fn){
+        $.ajax({
+            url: "/search/animals/" + searchQuery,
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
+                    fn(resData);
+            }
+        });
+    };
+    this.findAnimal = function (searchQuery, fn){
+        $.ajax({
+            url: "/search/animal/" + searchQuery,
             type: "GET",
             success: function (resData) {
                 // console.log(resData)

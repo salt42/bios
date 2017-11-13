@@ -1,4 +1,3 @@
-@import url(uiModules/test.css);
 /*region variables*/
 :root {
     font-family: Bahnschrift;
@@ -397,8 +396,3 @@ logo {
     background-image: url("/img/ui-kit/default/employ_female.png");
 }
 /* endregion */
-
-
-.hidden {
-    display: none;
-}
