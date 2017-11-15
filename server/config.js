@@ -3,14 +3,17 @@
  */
 "use strict";
 
-var fs = require("fs");
-var prettyJSON = require('prettyjson');
-var confPath = "";
-var conf = {};
-var defaults = {
-    httpPort: 777,
-    dbFile: "/../db/data.sqlite3",
-    settingsFile: "/settings/settings.conf",
+let fs = require("fs");
+let jsonFile = require('jsonfile');
+let confPath = "";
+let conf = {};
+let defaults = {
+    httpPort: 666,
+    db: {
+        dbFile: "/../db/bios.sqlite3",
+        sqlQueryFolder: "./sql/",
+        sqlQueryCache: false
+    }
 };
 
 module.exports = function(path) {
@@ -21,17 +24,15 @@ module.exports = function(path) {
 
 function load(path) {
     confPath = path;
-    let content = fs.readFileSync(path);
-    content = JSON.parse(content);
+    let content = "";
+    if (fs.existsSync(confPath)) {
+        content = jsonFile.readFileSync(path);
+    }
     conf = {};
     Object.assign(conf, defaults, content);
 }
 function save() {
-    if (!fs.existsSync(confPath)) {
-        console.log("path not exists");
-        return;
-    }
-    fs.writeFileSync(confPath, prettyJSON.render(JSON.stringify(conf), { noColor: true }) );
+    jsonFile.writeFileSync(confPath, conf, {spaces: 2, EOL: '\r\n'});
 }
 
 function exitHandler(options, err) {

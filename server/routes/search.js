@@ -15,10 +15,10 @@ router.get('/all/:query', function(req, res) {
 
     let result = {
         query: req.params.query,
-        owners: func.limitResults(dbResults.owner),
-        animals: func.limitResults(dbResults.animals.alive),
-        deadAnimals: func.limitResults(dbResults.animals.dead),
-        articles: func.limitResults(dbResults.articles),
+        owners: dbResults.owner,
+        animals: dbResults.animals.alive,
+        deadAnimals: dbResults.animals.dead,
+        articles: dbResults.articles,
     };
 
 
@@ -89,12 +89,12 @@ module.exports = router;
  * @param   {int}           [limit = 5]
  * @returns {Array}
  */
-func.limitResults = function (data, limit = 5) {
-    let limitedResults = [];
-    for (let i = 0; i < limit; i++){
-        if (i in data){
-            limitedResults.push(data[i]);
-        }
-    }
-    return limitedResults;
-};
+// func.limitResults = function (data, limit = 5) {
+//     let limitedResults = [];
+//     for (let i = 0; i < limit; i++){
+//         if (i in data){
+//             limitedResults.push(data[i]);
+//         }
+//     }
+//     return limitedResults;
+// };

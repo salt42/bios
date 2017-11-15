@@ -3,19 +3,60 @@
  */
 "use strict";
 
-var log = require('./log')("Database");
-var fs = require('fs');
-var Database = require('better-sqlite3');
-var config = require('./config');
-console.log(__dirname + config.dbFile);
-var DB = new Database(__dirname + config.dbFile, {});
+let log = require('./log')("Database");
+let fs = require('fs');
+let Database = require('better-sqlite3');
+let config = require('./config');
+
+let DB = new Database(__dirname + config.db.dbFile, {});
+let sqlQueryRegistry = new Map();
 
 let errorcodes = [
     'no error',     // 0
     'db not found', // 1
     'id not found', // 2
-]
+];
 
+
+
+function getStatement(name) {
+    let query;
+
+    if (!sqlQueryRegistry.has(name)) {
+        //load query from file
+        let path = config.db.sqlQueryFolder + name + ".sql";
+        if (fs.existsSync(path)) {
+            query = fs.readFileSync(path).toString();
+            if(config.db.sqlQueryCache) {
+                sqlQueryRegistry.set(name, query);
+            }
+            return query;
+        } else {
+            throw new Error("sql sql file '"+ name +"' not found!");
+        }
+    } else {
+        return sqlQueryRegistry.get(name);
+    }
+}
+function runStatement(name, opt = {}) {
+    let statements = getStatement(name);
+    let parts = statements.split("--#");
+    let result = [];
+    for(let i = 0; i < parts.length; i++) {
+        if (!parts[i]) continue;
+
+        let func = parts[i].slice(0, parts[i].indexOf("\r\n")),
+            statement = parts[i].slice(parts[i].indexOf("\r\n") + 2)
+                .replace(/[\n\r]/g, "")
+                .replace(/[\t]/g, "")
+                .trim();
+
+        let stm = DB.prepare(statement);
+        let r = stm[func].call(stm, opt);
+        result.push(r);
+    }
+    return result;
+}
 module.exports = {
     /*region internVars*/
     _SELECT: 'SELECT ',
@@ -42,33 +83,38 @@ module.exports = {
         return dbResults;
     },
 
-    liveSearchOwner(query){
-        //todo rebuild query to get a sorted result
-        let search = {
-            query: "%"+query+"%"
-        },
-            select = 'owner.id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, ' +
-                     'owner.City, owner.address_2, owner.Zip_2, owner.City_2',
-            from = 'owner',
-            where = '(id || salutation || first_name || name || address || Zip || City || ' +
-                    'first_name_2 || name_2 || address_2 || Zip_2 || City_2 || ' +
-                    'telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)',
-            Compare = ' ' + 'like @query',
-            orderStr = 'name ASC, \n CASE WHEN name = \''+query+'\' THEN 1 ' +
-                              'WHEN name like \''+query+'%\' Then 2 ' +
-                              'WHEN name like \'%'+query+'\' Then 3 ' +
-                              'WHEN name like \'%'+query+'%\' THEN 4 ' +
-                              'WHEN first_name like \'%'+query+'%\' THEN 5 ' +
-                              'WHEN name_2 like \'%'+query+'%\' THEN 6 ' +
-                              'WHEN first_name_2 like \'%'+query+'%\' THEN 7 ' +
-                            'END ASC',
-            statement = this._SELECT + select + this._FROM + from + this._WHERE + where + Compare + this._ORDER + orderStr
-        ;
+    liveSearchOwner(seachQuery){
+        //@todo secure searchQuery against sql injection
+        return runStatement("liveSearch", {
+            query: seachQuery
+        })[2];
 
-        // console.log('####### \n QUERY: ', query);
-        // console.log('####### \n STATEMENT: \n', statement);
-        let row = DB.prepare(statement).all(search);
-        return row;
+
+        /*@todo deprecated
+         let search = {
+         searchQuery: seachQuery
+         },
+         select = 'owner.id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, ' +
+         'owner.City, owner.address_2, owner.Zip_2, owner.City_2',
+         from = 'owner',
+         where = '(id || salutation || first_name || name || address || Zip || City || ' +
+         'first_name_2 || name_2 || address_2 || Zip_2 || City_2 || ' +
+         'telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)',
+         Compare = ' ' + 'like @query',
+         orderStr = 'name ASC, \n CASE WHEN name = \''+query+'\' THEN 1 ' +
+         'WHEN name like \''+query+'%\' Then 2 ' +
+         'WHEN name like \'%'+query+'\' Then 3 ' +
+         'WHEN name like \'%'+query+'%\' THEN 4 ' +
+         'WHEN first_name like \'%'+query+'%\' THEN 5 ' +
+         'WHEN name_2 like \'%'+query+'%\' THEN 6 ' +
+         'WHEN first_name_2 like \'%'+query+'%\' THEN 7 ' +
+         'END ASC',
+         statement = this._SELECT + select + this._FROM + from + this._WHERE + where + Compare + this._ORDER + orderStr
+         ;
+         console.log('####### \n QUERY: ', query);
+         console.log('####### \n STATEMENT: \n', statement);
+         return DB.prepare(getStatement("liveSearch")).all(seachQuery);*/
+
     },
     liveSearchAnimal(query){
         let search = {
