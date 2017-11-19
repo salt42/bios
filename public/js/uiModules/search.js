@@ -30,7 +30,6 @@ defineUI("search", function(bios, $element){
                     case "owners":
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
-                            console.log(a);
                             let htmlText = " " + a.first_name + " " + a.name + ", " + a.address;
                             $('<li></li>')
                                 .addClass(entryClass + " fa fa-user")
@@ -136,9 +135,9 @@ defineUI("search", function(bios, $element){
             .removeClass("hidden");
         searchQuery = $input.val();
         switch (e.keyCode) {
-            case 13:
-                //enter
-                bios.loadComponent("owners", "mainSection", {
+            case 13: // = enter
+                // @todo save last view
+                bios.loadComponent("liveSearchResult", "mainSection", {
                     query: searchQuery
                 });
                 $liveResults.not("hidden").addClass("hidden");
