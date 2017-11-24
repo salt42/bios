@@ -1,1 +1,10 @@
-{"httpPort":666,"dbFile":"/../db/bios.sqlite3","settingsFile":"/settings/settings.conf"}
+{
+  "httpPort": 666,
+  "db": {
+    "dbFile": "/../db/bios.sqlite3",
+    "sqlQueryFolder": "./sql/",
+    "sqlQueryCache": false
+  },
+  "dbFile": "/../db/bios.sqlite3",
+  "settingsFile": "/settings/settings.conf"
+}
