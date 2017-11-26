@@ -7,6 +7,7 @@ let log = require('./log')("Database");
 let fs = require('fs');
 let Database = require('better-sqlite3');
 let config = require('./config');
+let liveSearchInitiated = false;
 
 let DB = new Database(__dirname + config.db.dbFile, {});
 let sqlQueryRegistry = new Map();
@@ -16,26 +17,6 @@ let errorcodes = [
     'db not found', // 1
     'id not found', // 2
 ];
-
-let ownerSet = {
-    hidden: {},
-    person: {},
-    address: {},
-    contact: {},
-    cash: {},
-    comments: {},
-};
-let animalSet = {
-    hidden: {},
-    animal: {},
-    comments: {},
-};
-let articleSet = {
-    hidden: {},
-    article: {},
-    comments: {},
-};
-
 
 
 function getStatement(name) {
@@ -66,8 +47,8 @@ function runStatement(name, opt = {}) {
 
         let func = parts[i].slice(0, parts[i].indexOf("\r\n")),
             statement = parts[i].slice(parts[i].indexOf("\r\n") + 2)
-                .replace(/[\n\r]/g, "")
-                .replace(/[\t]/g, "")
+                .replace(/[\n\r]/g, " ")
+                .replace(/[\t]/g, " ")
                 .trim();
 
         let stm = DB.prepare(statement);
@@ -75,6 +56,34 @@ function runStatement(name, opt = {}) {
         result.push(r);
     }
     return result;
+}
+function firstStart() {
+    if (!liveSearchInitiated){
+        runStatement("virtualTablesLS");
+    }
+}
+function refreshLiveSearch() {
+    if (liveSearchInitiated){
+        runStatement("dropLS");
+        runStatement("virtualTablesLS");
+    }
+    else firstStart();
+}
+function cleanUpDoubleEntries(results){
+    let ids = [],
+        result = [];
+    for (let i = 0; i < results.length; i++){
+        if (results[i].id in ids) continue;
+        ids[results[i].id] = results[i].id;
+        result.push(results[i]);
+    }
+    return result;
+}
+function cleanUpDoubleEntriesMulti(results){
+    for ( let i = 0; i < results.length; i++){
+        results[i] = cleanUpDoubleEntries(results[i]);
+    }
+    return results;
 }
 module.exports = {
     /*region internVars*/
@@ -96,83 +105,40 @@ module.exports = {
 
     /*region liveSearch*/
     liveSearchAll(query){
+        firstStart();
+        let readOut = cleanUpDoubleEntriesMulti(runStatement("liveSearch", {
+            query: query,
+        }));
         let dbResults = {};
-        let animals = this.liveSearchAnimal(query);
+        let animals = readOut[1];
 
-        dbResults.owner = this.limitLiveSearch(this.liveSearchOwner(query));
+        dbResults.owner = this.limitLiveSearch(readOut[0]);
         dbResults.animals = {};
         dbResults.animals.alive = this.sortOutDeadAnimals(animals, 6);
         dbResults.animals.dead  = this.sortOutDeadAnimals(animals, 3, true);
-        dbResults.articles = this.limitLiveSearch(this.liveSearchArticle(query));
+        dbResults.articles = this.limitLiveSearch(readOut[2]);
 
         return dbResults;
     },
 
-    liveSearchOwner(seachQuery){
+    liveSearchOwner(query){
         //@todo secure searchQuery against sql injection
+        refreshLiveSearch();
         return runStatement("liveSearch", {
-            query: seachQuery
-        })[2];
-
-
-        /*@todo deprecated
-         let search = {
-         searchQuery: seachQuery
-         },
-         select = 'owner.id, owner.first_name, owner.first_name_2, owner.name, owner.name_2, owner.address, owner.Zip, ' +
-         'owner.City, owner.address_2, owner.Zip_2, owner.City_2',
-         from = 'owner',
-         where = '(id || salutation || first_name || name || address || Zip || City || ' +
-         'first_name_2 || name_2 || address_2 || Zip_2 || City_2 || ' +
-         'telephone_1 || telephone_2 || telephone_3 || telephone_4 || e_mail || www)',
-         Compare = ' ' + 'like @query',
-         orderStr = 'name ASC, \n CASE WHEN name = \''+query+'\' THEN 1 ' +
-         'WHEN name like \''+query+'%\' Then 2 ' +
-         'WHEN name like \'%'+query+'\' Then 3 ' +
-         'WHEN name like \'%'+query+'%\' THEN 4 ' +
-         'WHEN first_name like \'%'+query+'%\' THEN 5 ' +
-         'WHEN name_2 like \'%'+query+'%\' THEN 6 ' +
-         'WHEN first_name_2 like \'%'+query+'%\' THEN 7 ' +
-         'END ASC',
-         statement = this._SELECT + select + this._FROM + from + this._WHERE + where + Compare + this._ORDER + orderStr
-         ;
-         console.log('####### \n QUERY: ', query);
-         console.log('####### \n STATEMENT: \n', statement);
-         return DB.prepare(getStatement("liveSearch")).all(seachQuery);*/
-
+            query: query,
+        })[0];
     },
     liveSearchAnimal(query){
-        let search = {
-                query: "%"+query+"%"
-            },
-            select = 'animal.id, animal.species_id, animal.race_id, animal.name, animal.birthday, animal.gender, animal.color_description, animal.died, animal.died_on',
-            from = 'animal',
-            where = '(owner_id || ' +    // deprecated when owner-animal-hash implemented!!
-                    'species_id || race_id || chip || tattoo || name || birthday || color_description || died_on)',
-            Compare = ' ' + 'like @query',
-            statement = this._SELECT + select + this._FROM + from + this._WHERE + where + Compare
-        ;
-
-        // console.log('####### \n QUERY: ', query);
-        // console.log('####### \n STATEMENT: \n', statement);
-        let row = DB.prepare(statement).all(search);
-        return row;
+        refreshLiveSearch();
+        return runStatement("liveSearch", {
+            query: query,
+        })[1];
     },
     liveSearchArticle(query){
-        let search = {
-                query: "%"+query+"%"
-            },
-            select = 'articles.id, articles.name',
-            from = 'articles',
-            where = '(name)',
-            Compare = ' ' + 'like @query',
-            statement = this._SELECT + select + this._FROM + from + this._WHERE + where + Compare
-        ;
-
-        // console.log('####### \n QUERY: ', query);
-        // console.log('####### \n STATEMENT: \n', statement);
-        let row = DB.prepare(statement).all(search);
-        return row;
+        refreshLiveSearch();
+        return runStatement("liveSearch", {
+            query: query,
+        })[2];
     },
     /*endregion*/
 
@@ -236,105 +202,7 @@ module.exports = {
             error: "id not found",
             code: 2,
         };
-        let result = ownerSet;
-        let a = row[0];
-        for (let column in a){
-            if (a.hasOwnProperty(column)){
-                switch (column){
-                    case 'id':
-                        result.hidden.id = a[column];
-                        break;
-                    case 'salutation':
-                        result.person.salutation = a[column];
-                        break;
-                    case 'first_name':
-                        result.person.first_name = a[column];
-                        break;
-                    case 'name':
-                        result.person.name = a[column];
-                        break;
-                    case 'gender':
-                        result.person.gender = a[column];
-                        break;
-                    case 'first_name_2':
-                        result.person.first_name_2 = a[column];
-                        break;
-                    case 'name_2':
-                        result.person.name_2 = a[column];
-                        break;
-                    case 'address':
-                        result.address.address = a[column];
-                        break;
-                    case 'country':
-                        result.address.country = a[column];
-                        break;
-                    case 'Zip':
-                        result.address.Zip = a[column];
-                        break;
-                    case 'City':
-                        result.address.City = a[column];
-                        break;
-                    case 'address_2':
-                        result.address.address_2 = a[column];
-                        break;
-                    case 'Zip_2':
-                        result.address.Zip_2 = a[column];
-                        break;
-                    case 'City_2':
-                        result.address.City_2 = a[column];
-                        break;
-                    case 'telephone_1':
-                        result.contact.telephone_1 = a[column];
-                        break;
-                    case 'telephone_2':
-                        result.contact.telephone_2 = a[column];
-                        break;
-                    case 'telephone_3':
-                        result.contact.telephone_3 = a[column];
-                        break;
-                    case 'telephone_4':
-                        result.contact.telephone_4 = a[column];
-                        break;
-                    case 'e_mail':
-                        result.contact.e_mail = a[column];
-                        break;
-                    case 'www':
-                        result.contact.www = a[column];
-                        break;
-                    case 'comments':
-                        result.comments.comments = a[column];
-                        break;
-                    case 'cave':
-                        result.comments.cave = a[column];
-                        break;
-                    case 'cave_text':
-                        result.comments.cave_text = a[column];
-                        break;
-                    case 'iban':
-                        result.cash.iban = a[column];
-                        break;
-                    case 'bic':
-                        result.cash.bic = a[column];
-                        break;
-                    case 'debit':
-                        result.cash.debit = a[column];
-                        break;
-                    case 'reminder_1':
-                        result.comments.reminder_1 = a[column];
-                        break;
-                    case 'reminder_2':
-                        result.comments.reminder_2 = a[column];
-                        break;
-                    case 'reminder_3':
-                        result.comments.reminder_3 = a[column];
-                        break;
-                    case 'encashment':
-                        result.cash.encashment = a[column];
-                        break;
-                }
-            }
-        }
-        return result;
+        return this.prepareResults("owner", row[0]);
     },
     searchAnimals(query){
         //todo rebuild query to get a sorted string
@@ -367,25 +235,8 @@ module.exports = {
             error: "id not found",
             code: 1,
         };
-        let result = animalSet;
-        let a = row[0];
-        for (let column in a){
-            if (a.hasOwnProperty(column)){
-                switch (column){
-                    case 'id':
-                        result.hidden.id = a[column];
-                        break;
-                    case 'name':
-                        result.animal.name = a[column];
-                        break;
-                    case 'gender':
-                        result.animal.gender = a[column];
-                        break;
-                }
-            }
-        }
 
-        return result;
+        return this.prepareResults("animal", row[0]);
     },
     /*endregion*/
 
@@ -424,6 +275,164 @@ module.exports = {
             }
         }
         return res;
+    },
+
+    prepareResults(type, resultData){
+        let ownerSet = {
+            hidden: {},
+            person: {},
+            address: {},
+            contact: {},
+            cash: {},
+            comments: {},
+        },
+            animalSet = {
+            hidden: {},
+            animal: {},
+            comments: {},
+        },
+            articleSet = {
+            hidden: {},
+            article: {},
+            comments: {},
+        },
+            result;
+        a = resultData;
+        switch (type){
+            case "owner":
+                result = ownerSet;
+                for (let column in a){
+                    if (a.hasOwnProperty(column)){
+                        switch (column){
+                            case 'id':
+                                result.hidden[column] = a[column];
+                                break;
+                            case 'salutation':
+                            case 'first_name':
+                            case 'gender':
+                            case 'name':
+                            case 'first_name_2':
+                            case 'name_2':
+                                result.person[column] = a[column];
+                                break;
+                            case 'address':
+                            case 'country':
+                            case 'Zip':
+                            case 'City':
+                            case 'address_2':
+                            case 'Zip_2':
+                            case 'City_2':
+                                result.address[column] = a[column];
+                                break;
+                            case 'telephone_1':
+                            case 'telephone_2':
+                            case 'telephone_3':
+                            case 'telephone_4':
+                            case 'e_mail':
+                            case 'www':
+                                result.contact[column] = a[column];
+                                break;
+                            case 'comments':
+                            case 'cave':
+                            case 'cave_text':
+                            case 'reminder_1':
+                            case 'reminder_2':
+                            case 'reminder_3':
+                                result.comments[column] = a[column];
+                                break;
+                            case 'iban':
+                            case 'bic':
+                            case 'debit':
+                            case 'encashment':
+                                result.cash[column] = a[column];
+                                break;
+                        }
+                    }
+                }
+                break;
+            case "animal":
+                result = animalSet;
+                for (let column in a){
+                    if (a.hasOwnProperty(column)){
+                        switch (column){
+                            case 'id':
+                                result.hidden[column] = a[column];
+                                break;
+                            case 'name':
+                            case 'gender':
+                                result.animal[column] = a[column];
+                                break;
+                        }
+                    }
+                }
+                break;
+            case"article":
+                result = articleSet;
+                for (let column in a) {
+                    if (a.hasOwnProperty(column)) {
+                        switch (column) {
+                            case 'id':
+                                result.hidden[column] = a[column];
+                                break;
+                            case "name":
+                                result.article[column] = a[column];
+                                break;
+                        }
+                    }
+                }
+                break;
+        }
+        return result;
+    },
+
+    prepareDataForSave(type, data){
+        let ownerDB = {
+                id: null,
+                salutation: null,
+                first_name: null,
+                gender: null,
+                name: null,
+                first_name_2: null,
+                name_2: null,
+                address: null,
+                country: null,
+                Zip: null,
+                City: null,
+                address_2: null,
+                Zip_2: null,
+                City_2: null,
+        },
+            animalDB ={
+                id: null,
+                name: null,
+                gender: null,
+            },
+            articleDB = {
+                id: null,
+                name: null,
+            },
+            result;
+        switch (type){
+            case "owner":
+                result = ownerDB;
+                break;
+            case "animal":
+                result = animalDB;
+                break;
+            case "article":
+                result = articleDB;
+                break;
+        }
+        for (let fieldset in data) {
+            if (data.hasOwnProperty(fieldset)) {
+                for (let column in fieldset){
+                    if (fieldset.hasOwnProperty(column)) {
+                        result[column] = data[fieldset][column];
+                    }
+                }
+            }
+        }
+        return result;
     },
     /*endregion*/
 

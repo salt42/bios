@@ -1,7 +1,7 @@
 defineUI("search", function(bios, $element){
     "use strict";
     if (window.startUpLogLevel >= 2) console.log("start search UI module");
-
+    console.log("start search UI module");
     let $input = $('<input />')
         .attr("type", "text")
         .attr("name", "search")
@@ -26,6 +26,7 @@ defineUI("search", function(bios, $element){
             let entryClass = "live-search";
             // add entries
             if (data.hasOwnProperty(property)) {
+                console.log('##', property);
                 switch (property){
                     case "owners":
                         for (let i = 0; i < data[property].length; i++) {
@@ -146,7 +147,7 @@ defineUI("search", function(bios, $element){
                 // console.log(e.key);
                 if (!(searchQuery === "")){
                     bios.search.liveSearch(searchQuery, function(data) {
-                        // console.log(data.owners);
+                        // console.log(data);
                         if (data.query !== searchQuery) {
                             console.log("returned query is wrong");
                             return;
