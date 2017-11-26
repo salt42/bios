@@ -295,9 +295,9 @@ module.exports = {
             hidden: {},
             article: {},
             comments: {},
-        },
-            result;
-        a = resultData;
+        };
+        let result;
+        let a = resultData;
         switch (type){
             case "owner":
                 result = ownerSet;
