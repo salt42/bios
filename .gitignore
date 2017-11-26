@@ -64,3 +64,5 @@ typings/
 db/
 
 bios.iml
+/dbsave/old/
+dbsave/old/

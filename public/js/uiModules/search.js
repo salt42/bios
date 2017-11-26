@@ -47,7 +47,7 @@ defineUI("search", function(bios, $element){
                             let a = data[property][i];
                             let htmlText = " " + a.name + ", " + trans(denumS(a.species_id));
                             $('<li data-imgInfo = "' + a.species_id + '"></li>')
-                                .addClass(entryClass + " fa fa-stethoscope")
+                                .addClass(entryClass + " fa fa-paw")
                                 .attr("type", 'animal')
                                 .attr("animal-id", a.id)
                                 .html(htmlText)
@@ -146,7 +146,7 @@ defineUI("search", function(bios, $element){
                 // console.log(e.key);
                 if (!(searchQuery === "")){
                     bios.search.liveSearch(searchQuery, function(data) {
-                        // console.log(data);
+                        // console.log(data.owners);
                         if (data.query !== searchQuery) {
                             console.log("returned query is wrong");
                             return;

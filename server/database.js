@@ -17,6 +17,25 @@ let errorcodes = [
     'id not found', // 2
 ];
 
+let ownerSet = {
+    hidden: {},
+    person: {},
+    address: {},
+    contact: {},
+    cash: {},
+    comments: {},
+};
+let animalSet = {
+    hidden: {},
+    animal: {},
+    comments: {},
+};
+let articleSet = {
+    hidden: {},
+    article: {},
+    comments: {},
+};
+
 
 
 function getStatement(name) {
@@ -65,20 +84,26 @@ module.exports = {
     _ORDER: ' ORDER BY ',
     /*endregion*/
 
-    testResults(){
-        return this.liveSearchArticle("e");
+    limitLiveSearch(results, count = 8){
+        if (count == 0) return results;
+        let resultSet = [];
+        if (results.length < count) count = results.length;
+        for (let i = 0; i < count; i++){
+            resultSet[i] = results[i];
+        }
+        return resultSet;
     },
 
     /*region liveSearch*/
     liveSearchAll(query){
         let dbResults = {};
-        dbResults.animals = {};
+        let animals = this.liveSearchAnimal(query);
 
-        dbResults.owner = this.liveSearchOwner(query);
-        dbResults.animals.all = this.liveSearchAnimal(query);
-        dbResults.animals.alive = this.sortOutDeadAnimals(dbResults.animals.all, 5);
-        dbResults.animals.dead = this.sortOutDeadAnimals(dbResults.animals.all, 3, true);
-        dbResults.articles = this.liveSearchArticle(query);
+        dbResults.owner = this.limitLiveSearch(this.liveSearchOwner(query));
+        dbResults.animals = {};
+        dbResults.animals.alive = this.sortOutDeadAnimals(animals, 6);
+        dbResults.animals.dead  = this.sortOutDeadAnimals(animals, 3, true);
+        dbResults.articles = this.limitLiveSearch(this.liveSearchArticle(query));
 
         return dbResults;
     },
@@ -137,10 +162,9 @@ module.exports = {
         let search = {
                 query: "%"+query+"%"
             },
-            select = 'articles.id, articles.article_number, articles.name, articles.got, articles.vendor, articles.article_target',
+            select = 'articles.id, articles.name',
             from = 'articles',
-            where = '(article_number || name || volume || got || vendor || charge_number || invoice_id || tax_rate || ' +
-                    'sub_unit_1 || sub_unit_2 || sub_unit_3 || article_target)',
+            where = '(name)',
             Compare = ' ' + 'like @query',
             statement = this._SELECT + select + this._FROM + from + this._WHERE + where + Compare
         ;
@@ -212,14 +236,7 @@ module.exports = {
             error: "id not found",
             code: 2,
         };
-        let result = {
-            hidden: {},
-            person: {},
-            address: {},
-            contact: {},
-            cash: {},
-            comments: {},
-        };
+        let result = ownerSet;
         let a = row[0];
         for (let column in a){
             if (a.hasOwnProperty(column)){
@@ -350,7 +367,25 @@ module.exports = {
             error: "id not found",
             code: 1,
         };
-        return row[0];
+        let result = animalSet;
+        let a = row[0];
+        for (let column in a){
+            if (a.hasOwnProperty(column)){
+                switch (column){
+                    case 'id':
+                        result.hidden.id = a[column];
+                        break;
+                    case 'name':
+                        result.animal.name = a[column];
+                        break;
+                    case 'gender':
+                        result.animal.gender = a[column];
+                        break;
+                }
+            }
+        }
+
+        return result;
     },
     /*endregion*/
 
@@ -374,14 +409,14 @@ module.exports = {
         for (let i = 0; i < result.length; i++){
             if (invert === true){
                 // dead animals
-                if (result[i].died === 1 || result[i].died.toLowerCase() === "true"){
+                if (result[i].died === 1 ){
                     res.push(result[i]);
                     count++;
                     if (count === limit) break;
                 }
             }
             else {
-                if (!(result[i].died === 1 || result[i].died.toLowerCase() === "true")){
+                if (!(result[i].died === 1 )){
                     res.push(result[i]);
                     count++;
                     if (count === limit) break;

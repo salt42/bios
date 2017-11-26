@@ -16,6 +16,7 @@ defineComp("animal", function(bios, $element, args) {
         // let table = $table.data("context");
         // table.setData(data, {});
         // $table.append(table.getHTML());
+        $form.data("context").setData(data);
     });
 
 
