@@ -3,4 +3,4 @@
 	url = https://github.com/salt42/jsfair
 [submodule "assets/libs/jsonForm"]
 	path = assets/libs/jsonForm
-	url = git://github.com/salt42/jsonForm.git
+	url = https://github.com/salt42/jsonForm
