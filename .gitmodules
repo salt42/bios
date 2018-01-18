@@ -1,5 +1,5 @@
-[submodule "public/libs/jsonForm"]
-	path = public/libs/jsonForm
+[submodule "jsonForm"]
+	path = assets/libs/jsonForm
 	url = https://github.com/salt42/jsonForm
 [submodule "jsfair"]
 	path = jsfair
