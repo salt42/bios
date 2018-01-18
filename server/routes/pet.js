@@ -3,7 +3,7 @@
  */
 "use strict";
 
-var DB = require('../database');
+var DB = require('jsfair/database');
 var express = require('express');
 var router = express.Router();
 

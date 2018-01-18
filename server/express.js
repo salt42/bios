@@ -70,6 +70,29 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-app.listen(config.httpPort, function () {
-    log('HTTP'.magenta + ' listening on port ' + config.httpPort.toString().magenta);
+let isPortTaken = function(port, fn) {
+    let net = require('net')
+    let tester = net.createServer()
+        .once('error', function (err) {
+            if (err.code != 'EADDRINUSE') return fn(err)
+            fn(null, true)
+        })
+        .once('listening', function() {
+            tester.once('close', function() { fn(null, false) })
+                .close()
+        })
+        .listen(port)
+};
+isPortTaken(config.httpPort, function(err, taken) {
+    if (err) {
+        log(err);
+        return;
+    }
+    if (taken) {
+        log("port '" + config.httpPort + "' is not free");
+        return;
+    }
+    app.listen(config.httpPort, function () {
+        log('HTTP'.magenta + ' listening on port ' + config.httpPort.toString().magenta);
+    });
 });

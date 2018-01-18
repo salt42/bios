@@ -1,7 +1,7 @@
 (function() {
     let dtconf = {};
     // get config;
-    $.getScript("/js/config/dtc.js", function (data, textStatus, jqxhr) {
+    $.getScript("/config/dtc.js", function (data, textStatus, jqxhr) {
         dtconf = window.dtc;
     });
     // set free global window.dtc

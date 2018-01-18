@@ -18,45 +18,45 @@ let errorcodes = [
     'id not found', // 2
 ];
 
-
-function getStatement(name) {
-    let query;
-
-    if (!sqlQueryRegistry.has(name)) {
-        //load query from file
-        let path = config.db.sqlQueryFolder + name + ".sql";
-        if (fs.existsSync(path)) {
-            query = fs.readFileSync(path).toString();
-            if(config.db.sqlQueryCache) {
-                sqlQueryRegistry.set(name, query);
-            }
-            return query;
-        } else {
-            throw new Error("sql sql file '"+ name +"' not found!");
-        }
-    } else {
-        return sqlQueryRegistry.get(name);
-    }
-}
-function runStatement(name, opt = {}) {
-    let statements = getStatement(name);
-    let parts = statements.split("--#");
-    let result = [];
-    for(let i = 0; i < parts.length; i++) {
-        if (!parts[i]) continue;
-
-        let func = parts[i].slice(0, parts[i].indexOf("\r\n")),
-            statement = parts[i].slice(parts[i].indexOf("\r\n") + 2)
-                .replace(/[\n\r]/g, " ")
-                .replace(/[\t]/g, " ")
-                .trim();
-
-        let stm = DB.prepare(statement);
-        let r = stm[func].call(stm, opt);
-        result.push(r);
-    }
-    return result;
-}
+//
+// function getStatement(name) {
+//     let query;
+//
+//     if (!sqlQueryRegistry.has(name)) {
+//         //load query from file
+//         let path = config.db.sqlQueryFolder + name + ".sql";
+//         if (fs.existsSync(path)) {
+//             query = fs.readFileSync(path).toString();
+//             if(config.db.sqlQueryCache) {
+//                 sqlQueryRegistry.set(name, query);
+//             }
+//             return query;
+//         } else {
+//             throw new Error("sql sql file '"+ name +"' not found!");
+//         }
+//     } else {
+//         return sqlQueryRegistry.get(name);
+//     }
+// }
+// function runStatement(name, opt = {}) {
+//     let statements = getStatement(name);
+//     let parts = statements.split("--#");
+//     let result = [];
+//     for(let i = 0; i < parts.length; i++) {
+//         if (!parts[i]) continue;
+//
+//         let func = parts[i].slice(0, parts[i].indexOf("\r\n")),
+//             statement = parts[i].slice(parts[i].indexOf("\r\n") + 2)
+//                 .replace(/[\n\r]/g, " ")
+//                 .replace(/[\t]/g, " ")
+//                 .trim();
+//
+//         let stm = DB.prepare(statement);
+//         let r = stm[func].call(stm, opt);
+//         result.push(r);
+//     }
+//     return result;
+// }
 function firstStart() {
     if (!liveSearchInitiated){
         runStatement("virtualTablesLS");
@@ -104,22 +104,22 @@ module.exports = {
     },
 
     /*region liveSearch*/
-    liveSearchAll(query){
-        firstStart();
-        let readOut = cleanUpDoubleEntriesMulti(runStatement("liveSearch", {
-            query: query,
-        }));
-        let dbResults = {};
-        let animals = readOut[1];
-
-        dbResults.owner = this.limitLiveSearch(readOut[0]);
-        dbResults.animals = {};
-        dbResults.animals.alive = this.sortOutDeadAnimals(animals, 6);
-        dbResults.animals.dead  = this.sortOutDeadAnimals(animals, 3, true);
-        dbResults.articles = this.limitLiveSearch(readOut[2]);
-
-        return dbResults;
-    },
+    // liveSearchAll(query){
+    //     firstStart();
+    //     let readOut = cleanUpDoubleEntriesMulti(runStatement("liveSearch", {
+    //         query: query,
+    //     }));
+    //     let dbResults = {};
+    //     let animals = readOut[1];
+    //
+    //     dbResults.owner = this.limitLiveSearch(readOut[0]);
+    //     dbResults.animals = {};
+    //     dbResults.animals.alive = this.sortOutDeadAnimals(animals, 6);
+    //     dbResults.animals.dead  = this.sortOutDeadAnimals(animals, 3, true);
+    //     dbResults.articles = this.limitLiveSearch(readOut[2]);
+    //
+    //     return dbResults;
+    // },
 
     liveSearchOwner(query){
         //@todo secure searchQuery against sql injection

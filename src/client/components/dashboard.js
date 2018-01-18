@@ -3,8 +3,8 @@
  */
 defineComp("dashboard", function(bios, $element, args) {
     "use strict";
-    $("<h1>Dashboard</h1>")
-        .appendTo($element);
+    // $("<h1>Dashboard</h1>")
+    //     .appendTo($element);
     // $("<p>hier kann man das html der componente einbauen. zb ein login, oder eine liste, oder eine übersichts seite.</p>")
     //     .appendTo($element);
     //
@@ -13,6 +13,7 @@ defineComp("dashboard", function(bios, $element, args) {
     //
     // //init all ui modules
     // bios.initAllUI($element);
+
     this.doSomething = function() {
         $("<p>Dashboard Update</p>")
             .appendTo($element);
@@ -20,4 +21,6 @@ defineComp("dashboard", function(bios, $element, args) {
     this.onDiscard = function() {
         console.log("dashboard removed");
     };
+}, {
+    templatePath: "/components/dashboard/dashboard.html"
 });
