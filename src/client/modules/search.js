@@ -1,19 +1,34 @@
 define("search", function(bios){
     "use strict";
-    this.liveSearch = function(searchQuery, fn) {
+    this.liveSearch = function(searchQuery, fn, option) {
         //@todo send live search request to server
 
-        $.ajax({
-            url: "/search/all/" + searchQuery,
-            type: "GET",
-            // contentType: "application/json",
-            // data: JSON.stringify(conf),
-            success: function (resData) {
-                // console.log(resData)
-                if (searchQuery !== "")
-                    fn(resData);
-            }
-        });
+        if (option === "short"){
+            $.ajax({
+                url: "/search/live/short/" + searchQuery,
+                type: "GET",
+                // contentType: "application/json",
+                // data: JSON.stringify(conf),
+                success: function (resData) {
+                    // console.log(resData)
+                    if (searchQuery !== "")
+                        fn(resData);
+                }
+            });
+        }
+        else {
+            $.ajax({
+                url: "/search/live/all/" + searchQuery,
+                type: "GET",
+                // contentType: "application/json",
+                // data: JSON.stringify(conf),
+                success: function (resData) {
+                    // console.log(resData)
+                    if (searchQuery !== "")
+                        fn(resData);
+                }
+            });
+        }
     };
     this.getList = function (searchQuery, fn){
         $.ajax({
@@ -71,7 +86,17 @@ define("search", function(bios){
             type: "GET",
             success: function (resData) {
                 // console.log(resData)
-                    fn(resData);
+                fn(resData);
+            }
+        });
+    };
+    this.findArticle = function (searchQuery, fn){
+        $.ajax({
+            url: "/search/article/" + searchQuery,
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
+                fn(resData);
             }
         });
     };

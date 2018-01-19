@@ -13,12 +13,6 @@ defineComp("owner", function(bios, $element, args) {
     let $save = $('<button class="save"></button>')
         .appendTo($element);
 
-    $("<div>owners animals (list)</div>")
-        .appendTo($element);
-
-    $("<div>bills list</div>")
-        .appendTo($element);
-
     $save.on("click", function() {
         let data = $form.data("context").getData().root;
         console.log(data);

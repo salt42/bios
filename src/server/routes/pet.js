@@ -6,7 +6,7 @@
 var DB = require('jsfair/database');
 hookIn.createRoute("/pet", function(router) {
     router.get('/:name', function(req, res) {
-        var pet = DB.getOwner(req.params.name);
+        var pet = DB.getAnimalByID(req.params.name);
         res.render('pet', {
             petName: JSON.stringify(pet)
         });

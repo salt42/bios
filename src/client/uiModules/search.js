@@ -13,6 +13,7 @@ defineUI("search", function(bios, $element){
         .appendTo($element);
 
     let searchQuery = "";
+    let resultSet;
 
     function updateResults(data){
         for (let property in data) {
@@ -64,7 +65,7 @@ defineUI("search", function(bios, $element){
                             let a = data[property][i];
                             let htmlText = " " + a.name + ", " + trans(denumS(a.species_id)) + ", " + a.died_on;
                             $('<li data-imgInfo = "' + a.species_id + '"></li>')
-                                .addClass(entryClass + "animals-dead" + " fa fa-circle")
+                                .addClass(entryClass + "animal-dead" + " fa fa-circle")
                                 .attr("type", 'animal')
                                 .attr("animal-id", a.id)
                                 .html(htmlText)
@@ -97,17 +98,17 @@ defineUI("search", function(bios, $element){
         highlight(data["query"]);
     }
 
-    /*geht nich */
     function highlight(query) {
-        // let $srcElements = $(".live-search");
-        // for (let i = 0; i < $srcElements.length; i++){
-        //     let eText = $srcElements[i].text();
-        //     query = query.replace(/(\s+)/,"(<[^>]+>)*$1(<[^>]+>)*");
-        //     let pattern = new RegExp("("+term+")", "gi");
-        //     eText = eText.replace(pattern, "<mark>$1</mark>");
-        //     eText = eText.replace(/(<mark>[^<>]*)((<[^>]+>)+)([^<>]*<\/mark>)/,"$1</mark>$2<mark>$4");
-        //     $srcElements[i].html(eText);
-        // }
+        let $srcElements = $(".live-search");
+        for (let i = 0; i < $srcElements.length; i++){
+            let text = $srcElements[i];
+            let regex = new RegExp(query, 'gi')
+            let response = text.innerText.replace(regex, function(str) {
+                return "<span class='highlight'>" + str + "</span>"
+            })
+            text.innerHTML = response
+
+        }
     }
 
     function denumS(value){
@@ -139,21 +140,26 @@ defineUI("search", function(bios, $element){
             case 13: // = enter
                 // @todo save last view
                 bios.loadComponent("liveSearchResult", "mainSection", {
-                    query: searchQuery
+                    query: searchQuery,
+                    resultSet: resultSet,
                 });
                 $liveResults.not("hidden").addClass("hidden");
                 break;
             default:
                 // console.log(e.key);
                 if (!(searchQuery === "")){
+                    // add wildcard to search
+                    if (!(searchQuery.slice(-1) === "*"))
+                        searchQuery += "*";
                     bios.search.liveSearch(searchQuery, function(data) {
-                        // console.log(data);
+                        console.log(data);
                         if (data.query !== searchQuery) {
                             console.log("returned query is wrong");
                             return;
                         }
+                        resultSet = data;
                         updateResults(data);
-                    });
+                    }, "short");
                 }
         }
     });

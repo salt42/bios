@@ -3,7 +3,7 @@
  */
 defineComp("article", function(bios, $element, args) {
     "use strict";
-    $("<h1>animal</h1>")
+    $("<h1>article</h1>")
         .appendTo($element);
 
     let $form = $("<jsonForm></jsonForm>")
@@ -11,7 +11,7 @@ defineComp("article", function(bios, $element, args) {
 
     bios.initAllUI($element);
 
-    bios.search.findAnimal(args.id, function(data) {
+    bios.search.findArticle(args.id, function(data) {
         console.log(data);
         $form.data("context").setData(data);
     });

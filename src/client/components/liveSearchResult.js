@@ -9,12 +9,8 @@ defineComp("liveSearchResult", function(bios, $element, args) {
 
     bios.initAllUI($element);
 
-    bios.loadComponent("owners", "mainSection", {
-        query: args.query
-    });
-    bios.loadComponent("animals", "mainSection", {
-        query: args.query
-    });
+    bios.loadComponent("owners", "mainSection", args);
+    bios.loadComponent("animals", "mainSection", args);
 
 
     this.onDiscard = function() {};

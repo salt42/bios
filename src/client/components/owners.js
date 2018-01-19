@@ -11,11 +11,15 @@ defineComp("owners", function(bios, $element, args) {
 
     bios.initAllUI($element);
 
-    bios.search.findOwners(args.query, function(data) {
-        let table = $table.data("context");
-        table.setData(data, {});
-        $table.append(table.getHTML());
-    });
+       let table = $table.data("context");
+       table.setData(args.resultSet, {});
+       $table.append(table.getHTML());
+
+    //bios.search.findOwners(args.query, function(data) {
+    //    let table = $table.data("context");
+    //    table.setData(data, {});
+    //    $table.append(table.getHTML());
+    //});
 
 
     this.onDiscard = function() {};
