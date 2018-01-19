@@ -3,6 +3,7 @@
  */
 "use strict";
 let DB = require("jsfair/database");
+let convert = require("./dbObjectConverter");
 
 /* region error codes */
 let errorcodes = [
@@ -13,78 +14,78 @@ let errorcodes = [
 ];
 /* endregion */
 
-hookIn.createRoute("/search", function(router) {
-    router.get('/all/:query', function(req, res) {
-        let dbResults = DB.liveSearchAll(req.params.query);
-
-        let result = {
-            query: req.params.query,
-            owners: dbResults.owner,
-            animals: dbResults.animals.alive,
-            deadAnimals: dbResults.animals.dead,
-            articles: dbResults.articles,
-        };
-
-
-        res.json(result);
-    });
-    router.get('/user', function(req, res) {
-        let userList = DB.getUserList();
-        let userListActive = [];
-        let userListInactive = [];
-
-        for(let i = 0; i < userList.length; i++){
-            if (userList[i].present === 0){
-                userListInactive.push(userList[i]);
-            } else {
-                userListActive.push(userList[i]);
-            }
-        }
-
-        let result = {
-            query: req.params.query,
-            users: userList,
-            usersActive: userListActive,
-            usersInactive: userListInactive,
-        };
-
-        res.json(result);
-    });
-    router.get('/list/:query', function(req, res) {
-        let result = {};
-        if (req.params.query === "species"){
-            result.list = DB.getSpeciesList();
-        }
-        if(req.params.query === "userRoles"){
-            result.list = DB.getUserRolesList();
-        }
-        else {
-            result = DB.getAllLists();
-        }
-
-        res.json(result);
-    });
-    router.get('/owners/:query', function(req, res) {
-        let result = DB.searchOwners(req.params.query);
-
-        res.json(result);
-    });
-    router.get('/owner/:query', function(req, res) {
-        let result = DB.searchOwnerByID(req.params.query);
-
-        res.json(result);
-    });
-    router.get('/animals/:query', function(req, res) {
-        let result = DB.searchAnimals(req.params.query);
-
-        res.json(result);
-    });
-    router.get('/animal/:query', function(req, res) {
-        let result = DB.searchAnimalByID(req.params.query);
-
-        res.json(result);
-    });
-});
+// hookIn.createRoute("/search", function(router) {
+//     router.get('/all/:query', function(req, res) {
+//         let dbResults = DB.liveSearchAll(req.params.query);
+//
+//         let result = {
+//             query: req.params.query,
+//             owners: dbResults.owner,
+//             animals: dbResults.animals.alive,
+//             deadAnimals: dbResults.animals.dead,
+//             articles: dbResults.articles,
+//         };
+//
+//
+//         res.json(result);
+//     });
+//     router.get('/user', function(req, res) {
+//         let userList = DB.getUserList();
+//         let userListActive = [];
+//         let userListInactive = [];
+//
+//         for(let i = 0; i < userList.length; i++){
+//             if (userList[i].present === 0){
+//                 userListInactive.push(userList[i]);
+//             } else {
+//                 userListActive.push(userList[i]);
+//             }
+//         }
+//
+//         let result = {
+//             query: req.params.query,
+//             users: userList,
+//             usersActive: userListActive,
+//             usersInactive: userListInactive,
+//         };
+//
+//         res.json(result);
+//     });
+//     router.get('/list/:query', function(req, res) {
+//         let result = {};
+//         if (req.params.query === "species"){
+//             result.list = DB.getSpeciesList();
+//         }
+//         if(req.params.query === "userRoles"){
+//             result.list = DB.getUserRolesList();
+//         }
+//         else {
+//             result = DB.getAllLists();
+//         }
+//
+//         res.json(result);
+//     });
+//     router.get('/owners/:query', function(req, res) {
+//         let result = DB.searchOwners(req.params.query);
+//
+//         res.json(result);
+//     });
+//     router.get('/owner/:query', function(req, res) {
+//         let result = DB.searchOwnerByID(req.params.query);
+//
+//         res.json(result);
+//     });
+//     router.get('/animals/:query', function(req, res) {
+//         let result = DB.searchAnimals(req.params.query);
+//
+//         res.json(result);
+//     });
+//     router.get('/animal/:query', function(req, res) {
+//         let result = DB.searchAnimalByID(req.params.query);
+//
+//         res.json(result);
+//     });
+// });
 
 function cleanUpDoubleEntries(results){
     let ids = [],
@@ -142,190 +143,6 @@ function limitResults(results, count = 8){
     return limitedResults;
 }
 
-/* region converter */
-let convert = {
-    fromDB: function (type, resultData) {
-        let ownerSet = {
-            hidden: {},
-            person: {},
-            address: {},
-            contact: {},
-            cash: {},
-            comments: {},
-        };
-        let animalSet = {
-            hidden: {},
-            animal: {},
-            comments: {},
-        };
-        let articleSet = {
-            hidden: {},
-            article: {},
-            comments: {},
-        };
-        let result;
-        let a = resultData;
-        switch (type){
-            case "owner":
-                result = ownerSet;
-                for (let column in a){
-                    if (a.hasOwnProperty(column)){
-                        switch (column){
-                            case 'id':
-                                result.hidden[column] = a[column];
-                                break;
-                            case 'salutation':
-                            case 'first_name':
-                            case 'gender':
-                            case 'name':
-                            case 'first_name_2':
-                            case 'name_2':
-                                result.person[column] = a[column];
-                                break;
-                            case 'address':
-                            case 'country':
-                            case 'Zip':
-                            case 'City':
-                            case 'address_2':
-                            case 'Zip_2':
-                            case 'City_2':
-                                result.address[column] = a[column];
-                                break;
-                            case 'telephone_1':
-                            case 'telephone_2':
-                            case 'telephone_3':
-                            case 'telephone_4':
-                            case 'e_mail':
-                            case 'www':
-                                result.contact[column] = a[column];
-                                break;
-                            case 'comments':
-                            case 'cave':
-                            case 'cave_text':
-                            case 'reminder_1':
-                            case 'reminder_2':
-                            case 'reminder_3':
-                                result.comments[column] = a[column];
-                                break;
-                            case 'iban':
-                            case 'bic':
-                            case 'debit':
-                            case 'encashment':
-                                result.cash[column] = a[column];
-                                break;
-                        }
-                    }
-                }
-                break;
-            case "animal":
-                result = animalSet;
-                for (let column in a){
-                    if (a.hasOwnProperty(column)){
-                        switch (column){
-                            case 'id':
-                                result.hidden[column] = a[column];
-                                break;
-                            case 'name':
-                            case 'gender':
-                                result.animal[column] = a[column];
-                                break;
-                        }
-                    }
-                }
-                break;
-            case"article":
-                result = articleSet;
-                for (let column in a) {
-                    if (a.hasOwnProperty(column)) {
-                        switch (column) {
-                            case 'id':
-                                result.hidden[column] = a[column];
-                                break;
-                            case "name":
-                                result.article[column] = a[column];
-                                break;
-                        }
-                    }
-                }
-                break;
-        }
-        return result;
-    },
-    toDB: function (type, object) {
-        let ownerDB = {
-            id: null,
-            salutation: null,
-            first_name: null,
-            gender: null,
-            name: null,
-            first_name_2: null,
-            name_2: null,
-            address: null,
-            country: null,
-            Zip: null,
-            City: null,
-            address_2: null,
-            Zip_2: null,
-            City_2: null,
-        };
-        let animalDB ={
-            id: null,
-            name: null,
-            gender: null,
-        };
-        let articleDB = {
-            id: null,
-            name: null,
-        };
-        let result;
-        switch (type){
-            case "owner":
-                result = ownerDB;
-                break;
-            case "animal":
-                result = animalDB;
-                break;
-            case "article":
-                result = articleDB;
-                break;
-        }
-        for (let fieldset in object) {
-            if (object.hasOwnProperty(fieldset)) {
-                for (let column in fieldset){
-                    if (fieldset.hasOwnProperty(column)) {
-                        result[column] = object[fieldset][column];
-                    }
-                }
-            }
-        }
-        return result;
-    },
-    multi: {
-        fromDB: function (type, resultSet){
-            let count = resultSet.length;
-            let i = 0;
-            let objects;
-            if (count === 0) objects = resultSet;
-            while (i < count){
-                objects[i] = convert.fromDB(type, resultSet[i]); // usage of convert.fromDB because this references to convert.multi
-                i++;
-            }
-            return objects;
-        },
-        toDB: function (type, objects){
-            let count = objects.length;
-            let i = 0;
-            let data;
-            if (count === 0) data = objects;
-            while (i < count){
-                data[i] = convert.toDB(type, resultSet[i]); // usage of convert.toDB because this references to convert.multi
-                i++;
-            }
-            return data;
-        },
-    }
-};
-/* endregion */
 
 /* region live search */
 hookIn.db_addMethod("liveSearchAll", function(DB) {
@@ -396,6 +213,7 @@ hookIn.db_addMethod("getAllLists", function() {
     };
 });
 /*endregion*/
+
 /* region owner */
 hookIn.db_addMethod("getOwnerByID", function (DB) {
     return function (queryID) {
@@ -404,7 +222,6 @@ hookIn.db_addMethod("getOwnerByID", function (DB) {
         let row = DB.prepare(statement).all({
             query: queryID
         });
-        // @todo error codes
         if (row.length < 1) return {
             error: "id not found",
             code: 3,
@@ -419,7 +236,6 @@ hookIn.db_addMethod("getOwnerByName", function (DB) {
         let results = DB.prepare(statement).all({
             query: query
         });
-        // @todo error codes
         if (results.length < 1) return {
             error: "query not found",
             code: 2,
@@ -436,7 +252,6 @@ hookIn.db_addMethod("getArticleByID", function (DB) {
         let row = DB.prepare(statement).all({
             query: queryID
         });
-        // @todo error codes
         if (row.length < 1) return {
             error: "id not found",
             code: 3,
@@ -451,7 +266,6 @@ hookIn.db_addMethod("getArticleByName", function (DB) {
         let results = DB.prepare(statement).all({
             query: query
         });
-        // @todo error codes
         if (results.length < 1) return {
             error: "query not found",
             code: 2,
@@ -468,7 +282,6 @@ hookIn.db_addMethod("getAnimalByID", function (DB) {
         let row = DB.prepare(statement).all({
             query: queryID
         });
-        // @todo error codes
         if (row.length < 1) return {
             error: "id not found",
             code: 3,
@@ -483,7 +296,6 @@ hookIn.db_addMethod("getAnimalByName", function (DB) {
         let results = DB.prepare(statement).all({
             query: query
         });
-        // @todo error codes
         if (results.length < 1) return {
             error: "query not found",
             code: 2,
