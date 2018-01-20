@@ -4,7 +4,7 @@
 "use strict";
 
 var DB = require('jsfair/database');
-hookIn.createRoute("/pet", function(router) {
+hookIn.http_createRoute("/pet", function(router) {
     router.get('/:name', function(req, res) {
         var pet = DB.getAnimalByID(req.params.name);
         res.render('pet', {

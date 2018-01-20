@@ -5,7 +5,7 @@
 
 var DB = require('jsfair/database');
 
-hookIn.createRoute("/search", function(router) {
+hookIn.http_createRoute("/search", function(router) {
     router.get('/live/:query', function(req, res) {
         let dbResults = DB.liveSearch(req.params.query);
 
