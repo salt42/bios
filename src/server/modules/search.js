@@ -232,9 +232,51 @@ hookIn.db_addMethod("getAnimalByName", function (DB) {
 /* endregion */
 
 /* region objectTest */
+//--LiveSearch
+// @todo check name! added ...O.. the last O is to avoid conflicts with db_addMethod -> ....
+let lSO = {
+    all: function(query) {
+
+        // firstStart();
+        let readOut = cleanUpDoubleEntriesMulti(DB.runStatement("liveSearch", {
+            query: query,
+        }));
+        let dbResults = {};
+        let animals = readOut[1];
+
+        dbResults.animals = {};
+        dbResults.animals.alive = sortOutDeadAnimals(animals);
+        dbResults.animals.dead = sortOutDeadAnimals(animals, true);
+        dbResults.articles = readOut[2];
+        dbResults.owner = readOut[0];
+
+        return dbResults;
+    },
+    short: function(query) {
+
+        // firstStart();
+        let db_res = this.liveSearchAll(query);
+        let dbResults = {};
+
+        dbResults.animals.alive = limitResults(db_res.animals.alive, 6);
+        dbResults.animals.dead  = limitResults(db_res.animals.dead, 3);
+        dbResults.articles      = limitResults(db_res.articles);
+        dbResults.owner         = limitResults(db_res.owner);
+
+        return dbResults;
+    }
+};
+hookIn.db_addObject("liveSearchO", function(DB) {
+    return lSO;
+});
+// additional short cut
+hookIn.db_addMethod("live", function(DB) {
+    return lSO.short(query);
+});
+
 // --LIST
-// @todo check name! getXxxxs.. the last s is to avoid conflicts with db_addMethod -> getXxxxx
-hookIn.db_addObject("getLists", function(DB) {
+// @todo check name! getXxxxO.. the last O is to avoid conflicts with db_addMethod -> getXxxxx
+hookIn.db_addObject("getListO", function(DB) {
     return {
         all: function() {
             let result = {};
@@ -257,9 +299,70 @@ hookIn.db_addObject("getLists", function(DB) {
         },
     };
 });
+
+//--Animals
+// @todo check name! getXxxxO.. the last O is to avoid conflicts with db_addMethod -> getXxxxx
+hookIn.db_addMethod("getAnimalO", function (DB) {
+    return {
+        byID: function (queryID) {
+            let statement = 'SELECT * FROM animal WHERE id = @query ';
+
+            let row = DB.prepare(statement).all({
+                query: queryID
+            });
+            if (row.length < 1) return {
+                error: "id not found",
+                code: 3,
+            };
+            return convert.fromDB("animal", row[0]);
+        },
+        byName: function (query) {
+            let statement = 'SELECT * FROM animal WHERE name = @query ';
+
+            let results = DB.prepare(statement).all({
+                query: query
+            });
+            if (results.length < 1) return {
+                error: "query not found",
+                code: 2,
+            };
+            return convert.multi.fromDB("animal", results);
+        }
+    }
+});
+//--Articles
+// @todo check name! getXxxxO.. the last O is to avoid conflicts with db_addMethod -> getXxxxx
+hookIn.db_addObject("getArticleO", function (DB) {
+    return {
+        byID: function (queryID) {
+            let statement = 'SELECT * FROM articles WHERE id = @query ';
+
+            let row = DB.prepare(statement).all({
+                query: queryID
+            });
+            if (row.length < 1) return {
+                error: "id not found",
+                code: 3,
+            };
+            return convert.fromDB("article", row[0]);
+        },
+        byName: function (query) {
+            let statement = 'SELECT * FROM articles WHERE name = @query ';
+
+            let results = DB.prepare(statement).all({
+                query: query
+            });
+            if (results.length < 1) return {
+                error: "query not found",
+                code: 2,
+            };
+            return convert.multi.fromDB("article", results);
+        },
+    }
+});
 //--OWNER
-// @todo check name! getXxxxs.. the last s is to avoid conflicts with db_addMethod -> getXxxxx
-hookIn.db_addObject("getOwners", function (DB) {
+// @todo check name! getXxxxO.. the last O is to avoid conflicts with db_addMethod -> getXxxxx
+hookIn.db_addObject("getOwnerO", function (DB) {
     return {
         byID: function (queryID) {
             let statement = 'SELECT * FROM owner WHERE id = @query ';
@@ -289,7 +392,7 @@ hookIn.db_addObject("getOwners", function (DB) {
 });
 /* endregion */
 
-/* router conf.. deprecatet/in folder routes */
+/* router conf.. deprecated/in folder routes */
 // hookIn.createRoute("/search", function(router) {
 //     router.get('/all/:query', function(req, res) {
 //         let dbResults = DB.liveSearchAll(req.params.query);
