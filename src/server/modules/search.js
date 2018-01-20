@@ -134,7 +134,7 @@ function sortOutDeadAnimals(result, limit = 0, invert = false){
 }
 
 function limitResults(results, count = 8){
-    if (count == 0) return results;
+    if (count === 0) return results;
     let limitedResults = [];
     if (results.length < count) count = results.length;
     for (let i = 0; i < count; i++){
@@ -301,6 +301,64 @@ hookIn.db_addMethod("getAnimalByName", function (DB) {
             code: 2,
         };
         return convert.multi.fromDB("animal", results);
+    };
+});
+/* endregion */
+
+/* region objectTest */
+// --LIST
+// @todo check name! getXxxxs.. the last s is to avoid conflicts with db_addMethod -> getXxxxx
+hookIn.db_addObject("getLists", function(DB) {
+    return {
+        all: function() {
+            let result = {};
+            result.user = this.user();
+            result.userRoles = this.userRoles();
+            result.species   = this.species();
+            return result;
+        },
+        user: function() {
+            return this.getList("user");
+        },
+        userRoles: function() {
+            return this.single("user_roles");
+        },
+        species: function() {
+            return this.getList("species");
+        },
+        single: function (table) {
+            return cleanUpDoubleEntries(DB.prepare('select * from ' + table).all());
+        },
+    };
+});
+//--OWNER
+// @todo check name! getXxxxs.. the last s is to avoid conflicts with db_addMethod -> getXxxxx
+hookIn.db_addObject("getOwners", function (DB) {
+    return {
+        byID: function (queryID) {
+            let statement = 'SELECT * FROM owner WHERE id = @query ';
+
+            let row = DB.prepare(statement).all({
+                query: queryID
+            });
+            if (row.length < 1) return {
+                error: "id not found",
+                code: 3,
+            };
+            return convert.fromDB("owner", row[0]);
+        },
+        byName: function (query) {
+            let statement = 'SELECT * FROM owner WHERE name = @query ';
+
+            let results = DB.prepare(statement).all({
+                query: query
+            });
+            if (results.length < 1) return {
+                error: "query not found",
+                code: 2,
+            };
+            return convert.multi.fromDB("owner", results);
+        },
     };
 });
 /* endregion */
