@@ -1,4 +1,4 @@
-module.exports = {
+let dbObjectConverter = {
     fromDB: function (type, resultData) {
         let ownerSet = {
             hidden: {},
@@ -162,7 +162,7 @@ module.exports = {
             let objects;
             if (count === 0) objects = resultSet;
             while (i < count){
-                objects[i] = convert.fromDB(type, resultSet[i]); // usage of convert.fromDB because this references to convert.multi
+                objects[i] = dbObjectConverter.fromDB(type, resultSet[i]); // usage of dbObjectConverter.fromDB because this references to convert.multi
                 i++;
             }
             return objects;
@@ -180,3 +180,5 @@ module.exports = {
         },
     }
 };
+
+module.exports = dbObjectConverter;
