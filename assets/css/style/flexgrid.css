@@ -1,0 +1,13 @@
+#flex-grid-body {
+    display: flex;
+}
+#flex-grid-body .fgb-item {
+    height: var(--body-height);
+}
+#flex-grid-body .fgb-sidebar {
+    flex: 5;
+    margin-right: 10px;
+}
+#flex-grid-body .fgb-main-content {
+    flex: 45;
+}

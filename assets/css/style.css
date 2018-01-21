@@ -1,6 +1,7 @@
 @import "style/variables.css";
-@import "style/layout.css";
+@import "style/reset.css";
+@import "style/scrollbar.css";
 
-.hidden {
-    display: none;
-}
+@import "style/layout.css";
+@import "style/jsClasses.css";
+@import "style/flexgrid.css";

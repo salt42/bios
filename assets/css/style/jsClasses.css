@@ -1,0 +1,11 @@
+.hidden {
+    display: none;
+}
+
+
+img.flex-img-right {
+    order: 99;
+}
+img.flex-img-left {
+    order: 1;
+}

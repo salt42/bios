@@ -14,9 +14,10 @@
     --color-three: #ffa115;
     --color-three-dark: #c56c15;
 
-    --header-hight: 4em;
+    --header-height: 4em;
+    --header-img-height: calc(var(--header-height) * 0.9);
     --sidebar-width: 4em;
-    --body-height: calc(100vh - var(--header-hight));
+    --body-height: calc(100vh - var(--header-height));
 }
 
 .color-one {
