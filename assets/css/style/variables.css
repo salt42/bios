@@ -6,49 +6,66 @@
 
     --color-dark: #121212;
     --color-normal: #d4d4d4;
+    
+    --color-one: #718eaa;
+    --color-one-dark: #2d6987;
+    --color-two: #6ceebf;
+    --color-two-dark: #3eb9a0;
+    --color-three: #ffa115;
+    --color-three-dark: #c56c15;
 
     --header-hight: 4em;
     --sidebar-width: 4em;
-
-    --live-Search-owners: #3eb9a0;
-    --live-Search-owners-hover: #718eaa;
-    --live-Search-animals: #718eaa;
-    --live-Search-animals-hover: #2d6987;
-    --live-Search-animals-dead: #2d6987;
-    --live-Search-animals-dead-hover: #ffa115;
-    --live-Search-articles: #ffa115;
-    --live-Search-articles-hover: #3eb9a0;
-
-    --form-field-background: #718eaa;
+    --body-height: calc(100vh - var(--header-hight));
 }
+
+.color-one {
+    background-color: var(--color-one);
+}
+.color-one-dark {
+    background-color: var(--color-one-dark);
+}
+.color-two {
+    background-color: var(--color-two);
+}
+.color-two-dark {
+    background-color: var(--color-two-dark);
+}
+.color-three {
+    background-color: var(--color-three);
+}
+.color-three-dark {
+    background-color: var(--color-three-dark);
+}
+
 li.live-Search-owners{
-    background-color: var(--live-Search-owners);
+    background-color: var(--color-one-dark);
 }
 li.live-Search-owners:hover{
-    background-color: var(--live-Search-owners-hover);
+    background-color: var(--color-one);
 }
 li.live-Search-animals{
-    background-color: var(--live-Search-animals);
+    background-color: var(--color-one);
 }
 li.live-Search-animals:hover{
-    background-color: var(--live-Search-animals-hover);
+    background-color: var(--color-one-dark);
 }
 li.live-Search-animals-dead{
-    background-color: var(--live-Search-animals-dead);
+    background-color: var(--color-one-dark);
     color: white;
 }
 li.live-Search-animals-dead:hover{
-    background-color: var(--live-Search-animals-dead-hover);
+    background-color: var(--color-one);
     color: black;
 }
 li.live-Search-articles{
-    background-color: var(--live-Search-articles);
+    background-color: var(--color-three-dark);
 }
 li.live-Search-articles:hover{
-    background-color: var(--live-Search-articles-hover);
+    background-color: var(--color-three);
 }
 form-field-background{
-    background-color: var(--form-field-background);
+    background-color: var(--color-one);
 }
 
 .color-red {

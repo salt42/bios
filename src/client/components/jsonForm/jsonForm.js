@@ -1,4 +1,4 @@
-defineUI("jsonForm", function(bios, $element){
+defineComp("json-form", function(bios, $element){
     "use strict";
     if (window.startUpLogLevel >= 2) console.log("start jsonForm UI module");
     $('<h1>json Form</h1>')

@@ -1,86 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>{{title}}</title>
-    <link rel="stylesheet" href="libs/font-awesome-4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="libs/jsonForm/src/jsonForm.css">
+    <head>
+        <meta charset="utf-8">
+        <title>{{title}}</title>
+        <link rel="stylesheet" href="libs/font-awesome-4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="libs/jsonForm/src/jsonForm.css">
 
-	<link href="/css/style.css" rel="stylesheet">
+        <!-- stylesheets -->
+        <link href="/css/style.css" rel="stylesheet">
+        <link href="/components/content/content.css" rel="stylesheet">
+        <link href="/components/dashboard/dashboard.css" rel="stylesheet">
+        <link href="/components/header/header.css" rel="stylesheet">
+        <link href="/components/jsonForm/jsonForm.css" rel="stylesheet">
+        <link href="/components/sidebar/sidebar.css" rel="stylesheet">
+        <!-- stylesheets END -->
 
-    <script src="/libs/jquery/jquery.min.js"></script>
-    <script src="/language/english.js"></script>
+        <script src="/libs/jquery/jquery.min.js"></script>
+        <script src="/language/english.js"></script>
 
-	<script src="https://unpkg.com/rxjs/bundles/Rx.min.js"></script>
-	<script src="/jsfair/jsfair.js"></script>
-	<script src="/config/dtc.js"></script>
-	<script src="/libs/jsonForm/src/jsonForm.js"></script>
+        <script src="https://unpkg.com/rxjs/bundles/Rx.min.js"></script>
+        <script src="/jsfair/jsfair.js"></script>
+        <script src="/jsfair/component/sections.js"></script>
+        <script src="/config/dtc.js"></script>
+        <script src="/libs/jsonForm/src/jsonForm.js"></script>
 
-    <!-- modules -->
-	<script src="/modules/search.js"></script>
-	<script src="/modules/translate.js"></script>
-    <!-- ui modules -->
-	<script src="/uiModules/search.js"></script>
-	<script src="/uiModules/userlist.js"></script>
-	<script src="/uiModules/datatable.js"></script>
-	<script src="/uiModules/jsonForm.js"></script>
-	<script src="/uiModules/test.js"></script>
-    <!-- components -->
-	<script src="/components/content.js"></script>
+        <!-- modules -->
+        <script src="/modules/search.js"></script>
+        <script src="/modules/translate.js"></script>
+        <!-- modules END -->
 
-	<script src="/components/dashboard.js"></script>
-	<script src="/components/owner.js"></script>
-    <script src="/components/owners.js"></script>
-	<script src="/components/animal.js"></script>
-	<script src="/components/animals.js"></script>
-    <script src="/components/article.js"></script>
-	<script src="/components/liveSearchResult.js"></script>
+        <!-- components -->
+        <script src="/components/search.js"></script>
+        <script src="/components/userlist.js"></script>
+        <script src="/components/datatable.js"></script>
+        <script src="/components/test.js"></script>
+        <script src="/components/owner.js"></script>
+        <script src="/components/owners.js"></script>
+        <script src="/components/animal.js"></script>
+        <script src="/components/animals.js"></script>
+        <script src="/components/article.js"></script>
+        <script src="/components/liveSearchResult.js"></script>
 
-</head>
-<body>
-<header>
-    <vendor>
-        <!--
-    <v_style>
-    BioS |<br/>
-        | | | | | |
-        </v_style>
-        -->
-        <img alt="logo" src="/img/vendor/bios_logo.png"/>
-    </vendor>
-	<!--<logo>-->
-		<!--<img alt="logo" src="/img/logo.png"/>-->
-	<!--</logo>-->
-    <company>
-        Tierarztpraxis
-    </company>
-    <company_logo>
-        <img alt="logo" src="/img/vendor/bios.gif" style="background-color: lightgray"/>
-    </company_logo>
-    <userlist></userlist>
-	<search></search>
-    <dataTable data-table="test"></dataTable>
-    <test></test>
-</header>
+        <script src="/components/content/content.js"></script>
+        <script src="/components/dashboard/dashboard.js"></script>
+        <script src="/components/header/header.js"></script>
+        <script src="/components/jsonForm/jsonForm.js"></script>
+        <script src="/components/sidebar/sidebar.js"></script>
+        <!-- components END -->
+    </head>
+    <body>
 
-<sidebar>
-	<nav>
-		<ul>
-			<li class="bg-color-green">
-				<span class="initial">Ov</span>
-				<span class="title">Overview</span>
-			</li>
-		</ul>
-		<!-- other unordered lists here -->
-	</nav>
-	<div class="test-config"></div>
-	<h3>Results</h3>
-	<div class="stats">
-		<span class="title">Average: </span><span class="value average">0</span>%
-	</div>
-</sidebar>
-<content>
-	{{{body}}}
-</content>
-</body>
+        <header></header>
+        <div id="flex-container">
+            <section id="sidebar" class="flex flex-sidebar" default="sidebar"></section>
+            <section id="main-content" class="flex flex-main-content" default="dashboard"></section>
+        </div>
+    </body>
 </html>

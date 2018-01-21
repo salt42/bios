@@ -11,8 +11,6 @@ defineComp("content", function(bios, $element, args) {
     $("<userlist></userlist>")
         .appendTo($element);
 
-    //init all ui modules
-    bios.initAllUI($element);
 
     //eine componente kümmert sich um einen ganzen bereich der webseite.
     //componenten ist immer <section name="sectionName" default="content"></section>

@@ -13,7 +13,6 @@ defineComp("dashboard", function(bios, $element, args) {
     //
     // //init all ui modules
     // bios.initAllUI($element);
-
     this.doSomething = function() {
         $("<p>Dashboard Update</p>")
             .appendTo($element);

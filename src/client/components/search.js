@@ -1,4 +1,4 @@
-defineUI("search", function(bios, $element){
+defineComp("search", function(bios, $element){
     "use strict";
     if (window.startUpLogLevel >= 2) console.log("start search UI module");
     console.log("start search UI module");

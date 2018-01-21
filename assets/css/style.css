@@ -1,7 +1,5 @@
-@import "style/colors.css";
+@import "style/variables.css";
 @import "style/layout.css";
-@import "uiModules/test.css";
-@import "uiModules/jsonForm.css";
 
 .hidden {
     display: none;

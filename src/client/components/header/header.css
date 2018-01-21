@@ -1,0 +1,74 @@
+header {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-hight);
+    background-color: var(--bg-dark);
+}
+/* region vendor */
+header vendor {
+    margin-left: 5px;
+    float: left;
+    color: #718eaa;
+    height: 100%;
+}
+header vendor>v_style {
+    font-size: xx-large;
+}
+header vendor>img {
+    margin-top: 5%;
+    height: 90%;
+    background-image: radial-gradient(white, gray);
+    border-radius: 10px;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+/* endregion */
+/* region search */
+header search {
+    margin-top: 38px;
+    float: right;
+    margin-right: 5px;
+}
+header search input[type=text] {
+    width: 300px;
+    background-color: var(--color-two-dark);
+    /*transition: width 0.4s ease-in-out;*/
+}
+
+/* When the input field gets focus, change its width to 100% */
+header search input[type=text]:focus {
+    width: 300px;
+}
+/* endregion */
+/* region live search results */
+header .liveResults {
+    margin-top: 5px;
+    width: 100%;
+    float: left;
+}
+header .liveResults > li{
+    padding: 5px;
+    float: none;
+}
+header .liveResults li.fa{
+    display: block;
+    padding: 3px;
+}
+/* endregion */
+/* region bios licence owner */
+header logo>img,
+header company_logo>img {
+    margin-left: 15px;
+    height: 100%;
+}
+
+header company {
+    margin-left: 15px;
+    font-size: large;
+    float: left;
+    color: #718eaa;
+}
+/* endregion */

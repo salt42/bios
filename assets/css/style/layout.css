@@ -3,7 +3,6 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -52,197 +51,7 @@ table {
 body {
     padding-top: var(--header-hight);
 }
-body header {
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--header-hight);
-    background-color: var(--bg-dark);
-}
-body sidebar {
-    display: block;
-    position: fixed;
-    z-index: 900;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 270px;
-    padding-top: var(--header-hight);
-    background-color: var(--bg-not-so-dark);
-}
-body content {
-    display: block;
-    position: relative;
-    margin-left: 270px;
-}
 /*endregion*/
-/*region sidebar*/
-body sidebar nav {}
-body sidebar nav li {
-    --li-height: 60px;
-    position: relative;
-    /*overflow: hidden;*/
-    /*width: 100%;*/
-    height: var(--li-height);
-    cursor: pointer;
-    /*background-color: transparent!important;*/
-    color: #000000!important;
-    padding-left: 10px;
-    transition: all 0.2s;
-    transition-timing-function: ease-in;
-}
-body sidebar nav li :before{
-    content: "";
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 5px!important;
-    height: calc(var(--li-height) - 4px);
-    transition: all 0.1s ease-in;
-}
-body sidebar nav li:hover {
-    /*background-color: inherit!important;*/
-    background-color: transparent;
-    padding-left: 65px;
-}
-body sidebar nav li:hover :before {
-    width: 55px;
-}
-@keyframes example {
-    from {
-        top: 0px;
-        width: 5px;
-        height: 0px;
-    }
-    to {
-        top: -100vh;
-        width: 5px;
-        height: 200vh;
-    }
-}
-body sidebar nav li :after {
-    content: "";
-    /*display: none;*/
-}
-/*body sidebar nav li.active :after{*/
-/*display: block;*/
-/*position: absolute;*/
-/*z-index: 2000;*/
-/*right: 0px;*/
-/*width: 5px;*/
-/*height: 7770px;*/
-/*background-color: black;*/
-/*animation-name: example;*/
-/*animation-duration: 0.5s;*/
-/*animation-fill-mode: forwards;*/
-/*pointer-events: none;*/
-/*}*/
-body sidebar nav li .initial {
-    background-color: transparent;
-    display: block;
-    font-size: calc(var(--li-height) / 2);
-    font-weight: bold;
-}
-body sidebar nav li .title {
-
-}
-
-body > sidebar > .test-config {
-    height: calc(100% - 59px);
-    overflow-y: scroll;
-    overflow-x: hidden;
-    color: #cccccc;
-    padding-right: 10px;
-}
-
-body > sidebar > .config > .mutator{
-    background-color: rgba(0, 0, 0, 0.25);
-}
-
-body > sidebar > .config input {
-    /*float: right;*/
-}
-
-body > sidebar > .config span {
-    /*float: left;*/
-}
-
-/*endregion*/
-/*region header */
-header logo>img,
-header company_logo>img {
-    margin-left: 15px;
-    height: 100%;
-}
-header company {
-    margin-left: 15px;
-    font-size: large;
-    float: left;
-    color: #718eaa;
-}
-header vendor {
-    margin-left: 5px;
-    float: left;
-    color: #718eaa;
-    height: 100%;
-}
-header vendor>v_style {
-    font-size: xx-large;
-}
-header vendor>img {
-    margin-top: 5%;
-    height: 90%;
-    background-image: radial-gradient(white, gray);
-    border-radius: 10px;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-header ul.userList {
-    float: right;
-    margin-right: 15px;
-    margin-left: 25px;
-}
-header ul.userList li.userEntry {
-    background-color: var(--form-field-background);
-    float: right;
-    margin-right: 5px;
-    margin-left: 5px;
-}
-header search {
-    margin-top: 38px;
-    float: right;
-    margin-right: 5px;
-}
-header search input[type=text] {
-    width: 300px;
-    /*transition: width 0.4s ease-in-out;*/
-}
-
-/* When the input field gets focus, change its width to 100% */
-header search input[type=text]:focus {
-    width: 300px;
-}
-
-header .liveResults {
-    margin-top: 5px;
-    width: 100%;
-    float: left;
-}
-header .liveResults > li{
-    padding: 5px;
-    float: none;
-}
-header .liveResults li.fa{
-    display: block;
-    padding: 3px;
-}
-
-header .userIcon {
-     height: 20px;
- }
-/*endregion header */
 /*region util*/
 .break:after {
     content:"\000A";
@@ -283,20 +92,22 @@ header .userIcon {
 ::-webkit-scrollbar-corner {
     background: transparent;
 }
-logo {
-    margin-left: 5px;
-    float: left;
-    height: 100%;
-}
-
 /*endregion*/
-/* region icons */
-.bios-icon-user-0::before {
-    height: 20px;
-    background-image: url("/img/ui-kit/default/employ_male.png");
+/* region flex */
+#flex-container {
+    display: flex;
 }
-.bios-icon-user-1::before {
-    height: 20px;
-    background-image: url("/img/ui-kit/default/employ_female.png");
+#flex-container .flex-sidebar {
+    order: 1;
+    flex-grow: 1;
+    height: var(--body-height);
+    flex-basis: 250px;
+    margin-right: 10px;
+}
+#flex-container .flex-main-content {
+    order: 2;
+    flex-grow: 49;
+    height: var(--body-height);
+    flex-basis: 250px;
 }
 /* endregion */

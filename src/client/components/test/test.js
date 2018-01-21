@@ -1,4 +1,4 @@
-defineUI("test", function(bios, $element){
+defineComp("test", function(bios, $element){
     "use strict";
     if (window.startUpLogLevel >= 2) console.log("start test UI module");
 

@@ -1,0 +1,11 @@
+header ul.userList {
+    float: right;
+    margin-right: 15px;
+    margin-left: 25px;
+}
+header ul.userList li.userEntry {
+    background-color: var(--color-one);
+    float: right;
+    margin-right: 5px;
+    margin-left: 5px;
+}
