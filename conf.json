@@ -1,17 +1,20 @@
 {
     "appName": "bios",
-    "modulePaths": ["/src/server/routes", "/src/server/modules"],
-    "http": {
-        "port": 666,
-        "staticDirs": ["/src/client", "/assets"],
-        "viewsDir": "/src/views"
+    "server": {
+        "modulePaths": ["/src/server/routes", "/jsfair/server/modules"],
+        "http": {
+            "port": 666,
+            "staticDirs": ["/src/client", "/assets"],
+            "viewsDir": "/src/views"
+        },
+        "database": {
+            "dbFile": "/db/bios.sqlite3",
+            "sqlPath": "/sql",
+            "sqCache": false
+        }
     },
-    "dbFile": "/db/bios.sqlite3",
-    "httpPort": 666,
-    "db": {
-        "dbFile": "/db/bios.sqlite3",
-        "sqlQueryFolder": "./sql/",
-        "sqlQueryCache": false
-    },
-    "settingsFile": "/settings/settings.conf"
+    "client": {
+        "modulePaths": ["/src/client/modules"],
+        "componentPaths": ["/src/client/component"]
+    }
 }
