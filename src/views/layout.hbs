@@ -8,6 +8,8 @@
 
         <!-- stylesheets -->
         <link href="/css/style.css" rel="stylesheet">
+        <link href="/components/companyName/companyName.css" rel="stylesheet">
+        <link href="/components/companyVCard/companyVCard.css" rel="stylesheet">
         <link href="/components/content/content.css"     rel="stylesheet">
         <link href="/components/dashboard/dashboard.css" rel="stylesheet">
         <link href="/components/datatable/datatable.css" rel="stylesheet">
@@ -34,31 +36,34 @@
         <!-- modules END -->
 
         <!-- components -->
-        <script src="/components/search.js"              ></script>
-        <script src="/components/owner.js"               ></script>
-        <script src="/components/owners.js"              ></script>
-        <script src="/components/animal.js"              ></script>
-        <script src="/components/animals.js"             ></script>
-        <script src="/components/article.js"             ></script>
-        <script src="/components/liveSearchResult.js"    ></script>
+        <script src="/components/search.js"                  ></script>
+        <script src="/components/owner.js"                   ></script>
+        <script src="/components/owners.js"                  ></script>
+        <script src="/components/animal.js"                  ></script>
+        <script src="/components/animals.js"                 ></script>
+        <script src="/components/article.js"                 ></script>
+        <script src="/components/liveSearchResult.js"        ></script>
 
-        <script src="/components/content/content.js"     ></script>
-        <script src="/components/dashboard/dashboard.js" ></script>
-        <script src="/components/datatable/datatable.js" ></script>
-        <script src="/components/header/header.js"       ></script>
-        <script src="/components/jsonForm/jsonForm.js"   ></script>
-        <script src="/components/sidebar/sidebar.js"     ></script>
-        <script src="/components/userlist/userlist.js"   ></script>
+        <script src="/components/companyLogo/companyLogo.js" ></script>
+        <script src="/components/companyName/companyName.js" ></script>
+        <script src="/components/companyVCard/companyVCard.js"></script>
+        <script src="/components/content/content.js"         ></script>
+        <script src="/components/dashboard/dashboard.js"     ></script>
+        <script src="/components/datatable/datatable.js"     ></script>
+        <script src="/components/header/header.js"           ></script>
+        <script src="/components/jsonForm/jsonForm.js"       ></script>
+        <script src="/components/sidebar/sidebar.js"         ></script>
+        <script src="/components/userlist/userlist.js"       ></script>
 
-        <script src="/components/test/test.js"           ></script>
+        <script src="/components/test/test.js"               ></script>
         <!-- components END -->
     </head>
     <body>
 
         <header></header>
-        <div id="flex-container">
-            <section id="sidebar" class="flex flex-sidebar" default="sidebar"></section>
-            <section id="main-content" class="flex flex-main-content" default="dashboard"></section>
+        <div id="flex-grid-body">
+            <section id="sidebar" class="fgb-item fgb-sidebar" default="sidebar"></section>
+            <section id="main-content" class="fgb-item fgb-main-content" default="dashboard"></section>
         </div>
     </body>
 </html>

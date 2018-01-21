@@ -1,0 +1,7 @@
+company-vcard {
+    display: flex;
+    justify-content: center;
+}
+company-vcard company-name {
+    order: 2;
+}

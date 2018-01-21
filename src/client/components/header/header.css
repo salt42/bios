@@ -4,42 +4,71 @@ header {
     top: 0;
     left: 0;
     right: 0;
-    height: var(--header-hight);
+    height: var(--header-height);
     background-color: var(--bg-dark);
 }
-/* region vendor */
+header img {
+    margin: calc(var(--header-height) * 0.05);
+    margin-bottom: 0;
+    height: var(--header-img-height);
+}
+/* region flex-grid */
+header {
+    display: flex;
+}
+vendor.fgh-column {
+    flex: 5;
+}
+company.fgh-column {
+    flex: 25;
+}
+head-panel.fgh-column {
+    flex: 20;
+}
+/*endregion*/
+/* region <vendor> */
 header vendor {
-    margin-left: 5px;
-    float: left;
+    position: relative;
+    height: var(--header-height);
     color: #718eaa;
-    height: 100%;
+    display: flex;
+    justify-content: flex-start;
 }
 header vendor>v_style {
+    order: 2;
     font-size: xx-large;
 }
-header vendor>img {
-    margin-top: 5%;
-    height: 90%;
+header vendor img {
     background-image: radial-gradient(white, gray);
     border-radius: 10px;
     border-top-right-radius: 0;
     border-bottom-left-radius: 0;
 }
 /* endregion */
-/* region search */
-header search {
-    margin-top: 38px;
-    float: right;
-    margin-right: 5px;
+/* region <head-panel> */
+header head-panel {
+    position: relative;
+    height: var(--header-height);
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
 }
-header search input[type=text] {
+header head-panel userlist {
+    flex: 1;
+    align-self: flex-end;
+}
+header head-panel search {
+    flex: 1;
+    align-self: flex-start;
+}
+head-panel search input[type=text] {
     width: 300px;
     background-color: var(--color-two-dark);
     /*transition: width 0.4s ease-in-out;*/
 }
 
 /* When the input field gets focus, change its width to 100% */
-header search input[type=text]:focus {
+head-panel search input[type=text]:focus {
     width: 300px;
 }
 /* endregion */
@@ -56,19 +85,5 @@ header .liveResults > li{
 header .liveResults li.fa{
     display: block;
     padding: 3px;
-}
-/* endregion */
-/* region bios licence owner */
-header logo>img,
-header company_logo>img {
-    margin-left: 15px;
-    height: 100%;
-}
-
-header company {
-    margin-left: 15px;
-    font-size: large;
-    float: left;
-    color: #718eaa;
 }
 /* endregion */
