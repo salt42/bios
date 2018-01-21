@@ -6,32 +6,86 @@
 var DB = require('jsfair/database');
 
 hookIn.http_createRoute("/search", function(router) {
-    router.get('/live/:query', function(req, res) {
-        let dbResults = DB.liveSearch(req.params.query);
-
-        let result = {
+    /* region live search */
+    function liveSearchResults (dbResults){
+        return {
             query: req.params.query,
             owners: dbResults.owner,
             animals: dbResults.animals.alive,
             deadAnimals: dbResults.animals.dead,
             articles: dbResults.articles,
         };
+    }
+    router.get('/live/:query', function(req, res) {
+        let dbResults = DB.live(req.params.query);
 
-        res.json(result);
+        res.json(liveSearchResults(dbResults));
+    });
+    router.get('/live/all/:query', function(req, res) {
+        let dbResults = DB.liveSearch.all(req.params.query);
+
+        res.json(liveSearchResults(dbResults));
     });
     router.get('/all/:query', function(req, res) {
-        let dbResults = DB.liveSearchAll(req.params.query);
+        let dbResults = DB.liveSearch.all(req.params.query);
 
-        let result = {
-            query: req.params.query,
-            owners: dbResults.owner,
-            animals: dbResults.animals.alive,
-            deadAnimals: dbResults.animals.dead,
-            articles: dbResults.articles,
-        };
+        res.json(liveSearchResults(dbResults));
+    });
+    /*endregion*/
+    /* region list */
+    router.get('/list/:query', function(req, res) {
+        let result = {};
+        if (req.params.query === "species"){
+            result.list = DB.getSpeciesList();
+        }
+        if(req.params.query === "userRoles"){
+            result.list = DB.getUserRolesList();
+        }
+        else {
+            result = DB.getAllLists();
+        }
 
         res.json(result);
     });
+    /*endregion*/
+
+    /* region animal */
+    router.get('/animals/:query', function(req, res) {
+        let result = DB.getAnimal.all(req.params.query);
+
+        res.json(result);
+    });
+    router.get('/animal/:query', function(req, res) {
+        let result = DB.getAnimal.byID(req.params.query);
+
+        res.json(result);
+    });
+    /*endregion*/
+    /* region article */
+    router.get('/articles/:query', function(req, res) {
+        let result = DB.getAnimal.byName(req.params.query);
+
+        res.json(result);
+    });
+    router.get('/article/:query', function(req, res) {
+        let result = DB.getAnimal.byID(req.params.query);
+
+        res.json(result);
+    });
+    /*endregion*/
+    /* region owner */
+    router.get('/owners/:query', function(req, res) {
+        let result = DB.getOwner.byName(req.params.query);
+
+        res.json(result);
+    });
+    router.get('/owner/:query', function(req, res) {
+        let result = DB.getOwner.byID(req.params.query);
+
+        res.json(result);
+    });
+    /*endregion*/
+    /* region user */
     router.get('/user', function(req, res) {
         let userList = DB.getUserList();
         let userListActive = [];
@@ -54,38 +108,5 @@ hookIn.http_createRoute("/search", function(router) {
 
         res.json(result);
     });
-    router.get('/list/:query', function(req, res) {
-        let result = {};
-        if (req.params.query === "species"){
-            result.list = DB.getSpeciesList();
-        }
-        if(req.params.query === "userRoles"){
-            result.list = DB.getUserRolesList();
-        }
-        else {
-            result = DB.getAllLists();
-        }
-
-        res.json(result);
-    });
-    router.get('/owners/:query', function(req, res) {
-        let result = DB.searchOwners(req.params.query);
-
-        res.json(result);
-    });
-    router.get('/owner/:query', function(req, res) {
-        let result = DB.searchOwnerByID(req.params.query);
-
-        res.json(result);
-    });
-    router.get('/animals/:query', function(req, res) {
-        let result = DB.searchAnimals(req.params.query);
-
-        res.json(result);
-    });
-    router.get('/animal/:query', function(req, res) {
-        let result = DB.searchAnimalByID(req.params.query);
-
-        res.json(result);
-    });
+    /*endregion*/
 });

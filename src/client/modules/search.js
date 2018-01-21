@@ -1,5 +1,6 @@
 define("search", function(bios){
     "use strict";
+    /* region live search */
     this.liveSearch = function(searchQuery, fn, option) {
         //@todo send live search request to server
 
@@ -30,6 +31,8 @@ define("search", function(bios){
             });
         }
     };
+    /*endregion*/
+    /* region list */
     this.getList = function (searchQuery, fn){
         $.ajax({
             url: "/search/list/" + searchQuery,
@@ -40,49 +43,33 @@ define("search", function(bios){
             }
         });
     };
-    this.userSearch = function (fn){
-        $.ajax({
-            url: "/search/user",
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                    fn(resData);
-            }
-        });
-    };
-    this.findOwners = function (searchQuery, fn){
-        $.ajax({
-            url: "/search/owners/" + searchQuery,
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                    fn(resData);
-            }
-        });
-    };
-    this.findOwner = function (searchQuery, fn){
-        $.ajax({
-            url: "/search/owner/" + searchQuery,
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                    fn(resData);
-            }
-        });
-    };
+    /*endregion*/
+    /* region animal */
     this.findAnimals = function (searchQuery, fn){
         $.ajax({
             url: "/search/animals/" + searchQuery,
             type: "GET",
             success: function (resData) {
                 // console.log(resData)
-                    fn(resData);
+                fn(resData);
             }
         });
     };
     this.findAnimal = function (searchQuery, fn){
         $.ajax({
             url: "/search/animal/" + searchQuery,
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
+                fn(resData);
+            }
+        });
+    };
+    /*endregion*/
+    /* region article */
+    this.findArticles = function (searchQuery, fn){
+        $.ajax({
+            url: "/search/articles/" + searchQuery,
             type: "GET",
             success: function (resData) {
                 // console.log(resData)
@@ -100,4 +87,39 @@ define("search", function(bios){
             }
         });
     };
+    /*endregion*/
+    /* region owner */
+    this.findOwners = function (searchQuery, fn){
+        $.ajax({
+            url: "/search/owners/" + searchQuery,
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
+                fn(resData);
+            }
+        });
+    };
+    this.findOwner = function (searchQuery, fn){
+        $.ajax({
+            url: "/search/owner/" + searchQuery,
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
+                fn(resData);
+            }
+        });
+    };
+    /*endregion*/
+    /* region user */
+    this.userSearch = function (fn){
+        $.ajax({
+            url: "/search/user",
+            type: "GET",
+            success: function (resData) {
+                // console.log(resData)
+                    fn(resData);
+            }
+        });
+    };
+    /*endregion*/
 });

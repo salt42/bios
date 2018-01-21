@@ -34,7 +34,6 @@ define("trans", function(bios){
     }
 
     // decode holds querys from other tables
-    // ich bin jetzt mal was essen k bs
     this.decode = {
         species(value){
             return Decode(speciesList, value);

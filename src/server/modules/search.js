@@ -143,6 +143,18 @@ hookIn.db_addObject("getList", function(DB) {
 /* region animals */
 hookIn.db_addObject("getAnimal", function (DB) {
     return {
+        all: function (queryID) {
+            let statement = 'SELECT * FROM animal WHERE name = @query '; //@todo species = query ... or detail search ??
+
+            let row = DB.prepare(statement).all({
+                query: queryID
+            });
+            if (row.length < 1) return {
+                error: "id not found",
+                code: 3,
+            };
+            return convert.fromDB("animal", row[0]);
+        },
         byID: function (queryID) {
             let statement = 'SELECT * FROM animal WHERE id = @query ';
 
