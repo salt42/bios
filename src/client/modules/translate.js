@@ -1,7 +1,7 @@
 define("trans", function(bios){
     "use strict";
 
-    let transStrings = window.trans;
+    let transStrings = window.trans;// nee passt fast
     let speciesList;
     let userRolesList;
 

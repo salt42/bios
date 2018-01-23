@@ -3,5 +3,5 @@ defineComp("company-vcard", function(bios, $element, args) {
 
 
 }, {
-    templatePath: "/components/companyVCard/companyVCard.html"
+    templatePath: "/component/companyVCard/companyVCard.html"
 });

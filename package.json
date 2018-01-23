@@ -19,5 +19,7 @@
     "url": "https://github.com/salt42/bios/issues"
   },
   "homepage": "https://github.com/salt42/bios#readme",
-  "dependencies": {}
+  "dependencies": {
+    "express-hbs": "^1.0.4"
+  }
 }

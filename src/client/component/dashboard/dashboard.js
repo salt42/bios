@@ -21,5 +21,5 @@ defineComp("dashboard", function(bios, $element, args) {
         console.log("dashboard removed");
     };
 }, {
-    templatePath: "/components/dashboard/dashboard.html"
+    templatePath: "/component/dashboard/dashboard.html"
 });

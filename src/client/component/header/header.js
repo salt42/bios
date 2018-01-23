@@ -3,5 +3,5 @@ defineComp("header", function(bios, $element, args) {
 
 
 }, {
-    templatePath: "/components/header/header.html"
+    templatePath: "/component/header/header.html"
 });

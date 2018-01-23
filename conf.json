@@ -14,7 +14,11 @@
         }
     },
     "client": {
-        "modulePaths": ["/src/client/modules"],
-        "componentPaths": ["/src/client/component"]
+        "modulePaths": ["/src/client/modules", "/assets"],
+        "componentPaths": ["/src/client/component"],
+        "preCss": ["/css/style.css", "/libs/font-awesome-4.7.0/css/font-awesome.min.css", "/libs/jsonForm/src/jsonForm.css"],
+        "postCss": [],
+        "preScript": ["/libs/jsonForm/src/jsonForm.js", "/language/english.js"],
+        "postScript": []
     }
 }

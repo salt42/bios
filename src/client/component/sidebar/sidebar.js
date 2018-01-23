@@ -3,5 +3,5 @@ defineComp("sidebar", function(bios, $element, args) {
 
 
 }, {
-    templatePath: "/components/sidebar/sidebar.html"
+    templatePath: "/component/sidebar/sidebar.html"
 });
