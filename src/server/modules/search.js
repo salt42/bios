@@ -125,13 +125,13 @@ hookIn.db_addObject("getList", function(DB) {
             return result;
         },
         user: function() {
-            return this.getList("user");
+            return this.single("user");
         },
         userRoles: function() {
             return this.single("user_roles");
         },
         species: function() {
-            return this.getList("species");
+            return this.single("species");
         },
         single: function (table) {
             return cleanUpDoubleEntries(DB.prepare('select * from ' + table).all());

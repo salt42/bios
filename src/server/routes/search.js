@@ -34,18 +34,23 @@ hookIn.http_createRoute("/search", function(router) {
     /*endregion*/
     /* region list */
     router.get('/list/:query', function(req, res) {
-        let result = {};
-        if (req.params.query === "species"){
-            result.list = DB.getSpeciesList();
-        }
-        if(req.params.query === "userRoles"){
-            result.list = DB.getUserRolesList();
-        }
-        else {
-            result = DB.getAllLists();
-        }
+        try{
+            let result = {};
+            if (req.params.query === "species"){
+                result.list = DB.getList.species();
+            }
+            if(req.params.query === "userRoles"){
+                result.list = DB.getList.userRoles();
+            }
+            else {
+                console.log(DB.getList());//des is als funktion gedacht denk ich
+                result = DB.getList.all();
+            }
 
-        res.json(result);
+            res.json(result);
+        } catch (e){
+            console.log(e);
+        }
     });
     /*endregion*/
 
@@ -87,7 +92,7 @@ hookIn.http_createRoute("/search", function(router) {
     /*endregion*/
     /* region user */
     router.get('/user', function(req, res) {
-        let userList = DB.getUserList();
+        let userList = DB.getList.user();
         let userListActive = [];
         let userListInactive = [];
 
