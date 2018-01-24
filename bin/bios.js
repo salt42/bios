@@ -14,5 +14,5 @@ var img = `
                                  \`\`-------''`;
 
 console.log(img);
-let projectPath = require("fs").realpathSync(__dirname + "/../");
-require('../jsfair/main.js')(projectPath);
+let fs = require("fs")
+require('../jsfair/devShell')(fs.realpathSync(__dirname + "/../"));
