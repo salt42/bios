@@ -21,7 +21,7 @@ module.exports = {
         dataType = (dataType === null) ? tableName : dataType;
         return function (queryID) {
             let row = DB.select(
-                'SELECT * FROM ' + tableName + ' WHERE id like "' + queryID + '"'
+                'SELECT * FROM ' + tableName + ' WHERE id = "' + queryID + '"'
             );
             if (row.length < 1) return ERROR(3);
             return convert.fromDB(dataType, row[0]);
@@ -31,7 +31,7 @@ module.exports = {
         dataType = (dataType === null) ? tableName : dataType;
         return function (query) {
             let rows = DB.select(
-                'SELECT * FROM ' + tableName + ' WHERE name = "' + query + '"'
+                'SELECT * FROM ' + tableName + ' WHERE name like "' + query + '"'
             );
             if (rows.length < 1) return ERROR(2);
             return convert.multi.fromDB(dataType, rows);

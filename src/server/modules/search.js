@@ -4,4 +4,4 @@
 "use strict";
 let DB = require("jsfair/database");
 let convert = require("./dbObjectConverter");
-let errorcodes = require("./../db/errorCodes");
+let errorcodes = require("../../db/errorCodes");

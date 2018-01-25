@@ -1,10 +1,11 @@
 "use strict";
 
-const animal     = require('./../db/animal');
-const article    = require('./../db/article');
-const list       = require('./../db/list');
-const liveSearch = require('./../db/liveSearch');
-const owner      = require('./../db/owner');
+const animal     = require('../../db/animal');
+const article    = require('../../db/article');
+const list       = require('../../db/list');
+const liveSearch = require('../../db/liveSearch');
+const owner      = require('../../db/owner');
+
 let result = {};
 
 let modifyQuery = {

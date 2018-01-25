@@ -1,4 +1,4 @@
-#!/usr/bin/env node --use_strict
+#!/usr/bin/env node --inspect
 var img = `
                                   .'\\   /\`.
                                 .'.-.\`-'.-.\`.
@@ -15,4 +15,10 @@ var img = `
 
 console.log(img);
 let fs = require("fs")
-require('../jsfair/devShell')(fs.realpathSync(__dirname + "/../"));
+// require('../jsfair/devShell')(fs.realpathSync(__dirname + "/../"));
+
+
+const path = require("path");
+
+
+require("../jsfair/devShell")(path.realPathSync("./../conf.json"));

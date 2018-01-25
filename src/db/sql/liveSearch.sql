@@ -1,12 +1,5 @@
 --#all
 SELECT *
-    FROM OwnerSearch
-    WHERE OwnerSearch
-    MATCH @query
-    ORDER BY rank;
-
---#all
-SELECT *
     FROM AnimalSearch
     WHERE AnimalSearch
     MATCH @query
@@ -18,3 +11,12 @@ SELECT *
     WHERE ArticleSearch
     MATCH @query
     ORDER BY rank;
+
+--#all
+SELECT *
+    FROM OwnerSearch
+    WHERE OwnerSearch
+    MATCH @query
+    ORDER BY rank;
+
+

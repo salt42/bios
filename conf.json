@@ -8,8 +8,8 @@
             "viewsDir": "/src/views"
         },
         "database": {
-            "dbFile": "/db/bios.sqlite3",
-            "sqlPath": "/sql",
+            "dbFile":  "/src/db/db/bios.sqlite3",
+            "sqlPath": "/src/db/sql",
             "sqCache": false
         }
     },
