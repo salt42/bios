@@ -6,13 +6,13 @@ const stdGet  = require("./stdGet");
 // const h       = require("./helper");
 // const convert = require("./dbObjectConverter");
 
-const tableName = "owner";
-
+const sqlFile = "owners";
+const dataType = "owner";
 
 module.exports = {
     get: {
-        all:    stdGet.all   (tableName),
-        byID:   stdGet.byID  (tableName),
-        byName: stdGet.byName(tableName),
+        all:    stdGet.all   (sqlFile, dataType),
+        byID:   stdGet.byID  (sqlFile, dataType),
+        byName: stdGet.byName(sqlFile, dataType),
     }
 };

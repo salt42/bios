@@ -8,32 +8,19 @@ const owner      = require('../../db/owner');
 
 let result = {};
 
-let modifyQuery = {
-    request: function (query){
-        return this._modifyQuery(query, "*", "%");
+let liveQuery = {
+    isSubRoute: function (query) {
+        return (query.substr(0,4) === "all/");
     },
-    result: function (query){
-        return this._modifyQuery(query, "%", "*");
-    },
-    live: {
-        isSubRoute: function (query) {
-            return (query.substr(0,4) === "all/");
-        },
-        getSubRouteQuery: function (query) {
-            return query.substr(4);
-        }
-    },
-    _modifyQuery: function (query, replace, to){
-        if (!query) return null;
-        query = (query.slice(-1) === replace) ? query.slice(0,-1) + to : query;
-        return query
-    },
+    getSubRouteQuery: function (query) {
+        return query.substr(4);
+    }
 };
 
 hookIn.http_createRoute("/search", function(router) {
     router.get('/:type/:query*?', function(req, res) {
         try {
-            let query = modifyQuery.request(req.params.query);
+            let query = req.params.query;
             switch (req.params.type) {
                 /* region animals */
                 case "animals":
@@ -72,9 +59,8 @@ hookIn.http_createRoute("/search", function(router) {
                             userListActive.push(userList[i]);
                         }
                     }
-
                     result = {
-                        query: modifyQuery.result(query),
+                        query: query,
                         users: userList,
                         usersActive: userListActive,
                         usersInactive: userListInactive,
@@ -100,9 +86,9 @@ hookIn.http_createRoute("/search", function(router) {
                 case "live":
                 case "all":
                     query = (req.params.type === "all") ? "all/" + query : query; // modify query that route /all/:query is treated like /live/all/:query
-                    let dbResults = (modifyQuery.live.isSubRoute(query)) ? liveSearch.all(modifyQuery.live.getSubRouteQuery(query)) : liveSearch.short(query);
+                    let dbResults = (liveQuery.isSubRoute(query)) ? liveSearch.all(liveQuery.getSubRouteQuery(query)) : liveSearch.short(query);
                     result = {
-                        query: modifyQuery.result(query),
+                        query: (liveQuery.isSubRoute(query)) ? liveQuery.getSubRouteQuery(query) : query,
                         owners: dbResults.owner,
                         animals: dbResults.animals.alive,
                         deadAnimals: dbResults.animals.dead,

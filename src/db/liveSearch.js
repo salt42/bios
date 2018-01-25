@@ -19,15 +19,15 @@ function errorHandling(errorObject, information = null) {
 module.exports = {
     all: function(query = "*") {
         let dbResults = {};
-        let results = DB.runStatement("liveSearch", {
+        let animals = DB.runStatement("animals", {
             query: query
-        });
+        }, [0]);
 
         dbResults.animals = {};
-        dbResults.animals.alive = h.sortOutDeadAnimals(results[0]);
-        dbResults.animals.dead  = h.sortOutDeadAnimals(results[0], true);
-        dbResults.articles      = results[1];
-        dbResults.owner         = results[2];
+        dbResults.animals.alive = h.sortOutDeadAnimals(animals);
+        dbResults.animals.dead  = h.sortOutDeadAnimals(animals, true);
+        dbResults.articles      = DB.runStatement("articles", { query: query }, [0]);
+        dbResults.owner         = DB.runStatement("owners", { query: query }, [0]);
 
         return dbResults;
     },

@@ -3,38 +3,25 @@ const DB      = require("jsfair/database");
 const convert = require("./dbObjectConverter");
 const ERROR   = require("./dbError");
 
+function execStatement(sqlFile, query, statementID_Array, dataType, errorId = 2){
+    let rows = DB.runStatement(sqlFile, {query: query}, statementID_Array);
+    return (rows.length < 1) ? convert.multi.fromDB(dataType, rows) : ERROR(errorId);
+}
 
 module.exports = {
-    all: function(tableName, dataType = null) {
-        dataType = (dataType === null) ? tableName : dataType;
-            return function (query = null) {
-                if (query !== null) return convert.multi.fromDB(dataType, this.byName(query));
-
-                let rows = DB.select(
-                    'SELECT * FROM ' + tableName
-                );
-                if (rows.length < 1) return ERROR(2);
-                return convert.multi.fromDB(dataType, rows);
+    all: function(sqlFile, dataType) {
+            return function (query) {
+                return execStatement(sqlFile, query, [0], dataType);
             }
     },
-    byID: function(tableName, dataType = null) {
-        dataType = (dataType === null) ? tableName : dataType;
-        return function (queryID) {
-            let row = DB.select(
-                'SELECT * FROM ' + tableName + ' WHERE id = "' + queryID + '"'
-            );
-            if (row.length < 1) return ERROR(3);
-            return convert.fromDB(dataType, row[0]);
+    byID: function(sqlFile, dataType) {
+        return function (query) {
+            return execStatement(sqlFile, query, [1], dataType, 3);
         }
     },
-    byName: function(tableName, dataType = null) {
-        dataType = (dataType === null) ? tableName : dataType;
+    byName: function(sqlFile, dataType) {
         return function (query) {
-            let rows = DB.select(
-                'SELECT * FROM ' + tableName + ' WHERE name like "' + query + '"'
-            );
-            if (rows.length < 1) return ERROR(2);
-            return convert.multi.fromDB(dataType, rows);
+            return execStatement(sqlFile, query, [2], dataType);
         }
     },
 };

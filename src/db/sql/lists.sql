@@ -1,0 +1,5 @@
+--#all
+SELECT *
+    FROM @table;
+
+

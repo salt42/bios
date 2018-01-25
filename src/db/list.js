@@ -24,7 +24,7 @@ module.exports = {
             return this.single("species");
         },
         single: function (table) {
-            return h.cleanUpDoubleEntries(DB.select('select * from ' + table));
+            return h.cleanUpDoubleEntries(DB.runStatement("lists", {table: table}), [0]);
         },
     }
 };
