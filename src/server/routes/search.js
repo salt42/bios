@@ -1,19 +1,38 @@
-/**
- * Created by salt on 28.10.2017.
- */
 "use strict";
 
 const animal     = require('./../db/animal');
 const article    = require('./../db/article');
 const list       = require('./../db/list');
-const livesearch = require('./../db/livesearch');
+const liveSearch = require('./../db/liveSearch');
 const owner      = require('./../db/owner');
 let result = {};
+
+let modifyQuery = {
+    request: function (query){
+        return this._modifyQuery(query, "*", "%");
+    },
+    result: function (query){
+        return this._modifyQuery(query, "%", "*");
+    },
+    live: {
+        isSubRoute: function (query) {
+            return (query.substr(0,4) === "all/");
+        },
+        getSubRouteQuery: function (query) {
+            return query.substr(4);
+        }
+    },
+    _modifyQuery: function (query, replace, to){
+        if (!query) return null;
+        query = (query.slice(-1) === replace) ? query.slice(0,-1) + to : query;
+        return query
+    },
+};
 
 hookIn.http_createRoute("/search", function(router) {
     router.get('/:type/:query*?', function(req, res) {
         try {
-            let query = (req.params.query) ? req.params.query : null;
+            let query = modifyQuery.request(req.params.query);
             switch (req.params.type) {
                 /* region animals */
                 case "animals":
@@ -54,7 +73,7 @@ hookIn.http_createRoute("/search", function(router) {
                     }
 
                     result = {
-                        query: query,
+                        query: modifyQuery.result(query),
                         users: userList,
                         usersActive: userListActive,
                         usersInactive: userListInactive,
@@ -75,11 +94,19 @@ hookIn.http_createRoute("/search", function(router) {
                             result = list.get.all();
                     }
                     break;
-                    /*endregion*/
+                /*endregion*/
                 /* region live search */
                 case "live":
                 case "all":
-                    result = liveRouting(query);
+                    query = (req.params.type === "all") ? "all/" + query : query; // modify query that route /all/:query is treated like /live/all/:query
+                    let dbResults = (modifyQuery.live.isSubRoute(query)) ? liveSearch.all(modifyQuery.live.getSubRouteQuery(query)) : liveSearch.short(query);
+                    result = {
+                        query: modifyQuery.result(query),
+                        owners: dbResults.owner,
+                        animals: dbResults.animals.alive,
+                        deadAnimals: dbResults.animals.dead,
+                        articles: dbResults.articles,
+                    };
                 /*endregion*/
             }
             res.json(result);
@@ -87,22 +114,4 @@ hookIn.http_createRoute("/search", function(router) {
             console.log(e);
         }
     });
-    function liveRouting(query) {
-        let subRoute = query.substr(0,3);
-        if (subRoute === "all/"){
-            let realQuery = query.substr(4);
-            return liveSearchResults(livesearch.all(realQuery), realQuery);
-        } else {
-            return liveSearchResults(livesearch.short(query), query);
-        }
-    }
-    function liveSearchResults (dbResults, query){
-        return {
-            query: query,
-            owners: dbResults.owner,
-            animals: dbResults.animals.alive,
-            deadAnimals: dbResults.animals.dead,
-            articles: dbResults.articles,
-        };
-    }
 });

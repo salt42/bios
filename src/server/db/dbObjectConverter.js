@@ -193,6 +193,7 @@ function multiToDB_func (type, objects){
 /* region db object converter structure */
 let dbObjectConverter = {
     fromDB: function (type, resultData) {
+        console.log("bd Converter input", resultData);
         return fromDB_func(type, resultData)
     },
     toDB: function (type, object) {
@@ -200,6 +201,7 @@ let dbObjectConverter = {
     },
     multi: {
         fromDB: function (type, resultSet) {
+            console.log("bd Converter multi input", resultData);
             return multiFromDB_func(type, resultSet)
         },
         toDB: function (type, objects) {

@@ -10,7 +10,7 @@ const article    = require('./../db/article');
 const owner      = require('./../db/owner');
 
 function errorHandling(errorObject, information = null) {
-    console.log("Error in 'src/server/db/livesearch.js'");
+    console.log("Error in 'src/server/db/liveSearch.js'");
     let msg = (information !== null) ? "info:" + information + " -> " : "";
     console.log(msg, errorObject);
     return [];
