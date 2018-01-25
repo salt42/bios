@@ -34,6 +34,7 @@ define("search", function(bios){
     /*endregion*/
     /* region list */
     this.getList = function (searchQuery, fn){
+        console.log("sers ", searchQuery);
         $.ajax({
             url: "/search/list/" + searchQuery,
             type: "GET",

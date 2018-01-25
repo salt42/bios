@@ -1,13 +1,13 @@
 define("trans", function(bios){
     "use strict";
 
-    let transStrings = window.trans;// nee passt fast
+    let transStrings = window.trans;
     let speciesList;
     let userRolesList;
 
     bios.search.getList("all", function(data){
-        // speciesList = setSimpleList(data.listSpecies);
-        // userRolesList = setSimpleList(data.listUserRoles);
+        speciesList   = setSimpleList(data.species);
+        userRolesList = setSimpleList(data.userRoles);
     });
 
     this.language = function(str) {
