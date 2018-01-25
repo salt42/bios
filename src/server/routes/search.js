@@ -97,22 +97,12 @@ hookIn.http_createRoute("/search", function(router) {
         }
     }
     function liveSearchResults (dbResults, query){
-        // return {
-        //     query: query,
-        //     owners: dbResults.owner,
-        //     animals: dbResults.animals.alive,
-        //     deadAnimals: dbResults.animals.dead,
-        //     articles: dbResults.articles,
-        // };
-        let a = {
+        return {
             query: query,
             owners: dbResults.owner,
             animals: dbResults.animals.alive,
             deadAnimals: dbResults.animals.dead,
             articles: dbResults.articles,
         };
-        console.log("routes/search 114", query, a);
-        console.log(a);
-        return a;
     }
 });

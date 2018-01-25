@@ -9,6 +9,13 @@ const animal     = require('./../db/animal');
 const article    = require('./../db/article');
 const owner      = require('./../db/owner');
 
+function errorHandling(errorObject, information = null) {
+    console.log("Error in 'src/server/db/livesearch.js'");
+    let msg = (information !== null) ? "info:" + information + " -> " : "";
+    console.log(msg, errorObject);
+    return [];
+}
+
 module.exports = {
     all: function(query = null) {
         let dbResults = {};
@@ -18,10 +25,10 @@ module.exports = {
         let owners   = (query === null) ? owner.get.all()   : owner.get.byName(query);
 
         dbResults.animals = {};
-        dbResults.animals.alive = (animals.error) ? [] : h.sortOutDeadAnimals(animals);
-        dbResults.animals.dead  = (animals.error) ? [] : h.sortOutDeadAnimals(animals, true);
-        dbResults.articles      = (articles.error)? [] : articles;
-        dbResults.owner         = (owners.error)  ? [] : owners;
+        dbResults.animals.alive = (animals.error) ? errorHandling(animals,  "animals req alive") : h.sortOutDeadAnimals(animals);
+        dbResults.animals.dead  = (animals.error) ? errorHandling(animals,  "animals req dead")  : h.sortOutDeadAnimals(animals, true);
+        dbResults.articles      = (articles.error)? errorHandling(articles, "articles req")      : articles;
+        dbResults.owner         = (owners.error)  ? errorHandling(owners,   "owners req")        : owners;
 
         return dbResults;
     },
