@@ -66,3 +66,4 @@ typings/
 bios.iml
 /dbsave/old/
 dbsave/old/
+/src/db/get.js
