@@ -61,7 +61,8 @@ typings/
 /Ideas/images/
 
 /.idea/
-db/
+/db/
+!/src/server/db/
 
 bios.iml
 /dbsave/old/

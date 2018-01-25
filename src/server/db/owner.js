@@ -1,0 +1,35 @@
+"use strict";
+
+const DB = require("jsfair/database");
+const h = require("./helper");
+const convert = require("./dbObjectConverter");
+const error = require("./errorCodes");
+
+module.exports = {
+    get: {
+        byID: function (queryID) {
+            let statement = 'SELECT * FROM owner WHERE id = @query ';
+
+            let row = DB.prepare(statement).all({
+                query: queryID
+            });
+            if (row.length < 1) return {
+                error: "id not found",
+                code: 3,
+            };
+            return convert.fromDB("owner", row[0]);
+        },
+        byName: function (query) {
+            let statement = 'SELECT * FROM owner WHERE name = @query ';
+
+            let results = DB.prepare(statement).all({
+                query: query
+            });
+            if (results.length < 1) return {
+                error: "query not found",
+                code: 2,
+            };
+            return convert.multi.fromDB("owner", results);
+        },
+    },
+};

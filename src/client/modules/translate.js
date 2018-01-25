@@ -6,8 +6,8 @@ define("trans", function(bios){
     let userRolesList;
 
     bios.search.getList("all", function(data){
-        speciesList = setSimpleList(data.listSpecies);
-        userRolesList = setSimpleList(data.listUserRoles);
+        // speciesList = setSimpleList(data.listSpecies);
+        // userRolesList = setSimpleList(data.listUserRoles);
     });
 
     this.language = function(str) {
@@ -44,6 +44,7 @@ define("trans", function(bios){
     };
 
     function setSimpleList(list){
+        console.log(list);
         let res = [];
         for (let i = 0; i < list.length; i++){
             res[list[i]["id"]] = list[i]["name"];
@@ -52,7 +53,7 @@ define("trans", function(bios){
     }
 
     function Decode(list, value){
-            return list[value]
+        return list[value]
     }
 
     window.trans = this.language;

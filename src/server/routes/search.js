@@ -3,115 +3,109 @@
  */
 "use strict";
 
-var DB = require('jsfair/database');
+const animal     = require('./../db/animal');
+const article    = require('./../db/article');
+const list       = require('./../db/list');
+const livesearch = require('./../db/livesearch');
+const owner      = require('./../db/owner');
+let result = {};
 
 hookIn.http_createRoute("/search", function(router) {
-    /* region live search */
-    function liveSearchResults (dbResults){
+    router.get('/:type/:query*?', function(req, res) {
+        try {
+            req.params.query = null;
+            console.log('gdf', req.params);
+            switch (req.params.type) {
+                /* region animals */
+                case "animals":
+                    result = animal.get.all(req.params.query);
+                    break;
+                case "animal":
+                    result = animal.get.byID(req.params.query);
+                    break;
+                /*endregion*/
+                /* region article */
+                case "articles":
+                    result = article.get.all(req.params.query);
+                    break;
+                case "article":
+                    result = article.get.byID(req.params.query);
+                    break;
+                /*endregion*/
+                /* region owner */
+                case "owners":
+                    result = owner.get.all(req.params.query);
+                    break;
+                case "owner":
+                    result = owner.get.byID(req.params.query);
+                    break;
+                /*endregion*/
+                /* region user */
+                case "user":
+                    let userList = list.get.user();
+                    let userListActive = [];
+                    let userListInactive = [];
+
+                    for (let i = 0; i < userList.length; i++) {
+                        if (userList[i].present === 0) {
+                            userListInactive.push(userList[i]);
+                        } else {
+                            userListActive.push(userList[i]);
+                        }
+                    }
+
+                    let result = {
+                        query: req.params.query,
+                        users: userList,
+                        usersActive: userListActive,
+                        usersInactive: userListInactive,
+                    };
+                    break;
+                /*endregion*/
+                /* region list */
+                case "list":
+                    switch (req.params.query) {
+                        case "species":
+                            result.list = list.get.species();
+                            break;
+                        case "userRoles":
+                            result.list = list.get.userRoles();
+                            break;
+
+                        case "all":
+                            console.log("list all");
+                            result = list.get.all();
+                            console.log(result);
+                    }
+                    break;
+                    /*endregion*/
+                /* region live search */
+                case "live":
+                case "all":
+                    result = liveRouting(req.params.query);
+                /*endregion*/
+            }
+            res.json(result);
+        } catch (e){
+            console.log(e);
+        }
+    });
+    function liveRouting(query) {
+        let subroute = query.substr(0,3);
+        if (subroute === "all/"){
+            let realQuery = query.substr(4);
+            return liveSearchResults(livesearch.all(realQuery), realQuery);
+        } else {
+            return liveSearchResults(livesearch.short(req.params.query), req.params.query);
+        }
+    }
+    function liveSearchResults (dbResults, query){
         return {
-            query: req.params.query,
+            query: query,
             owners: dbResults.owner,
             animals: dbResults.animals.alive,
             deadAnimals: dbResults.animals.dead,
             articles: dbResults.articles,
         };
     }
-    router.get('/live/:query', function(req, res) {
-        let dbResults = DB.live(req.params.query);
-
-        res.json(liveSearchResults(dbResults));
-    });
-    router.get('/live/all/:query', function(req, res) {
-        let dbResults = DB.liveSearch.all(req.params.query);
-
-        res.json(liveSearchResults(dbResults));
-    });
-    router.get('/all/:query', function(req, res) {
-        let dbResults = DB.liveSearch.all(req.params.query);
-
-        res.json(liveSearchResults(dbResults));
-    });
-    /*endregion*/
-    /* region list */
-    router.get('/list/:query', function(req, res) {
-        try{
-            let result = {};
-            if (req.params.query === "species"){
-                result.list = DB.getList.species();
-            }
-            if(req.params.query === "userRoles"){
-                result.list = DB.getList.userRoles();
-            }
-            else {
-                console.log(DB.getList());//des is als funktion gedacht denk ich
-                result = DB.getList.all();
-            }
-
-            res.json(result);
-        } catch (e){
-            console.log(e);
-        }
-    });
-    /*endregion*/
-
-    /* region animal */
-    router.get('/animals/:query', function(req, res) {
-        let result = DB.getAnimal.all(req.params.query);
-
-        res.json(result);
-    });
-    router.get('/animal/:query', function(req, res) {
-        let result = DB.getAnimal.byID(req.params.query);
-
-        res.json(result);
-    });
-    /*endregion*/
-    /* region article */
-    router.get('/articles/:query', function(req, res) {
-        let result = DB.getAnimal.byName(req.params.query);
-
-        res.json(result);
-    });
-    router.get('/article/:query', function(req, res) {
-        let result = DB.getAnimal.byID(req.params.query);
-
-        res.json(result);
-    });
-    /*endregion*/
-    /* region owner */
-    router.get('/owners/:query', function(req, res) {
-        let result = DB.getOwner.byName(req.params.query);
-
-        res.json(result);
-    });
-    router.get('/owner/:query', function(req, res) {
-        let result = DB.getOwner.byID(req.params.query);
-
-        res.json(result);
-    });
-    /*endregion*/
-    /* region user */
-    router.get('/user', function(req, res) {
-        let userList = DB.getList.user();
-        let userListActive = [];
-        let userListInactive = [];
-
-        for(let i = 0; i < userList.length; i++){
-            if (userList[i].present === 0){
-                userListInactive.push(userList[i]);
-            } else {
-                userListActive.push(userList[i]);
-            }
-        }
-
-        let result = {
-            query: req.params.query,
-            users: userList,
-            usersActive: userListActive,
-            usersInactive: userListInactive,
-        };
-
-        res.json(result);
-    });
-    /*endregion*/
 });
