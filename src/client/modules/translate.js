@@ -44,7 +44,6 @@ define("trans", function(bios){
     };
 
     function setSimpleList(list){
-        console.log(list);
         let res = [];
         for (let i = 0; i < list.length; i++){
             res[list[i]["id"]] = list[i]["name"];
