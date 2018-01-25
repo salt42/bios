@@ -7,8 +7,8 @@ const error = require("./errorCodes");
 
 module.exports = {
     get: {
-        all: function (queryID) {
-            let statement = 'SELECT * FROM animal WHERE name = @query '; //@todo species = query ... or detail search ??
+        all: function () {
+            let statement = 'SELECT * FROM animal';
 
             let row = DB.prepare(statement).all({
                 query: queryID

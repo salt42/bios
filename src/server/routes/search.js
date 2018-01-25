@@ -13,12 +13,11 @@ let result = {};
 hookIn.http_createRoute("/search", function(router) {
     router.get('/:type/:query*?', function(req, res) {
         try {
-            req.params.query = null;
-            console.log('gdf', req.params);
+            let query = (req.params.query) ? req.params.query : null;
             switch (req.params.type) {
                 /* region animals */
                 case "animals":
-                    result = animal.get.all(req.params.query);
+                    result = animal.get.all();
                     break;
                 case "animal":
                     result = animal.get.byID(req.params.query);
@@ -26,7 +25,7 @@ hookIn.http_createRoute("/search", function(router) {
                 /*endregion*/
                 /* region article */
                 case "articles":
-                    result = article.get.all(req.params.query);
+                    result = article.get.all();
                     break;
                 case "article":
                     result = article.get.byID(req.params.query);
@@ -34,7 +33,7 @@ hookIn.http_createRoute("/search", function(router) {
                 /*endregion*/
                 /* region owner */
                 case "owners":
-                    result = owner.get.all(req.params.query);
+                    result = owner.get.all();
                     break;
                 case "owner":
                     result = owner.get.byID(req.params.query);
@@ -54,7 +53,7 @@ hookIn.http_createRoute("/search", function(router) {
                         }
                     }
 
-                    let result = {
+                    result = {
                         query: req.params.query,
                         users: userList,
                         usersActive: userListActive,
@@ -64,7 +63,7 @@ hookIn.http_createRoute("/search", function(router) {
                 /*endregion*/
                 /* region list */
                 case "list":
-                    switch (req.params.query) {
+                    switch (query) {
                         case "species":
                             result.list = list.get.species();
                             break;
@@ -73,16 +72,14 @@ hookIn.http_createRoute("/search", function(router) {
                             break;
 
                         case "all":
-                            console.log("list all");
                             result = list.get.all();
-                            console.log(result);
                     }
                     break;
                     /*endregion*/
                 /* region live search */
                 case "live":
                 case "all":
-                    result = liveRouting(req.params.query);
+                    result = liveRouting(query);
                 /*endregion*/
             }
             res.json(result);
