@@ -7,17 +7,16 @@ const error = require("./errorCodes");
 
 module.exports = {
     get: {
-        all: function () {
+        all: function (query) {
+            if (query !== null) return convert.multi.fromDB("animal", this.byName(query));
             let statement = 'SELECT * FROM animal';
 
-            let row = DB.prepare(statement).all({
-                query: queryID
-            });
+            let row = DB.prepare(statement).all();
             if (row.length < 1) return {
                 error: "id not found",
                 code: 3,
             };
-            return convert.fromDB("animal", row[0]);
+            return convert.multi.fromDB("animal", row[0]);
         },
         byID: function (queryID) {
             let statement = 'SELECT * FROM animal WHERE id = @query ';
