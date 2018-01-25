@@ -26,7 +26,7 @@ let articleDBObject = {
     name: null,
 };
 
-let ownerSet = {
+let ownerSet   = {
     hidden: {},
     person: {},
     address: {},
@@ -34,7 +34,7 @@ let ownerSet = {
     cash: {},
     comments: {},
 };
-let animalSet = {
+let animalSet  = {
     hidden: {},
     animal: {},
     comments: {},
@@ -45,7 +45,6 @@ let articleSet = {
     comments: {},
 };
 /*endregion*/
-
 /* region convert from DB functions */
 function animalDBtoObject(a){
     let result = animalSet;
@@ -133,68 +132,46 @@ function ownerDBtoObject(a){
     return result;
 }
 /*endregion*/
-
-/* region convert to DB functions */
-function animalObjectToDB(a){
-    let result = animalDBObject;
-    //@todo process a
-    return result;
-}
-function articleObjectToDB(a){
-    let result = articleDBObject;
-    //@todo process a
-    return result;
-}
-function ownerObjectToDB(a){
-    let result = ownerDBObject;
-    //@todo process a
-    return result;
-}
-/*endregion*/
-
-/* region switch functions */
-function fromDB_func (type, resultData) {
-    let result;
-    switch (type){
-        case "animal":
-            result = animalDBtoObject(resultData);
-            break;
-        case"article":
-            result = articleDBtoObject(resultData);
-            break;
-        case "owner":
-            result = ownerDBtoObject(resultData);
-            break;
-    }
-    return result;
-}
-function toDB_func (type, object) {
-    let result;
-    switch (type){
-        case "animal":
-            result = animalObjectToDB(object);
-            break;
-        case "article":
-            result = articleObjectToDB(object);
-            break;
-        case "owner":
-            result = ownerObjectToDB(object);
-            break;
-    }
-    for (let fieldset in object) {
-        if (object.hasOwnProperty(fieldset)) {
+/* region convert to DB function */
+function objectToDB(a, defaultObject){
+    let result = defaultObject;
+    //@todo check --- might not work
+    for (let fieldset in a) {
+        if (a.hasOwnProperty(fieldset)) {
             for (let column in fieldset){
                 if (fieldset.hasOwnProperty(column)) {
-                    result[column] = object[fieldset][column];
+                    result[column] = a[fieldset][column];
                 }
             }
         }
     }
     return result;
 }
+/*endregion*/
+/* region switch functions */
+function fromDB_func (type, resultData) {
+    switch (type){
+        case "animal":
+            return animalDBtoObject(resultData);
+        case"article":
+            return articleDBtoObject(resultData);
+        case "owner":
+            return ownerDBtoObject(resultData);
+    }
+}
+function toDB_func (type, object) {
+    switch (type){
+        case "animal":
+            return objectToDB(object, animalDBObject);
+        case "article":
+            return objectToDB(object, articleDBObject);
+        case "owner":
+            return objectToDB(object, ownerDBObject);
+    }
+}
 function multiFromDB_func (type, resultSet){
+    if (resultSet.length === 0) return [];
     let objects = [];
-    if (resultSet.length === 0) return null;
     for (let row in resultSet){
         if(resultSet.hasOwnProperty(row)){
             objects.push(fromDB_func(type, row));
@@ -203,8 +180,8 @@ function multiFromDB_func (type, resultSet){
     return objects;
 }
 function multiToDB_func (type, objects){
+    if (objects.length === 0) return [];
     let data = [];
-    if (objects.length === 0) return null;
     for (let row in data){
         if(data.hasOwnProperty(row)){
             data.push(toDB_func(type, row));
@@ -213,7 +190,6 @@ function multiToDB_func (type, objects){
     return data;
 }
 /*endregion*/
-
 /* region db object converter structure */
 let dbObjectConverter = {
     fromDB: function (type, resultData) {
@@ -224,7 +200,6 @@ let dbObjectConverter = {
     },
     multi: {
         fromDB: function (type, resultSet) {
-            console.log("db object converter structure - multi from db");
             return multiFromDB_func(type, resultSet)
         },
         toDB: function (type, objects) {
@@ -233,5 +208,4 @@ let dbObjectConverter = {
     }
 };
 /*endregion*/
-
 module.exports = dbObjectConverter;
