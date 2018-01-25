@@ -1,12 +1,12 @@
 define("search", function(bios){
     "use strict";
     /* region live search */
-    this.liveSearch = function(searchQuery, fn, option) {
+    this.liveSearch = function(searchQuery, fn, option = "short") {
         //@todo send live search request to server
 
         if (option === "short"){
             $.ajax({
-                url: "/search/live/short/" + searchQuery,
+                url: "/search/live/" + searchQuery,
                 type: "GET",
                 // contentType: "application/json",
                 // data: JSON.stringify(conf),
@@ -34,7 +34,6 @@ define("search", function(bios){
     /*endregion*/
     /* region list */
     this.getList = function (searchQuery, fn){
-        console.log("sers ", searchQuery);
         $.ajax({
             url: "/search/list/" + searchQuery,
             type: "GET",

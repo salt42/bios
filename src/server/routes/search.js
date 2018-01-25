@@ -20,7 +20,7 @@ hookIn.http_createRoute("/search", function(router) {
                     result = animal.get.all();
                     break;
                 case "animal":
-                    result = animal.get.byID(req.params.query);
+                    result = animal.get.byID(query);
                     break;
                 /*endregion*/
                 /* region article */
@@ -28,7 +28,7 @@ hookIn.http_createRoute("/search", function(router) {
                     result = article.get.all();
                     break;
                 case "article":
-                    result = article.get.byID(req.params.query);
+                    result = article.get.byID(query);
                     break;
                 /*endregion*/
                 /* region owner */
@@ -36,7 +36,7 @@ hookIn.http_createRoute("/search", function(router) {
                     result = owner.get.all();
                     break;
                 case "owner":
-                    result = owner.get.byID(req.params.query);
+                    result = owner.get.byID(query);
                     break;
                 /*endregion*/
                 /* region user */
@@ -54,7 +54,7 @@ hookIn.http_createRoute("/search", function(router) {
                     }
 
                     result = {
-                        query: req.params.query,
+                        query: query,
                         users: userList,
                         usersActive: userListActive,
                         usersInactive: userListInactive,
@@ -88,21 +88,31 @@ hookIn.http_createRoute("/search", function(router) {
         }
     });
     function liveRouting(query) {
-        let subroute = query.substr(0,3);
-        if (subroute === "all/"){
+        let subRoute = query.substr(0,3);
+        if (subRoute === "all/"){
             let realQuery = query.substr(4);
             return liveSearchResults(livesearch.all(realQuery), realQuery);
         } else {
-            return liveSearchResults(livesearch.short(req.params.query), req.params.query);
+            return liveSearchResults(livesearch.short(query), query);
         }
     }
     function liveSearchResults (dbResults, query){
-        return {
+        // return {
+        //     query: query,
+        //     owners: dbResults.owner,
+        //     animals: dbResults.animals.alive,
+        //     deadAnimals: dbResults.animals.dead,
+        //     articles: dbResults.articles,
+        // };
+        let a = {
             query: query,
             owners: dbResults.owner,
             animals: dbResults.animals.alive,
             deadAnimals: dbResults.animals.dead,
             articles: dbResults.articles,
         };
+        console.log("routes/search 114", query, a);
+        console.log(a);
+        return a;
     }
 });

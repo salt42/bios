@@ -136,7 +136,12 @@ defineComp("search", function(bios, $element){
         $liveResults.empty()
             .removeClass("hidden");
         searchQuery = $input.val();
+        // console.log(e.keyCode);
         switch (e.keyCode) {
+            case 16: // = shift
+            case 20: // = caps lock
+            case 18: // = alt
+                break; // do nothing
             case 13: // = enter
                 // @todo save last view
                 bios.loadComponent("liveSearchResult", "mainSection", {
@@ -146,11 +151,11 @@ defineComp("search", function(bios, $element){
                 $liveResults.not("hidden").addClass("hidden");
                 break;
             default:
-                // console.log(e.key);
                 if (!(searchQuery === "")){
                     // add wildcard to search
                     if (!(searchQuery.slice(-1) === "*"))
                         searchQuery += "*";
+                    // console.log("query: ", searchQuery);
                     bios.search.liveSearch(searchQuery, function(data) {
                         console.log(data);
                         if (data.query !== searchQuery) {

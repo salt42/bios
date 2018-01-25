@@ -1,25 +1,27 @@
 "use strict";
 
-const DB = require("jsfair/database");
 const h = require("./helper");
-const convert = require("./dbObjectConverter");
-const error = require("./errorCodes");
+// const DB = require("jsfair/database");
+// const convert = require("./dbObjectConverter");
+// const error = require("./dbError");
+
+const animal     = require('./../db/animal');
+const article    = require('./../db/article');
+const owner      = require('./../db/owner');
 
 module.exports = {
-    all: function(query) {
-
-        // firstStart();
-        let readOut = h.cleanUpDoubleEntriesMulti(DB.runStatement("liveSearch", {
-            query: query,
-        }));
+    all: function(query = null) {
         let dbResults = {};
-        let animals = readOut[1];
+
+        let animals  = (query === null) ? animal.get.all()  : animal.get.byName(query);
+        let articles = (query === null) ? article.get.all() : article.get.byName(query);
+        let owners   = (query === null) ? owner.get.all()   : owner.get.byName(query);
 
         dbResults.animals = {};
-        dbResults.animals.alive = h.sortOutDeadAnimals(animals);
-        dbResults.animals.dead = h.sortOutDeadAnimals(animals, true);
-        dbResults.articles = readOut[2];
-        dbResults.owner = readOut[0];
+        dbResults.animals.alive = (animals.error) ? [] : h.sortOutDeadAnimals(animals);
+        dbResults.animals.dead  = (animals.error) ? [] : h.sortOutDeadAnimals(animals, true);
+        dbResults.articles      = (articles.error)? [] : articles;
+        dbResults.owner         = (owners.error)  ? [] : owners;
 
         return dbResults;
     },
@@ -29,6 +31,7 @@ module.exports = {
         let db_res = this.all(query);
         let dbResults = {};
 
+        dbResults.animals = {};
         dbResults.animals.alive = h.limitResults(db_res.animals.alive, 6);
         dbResults.animals.dead  = h.limitResults(db_res.animals.dead, 3);
         dbResults.articles      = h.limitResults(db_res.articles);

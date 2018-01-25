@@ -1,9 +1,9 @@
 "use strict";
 
 const DB = require("jsfair/database");
-const h = require("./helper");
-const convert = require("./dbObjectConverter");
-const error = require("./errorCodes");
+const h  = require("./helper");
+// const convert = require("./dbObjectConverter");
+// const error   = require("./dbError");
 
 module.exports = {
     get: {
@@ -24,7 +24,7 @@ module.exports = {
             return this.single("species");
         },
         single: function (table) {
-            return h.cleanUpDoubleEntries(DB.select('select * from ' + table));//achso
+            return h.cleanUpDoubleEntries(DB.select('select * from ' + table));
         },
     }
 };

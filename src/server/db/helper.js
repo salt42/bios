@@ -12,12 +12,13 @@ module.exports = {
 
     cleanUpDoubleEntriesMulti: function(results){
     for ( let i = 0; i < results.length; i++){
-        results[i] = cleanUpDoubleEntries(results[i]);
+        results[i] = this.cleanUpDoubleEntries(results[i]);
     }
     return results;
     },
 
     sortOutDeadAnimals: function(result, limit = 0, invert = false){
+        if (result === null) return null;
     if (typeof limit === "boolean"){
         invert = limit;
         limit = 0;
