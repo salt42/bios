@@ -1,5 +1,3 @@
 --#all
 SELECT *
-    FROM @table;
-
-
+    FROM !table;
