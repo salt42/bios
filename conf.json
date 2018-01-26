@@ -18,14 +18,11 @@
         "coreComponents": {
             "section": true
         },
-        "modulePaths": ["/server/routes"],
-        "componentPaths": ["/client/component"],
         "preCss": ["/css/style.css", "/libs/font-awesome-4.7.0/css/font-awesome.min.css", "/libs/jsonForm/src/jsonForm.css"],
         "postCss": [],
-        "preScript": ["/libs/jsonForm/src/jsonForm.js", "/language/english.js", "/jsfair/browserBridge.js"],
+        "preScript": ["/libs/jsonForm/src/jsonForm.js", "/language/english.js"],
         "postScript": [],
-        "coreComponent": {
-            "section": true
-        }
+        "modulePaths": ["/modules"],
+        "componentPaths": ["/component"]
     }
 }
