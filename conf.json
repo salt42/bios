@@ -8,17 +8,22 @@
             "viewsDir": "/src/views"
         },
         "database": {
-            "dbFile":  "/src/db/db/bios.sqlite3",
+            "dbFile": "/src/db/db/bios.sqlite3",
             "sqlPath": "/src/db/sql",
             "sqCache": false
         }
     },
     "client": {
-        "modulePaths": ["/src/client/modules", "/assets"],
-        "componentPaths": ["/src/client/component"],
+        "coreModules": {},
+        "coreComponent": {
+            "section": true
+        },
+        "modulePaths": ["/server/routes", "/server/routes", "/src/client/modules", "/assets"],
+        "componentPaths": ["/client/component", "/client/component", "/src/client/component"],
         "preCss": ["/css/style.css", "/libs/font-awesome-4.7.0/css/font-awesome.min.css", "/libs/jsonForm/src/jsonForm.css"],
         "postCss": [],
-        "preScript": ["/libs/jsonForm/src/jsonForm.js", "/language/english.js"],
-        "postScript": []
+        "preScript": ["/libs/jsonForm/src/jsonForm.js", "/language/english.js", "/jsfair/browserBridge.js", "/jsfair/browserBridge.js"],
+        "postScript": [],
+        "deinValue": "default value"
     }
 }
