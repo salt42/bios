@@ -5,6 +5,8 @@ define("trans", function(bios){
     let speciesList;
     let userRolesList;
 
+    let error = false;
+
     /* region get lists */
     bios.search.getList("all", function(data){
         errorCheck("bios.search.getList('all'...", data);
@@ -53,17 +55,17 @@ define("trans", function(bios){
     // decode holds querys from other tables
     this.decode = {
         species(value){
-            return Decode(speciesList, value);
+            return _Decode(speciesList, value);
         },
         userRoles(value){
-            return Decode(userRolesList, value);
+            return _Decode(userRolesList, value);
         },
     };
     /*endregion*/
 
     /* region decode aux */
 
-    function Decode(list, value){
+    function _Decode(list, value){
         if(error) return value;
         return list[value]
     }
@@ -82,7 +84,8 @@ define("trans", function(bios){
                     if(data.userRoles.length === 0 ) eMsg += ("List 'userRole' is empty!");
                 }
                 if(eMsg) {
-                    throw new Error(eMsg);
+                    error = true;
+                    throw new Error("Language Translation Module ERROR: " + eMsg);
                 }
         }
     }
