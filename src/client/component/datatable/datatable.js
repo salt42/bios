@@ -7,7 +7,7 @@
     // set free global window.dtc
     window.dtc = {};
 
-    defineComp("dataTable", function (bios, $element) {
+    defineComp("data-table", function (bios, $element) {
         "use strict";
 
         let dataTable = {

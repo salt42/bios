@@ -8,7 +8,7 @@ defineComp("content", function(bios, $element, args) {
     $("<p>hier kann man das html der componente einbauen. zb ein login, oder eine liste, oder eine übersichts seite.</p>")
         .appendTo($element);
 
-    $("<userlist></userlist>")
+    $("<user-list></user-list>")
         .appendTo($element);
 
 

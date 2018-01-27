@@ -6,7 +6,7 @@ defineComp("owner", function(bios, $element, args) {
     $("<h1>owner</h1>")
         .appendTo($element);
 
-    let $form = $("<jsonForm></jsonForm>")
+    let $form = $("<json-form></json-form>")
         .addClass("owner-details")
         .appendTo($element);
 

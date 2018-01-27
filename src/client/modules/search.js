@@ -32,6 +32,7 @@ define("search", function(bios){
         }
     };
     /*endregion*/
+
     /* region list */
     this.getList = function (searchQuery, fn){
         $.ajax({
@@ -44,6 +45,7 @@ define("search", function(bios){
         });
     };
     /*endregion*/
+
     /* region animal */
     this.findAnimals = function (searchQuery, fn){
         $.ajax({
@@ -66,6 +68,7 @@ define("search", function(bios){
         });
     };
     /*endregion*/
+
     /* region article */
     this.findArticles = function (searchQuery, fn){
         $.ajax({
@@ -88,6 +91,7 @@ define("search", function(bios){
         });
     };
     /*endregion*/
+
     /* region owner */
     this.findOwners = function (searchQuery, fn){
         $.ajax({
@@ -110,6 +114,7 @@ define("search", function(bios){
         });
     };
     /*endregion*/
+
     /* region user */
     this.userSearch = function (fn){
         $.ajax({

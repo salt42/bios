@@ -6,7 +6,7 @@ defineComp("animal", function(bios, $element, args) {
     $("<h1>animal</h1>")
         .appendTo($element);
 
-    let $form = $("<jsonForm></jsonForm>")
+    let $form = $("<json-form></json-form>")
         .appendTo($element);
 
     bios.initAllUI($element);

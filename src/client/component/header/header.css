@@ -53,7 +53,7 @@ header head-panel {
     justify-content: space-between;
     flex-direction: column;
 }
-header head-panel userlist {
+header head-panel user-list {
     flex: 1;
     align-self: flex-end;
 }

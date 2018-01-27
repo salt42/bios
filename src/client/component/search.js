@@ -144,7 +144,7 @@ defineComp("search", function(bios, $element){
                 break; // do nothing
             case 13: // = enter
                 // @todo save last view
-                bios.loadComponent("liveSearchResult", "mainSection", {
+                bios.loadComponent("live-searchresult", "mainSection", {
                     query: searchQuery,
                     resultSet: resultSet,
                 });

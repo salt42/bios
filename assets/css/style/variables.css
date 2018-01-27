@@ -38,33 +38,6 @@
 .color-three-dark {
     background-color: var(--color-three-dark);
 }
-
-li.live-Search-owners{
-    background-color: var(--color-one-dark);
-}
-li.live-Search-owners:hover{
-    background-color: var(--color-one);
-}
-li.live-Search-animals{
-    background-color: var(--color-one);
-}
-li.live-Search-animals:hover{
-    background-color: var(--color-one-dark);
-}
-li.live-Search-animals-dead{
-    background-color: var(--color-one-dark);
-    color: white;
-}
-li.live-Search-animals-dead:hover{
-    background-color: var(--color-one);
-    color: black;
-}
-li.live-Search-articles{
-    background-color: var(--color-three-dark);
-}
-li.live-Search-articles:hover{
-    background-color: var(--color-three);
-}
 form-field-background{
     background-color: var(--color-one);
 }

@@ -1,6 +1,6 @@
-defineComp("userlist", function(bios, $element){
+defineComp("user-list", function(bios, $element){
     "use strict";
-    if (window.startUpLogLevel >= 2) console.log("start userlist UI module");
+    if (window.startUpLogLevel >= 2) console.log("start user-list UI module");
 
     let $list = $('<ul></ul>');
 

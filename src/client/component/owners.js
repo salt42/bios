@@ -6,7 +6,7 @@ defineComp("owners", function(bios, $element, args) {
     $("<h1>owner Overview</h1>")
         .appendTo($element);
 
-    let $table = $("<dataTable></dataTable>")
+    let $table = $("<data-table></data-table>")
         .appendTo($element);
 
     bios.initAllUI($element);
