@@ -11,17 +11,17 @@ function execStatement(sqlFile, query, statementID_Array, dataType, errorId = 2)
 module.exports = {
     all: function(sqlFile, dataType) {
             return function (query) {
-                return execStatement(sqlFile, query, [0], dataType);
+                return execStatement(sqlFile, query, [0], dataType)[0];
             }
     },
     byID: function(sqlFile, dataType) {
         return function (query) {
-            return execStatement(sqlFile, query, [1], dataType, 3);
+            return execStatement(sqlFile, query, [1], dataType, 3)[0];
         }
     },
     byName: function(sqlFile, dataType) {
         return function (query) {
-            return execStatement(sqlFile, query, [2], dataType);
+            return execStatement(sqlFile, query, [2], dataType)[0];
         }
     },
 };

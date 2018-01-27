@@ -21,13 +21,13 @@ module.exports = {
         let dbResults = {};
         let animals = DB.runStatement("animals", {
             query: query
-        }, [0]);
+        }, [0])[0];
 
         dbResults.animals = {};
         dbResults.animals.alive = h.sortOutDeadAnimals(animals);
         dbResults.animals.dead  = h.sortOutDeadAnimals(animals, true);
-        dbResults.articles      = DB.runStatement("articles", { query: query }, [0]);
-        dbResults.owner         = DB.runStatement("owners", { query: query }, [0]);
+        dbResults.articles      = DB.runStatement("articles", { query: query }, [0])[0];
+        dbResults.owner         = DB.runStatement("owners", { query: query }, [0])[0];
 
         return dbResults;
     },

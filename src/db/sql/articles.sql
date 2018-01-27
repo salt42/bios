@@ -6,13 +6,13 @@ SELECT *
     ORDER BY RANK;
 --#all
 SELECT *
-    FROM articles
+    FROM ArticleSearch
     WHERE id = @query
-    ORDER BY RANK;
+    ORDER BY name;
 --#all
 SELECT *
-    FROM articles
-    WHERE name
+    FROM ArticleSearch
+    WHERE ArticleSearch
     MATCH @query
-    ORDER BY RANK;
+    ORDER BY name;
 

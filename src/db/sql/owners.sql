@@ -8,12 +8,12 @@ SELECT *
 SELECT *
     FROM owner
     WHERE id = @query
-    ORDER BY RANK;
+    ORDER BY name;
 --#all
 SELECT *
-    FROM owner
-    WHERE name
+    FROM OwnerSearch
+    WHERE OwnerSearch
     MATCH @query
-    ORDER BY RANK;
+    ORDER BY name;
 
 

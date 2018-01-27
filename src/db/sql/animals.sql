@@ -8,10 +8,10 @@ SELECT *
 SELECT *
     FROM animal
     WHERE id = @query
-    ORDER BY RANK;
+    ORDER BY name;
 --#all
 SELECT *
-    FROM animal
-    WHERE name
+    FROM AnimalSearch
+    WHERE AnimalSearch
     MATCH @query
-    ORDER BY RANK;
+    ORDER BY name;
