@@ -45,6 +45,11 @@ let articleSet = {
     comments: {},
 };
 /*endregion*/
+let convertTypes = [
+    "animal",
+    "article",
+    "owner",
+];
 /* region convert from DB functions */
 function animalDBtoObject(a){
     let result = animalSet;
@@ -201,12 +206,16 @@ let dbObjectConverter = {
     },
     multi: {
         fromDB: function (type, resultSet) {
-            console.log("bd Converter multi input", resultData);
+            console.log("bd Converter multi input", resultSet);
             return multiFromDB_func(type, resultSet)
         },
         toDB: function (type, objects) {
             return multiToDB_func(type, objects)
         },
+    },
+    isConvertType: function(type){
+        return type in convertTypes;
+
     }
 };
 /*endregion*/

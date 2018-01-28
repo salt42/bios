@@ -3,7 +3,7 @@
 const stdGet  = require("./stdGet");
 // const DB      = require("jsfair/database");
 // const ERROR   = require("./dbError");
-// const h       = require("./helper");
+// const h       = require("./db_helper");
 // const convert = require("./dbObjectConverter");
 
 const sqlFile = "owners";

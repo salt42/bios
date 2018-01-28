@@ -1,5 +1,5 @@
 --#run
-CREATE VIRTUAL TABLE IF NOT EXISTS AnimalSearch USING FTS5(id, species_id, race_id, chip, tattoo, name, birthday, color_description, died_on);
+CREATE VIRTUAL TABLE IF NOT EXISTS AnimalSearch USING FTS5(id, species_id, race_id, chip, tattoo, name, birthday, color_description, died_on, died);
 
 --#run
 CREATE VIRTUAL TABLE IF NOT EXISTS ArticleSearch USING FTS5(id, name);
@@ -9,7 +9,7 @@ CREATE VIRTUAL TABLE IF NOT EXISTS OwnerSearch USING FTS5(id, name, name_2, firs
 
 --#run
 INSERT INTO AnimalSearch
-  SELECT id, species_id, race_id, chip, tattoo, name, birthday, color_description, died_on
+  SELECT id, species_id, race_id, chip, tattoo, name, birthday, color_description, died_on, died
   FROM animal;
 --#run
 INSERT INTO ArticleSearch

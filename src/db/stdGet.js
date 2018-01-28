@@ -1,27 +1,24 @@
 "use strict";
+const log     = require("jsfair/log")("stdGet - Search");
 const DB      = require("jsfair/database");
-const convert = require("./dbObjectConverter");
 const ERROR   = require("./dbError");
-
-function execStatement(sqlFile, query, statementID_Array, dataType, errorId = 2){
-    let rows = DB.runStatement(sqlFile, {query: query}, statementID_Array);
-    return (rows.length < 1) ? convert.multi.fromDB(dataType, rows) : ERROR(errorId);
-}
+const h       = require("./db_helper");
 
 module.exports = {
-    all: function(sqlFile, dataType) {
+    all: function(sqlFile) {
             return function (query) {
-                return execStatement(sqlFile, query, [0], dataType)[0];
+                let aa = DB.runStatement(sqlFile, {query: query}, [0]);
+                return h.cleanUpDoubleEntries( aa );
             }
     },
-    byID: function(sqlFile, dataType) {
-        return function (query) {
-            return execStatement(sqlFile, query, [1], dataType, 3)[0];
-        }
+    byID: function(sqlFile) {
+            return function (query) {
+                return h.cleanUpDoubleEntries( DB.runStatement(sqlFile, {query: query}, [1]) );
+            }
     },
-    byName: function(sqlFile, dataType) {
+    byName: function(sqlFile) {
         return function (query) {
-            return execStatement(sqlFile, query, [2], dataType)[0];
+            return h.cleanUpDoubleEntries(DB.runStatement(sqlFile, {query: query}, [2]));
         }
-    },
+    }
 };

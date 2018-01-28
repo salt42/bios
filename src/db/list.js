@@ -1,30 +1,32 @@
 "use strict";
 
 const DB = require("jsfair/database");
-const h  = require("./helper");
+const h  = require("./db_helper");
 // const convert = require("./dbObjectConverter");
 // const error   = require("./dbError");
 
-module.exports = {
+let list = {
     get: {
         all: function () {
             let result = {};
-            result.user = this.user();
-            result.userRoles = this.userRoles();
-            result.species = this.species();
+            result.user      = list.get.user();
+            result.userRoles = list.get.userRoles();
+            result.species   = list.get.species();
             return result;
         },
         user: function () {
-            return this.single("user");
+            return list.get.single("user")[0];
         },
         userRoles: function () {
-            return this.single("user_roles");
+            return list.get.single("user_roles")[0];
         },
         species: function () {
-            return this.single("species");
+            return list.get.single("species")[0];
         },
         single: function (table) {
-            return h.cleanUpDoubleEntries(DB.runStatement("lists", {table: table})[0]);
+            return DB.runStatement("lists", {table: table}, [0]);
         },
     }
 };
+
+module.exports = list;

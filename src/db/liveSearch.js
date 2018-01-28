@@ -1,33 +1,31 @@
 "use strict";
 
-const h = require("./helper");
 const DB = require("jsfair/database");
+const h = require("./db_helper");
 // const convert = require("./dbObjectConverter");
 // const error = require("./dbError");
 
 const animal  = require('./animal');
 const article = require('./article');
 const owner   = require('./owner');
-const log     = require('jsfair/log')("Error".red + " in 'src/server/db/liveSearch.js'".green);
+const log     = require('jsfair/log')("liveSearch.js");
 
 function errorHandling(errorObject, information = null) {
     let msg = (information !== null) ? "info:" + information + " -> " : "";
-    log(msg, errorObject);
+    log.error(msg, errorObject);
     return [];
 }
 
 module.exports = {
     all: function(query = "*") {
         let dbResults = {};
-        let animals = DB.runStatement("animals", {
-            query: query
-        }, [0])[0];
+        let animals = animal.get.all(query);
 
         dbResults.animals = {};
-        dbResults.animals.alive = h.sortOutDeadAnimals(animals);
-        dbResults.animals.dead  = h.sortOutDeadAnimals(animals, true);
-        dbResults.articles      = DB.runStatement("articles", { query: query }, [0])[0];
-        dbResults.owner         = DB.runStatement("owners", { query: query }, [0])[0];
+        dbResults.animals.alive = animals.alive;
+        dbResults.animals.dead  = animals.dead;
+        dbResults.articles      = article.get.all(query);
+        dbResults.owner         = owner.get.all(query);
 
         return dbResults;
     },
