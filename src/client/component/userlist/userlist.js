@@ -5,7 +5,6 @@ defineComp("user-list", function(bios, $element){
     let $list = $('<ul></ul>');
 
     bios.search.userSearch(function(data){
-        console.log(data);
         getUserList(data.users);
     });
 

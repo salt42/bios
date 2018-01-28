@@ -1,8 +1,8 @@
 --#run
-DROP TABLE OwnerSearch;
+DROP TABLE IF EXISTS OwnerSearch;
 
 --#run
-DROP TABLE AnimalSearch;
+DROP TABLE IF EXISTS AnimalSearch;
 
 --#run
-DROP TABLE ArticleSearch;
+DROP TABLE IF EXISTS ArticleSearch;

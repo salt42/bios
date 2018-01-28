@@ -12,24 +12,26 @@ const dataType = "animal";
 
 
 function createAnimalResult (all){
-    console.log('here');
-    debugger;
     let result = {};
-    result.animals = {};
-    result.animals.alive = h.sortOutDeadAnimals(all);
-    result.animals.dead  = h.sortOutDeadAnimals(all, true);
+    result = {};
+    result.alive = h.sortOutDeadAnimals(all);
+    result.dead  = h.sortOutDeadAnimals(all, true);
     return result;
 }
 
 module.exports = {
     get: {
-        all:    function (query){
-            let aa = stdGet.all (sqlFile)(query)[0];
-            return convert.multi.fromDB( dataType, createAnimalResult( aa ));
+        all:    function (query, plainDB = false){
+            if(plainDB) return createAnimalResult( stdGet.all (sqlFile)(query)[0][0]);
+            return convert.fromDB( dataType, createAnimalResult( stdGet.all (sqlFile)(query)[0][0] ) );
         },
-        byID:   stdGet.byID  (sqlFile, dataType),
-        byName: function (query){
-            return convert.multi.fromDB( dataType, createAnimalResult( stdGet.byName (sqlFile)(query)[0] ) );
+        byID:   function (query, plainDB = false){
+            if(plainDB) return createAnimalResult( stdGet.byID() (sqlFile)(query)[0][0] );
+            return convert.fromDB( dataType, createAnimalResult( stdGet.byID() (sqlFile)(query)[0][0] ) );
+        },
+        byName: function (query, plainDB = false){
+            if(plainDB) return createAnimalResult( stdGet.byName (sqlFile)(query)[0][0] );
+            return convert.fromDB( dataType, createAnimalResult( stdGet.byName (sqlFile)(query)[0][0] ) );
         },
     }
 };

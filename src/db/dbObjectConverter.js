@@ -175,11 +175,20 @@ function toDB_func (type, object) {
     }
 }
 function multiFromDB_func (type, resultSet){
-    if (resultSet.length === 0) return [];
+    if (resultSet.length === 0) return []; // empty array
     let objects = [];
-    for (let row in resultSet){
-        if(resultSet.hasOwnProperty(row)){
-            objects.push(fromDB_func(type, row));
+
+    if (Array.isArray(resultSet)){
+        for(let i = 0; i < resultSet.length; i++){
+            if (Array.isArray(resultSet[i])) {
+                objects[i] = multiFromDB_func(type, resultSet[i]);
+            } else {
+                for (let row in resultSet[i]){
+                    if(resultSet[i].hasOwnProperty(row)){
+                        objects[i] = fromDB_func(type, resultSet[i]);
+                    }
+                }
+            }
         }
     }
     return objects;
@@ -189,7 +198,7 @@ function multiToDB_func (type, objects){
     let data = [];
     for (let row in data){
         if(data.hasOwnProperty(row)){
-            data.push(toDB_func(type, row));
+            data.push(toDB_func(type, objects[row]));
         }
     }
     return data;
@@ -197,21 +206,11 @@ function multiToDB_func (type, objects){
 /*endregion*/
 /* region db object converter structure */
 let dbObjectConverter = {
-    fromDB: function (type, resultData) {
-        console.log("bd Converter input", resultData);
-        return fromDB_func(type, resultData)
+    fromDB: function (type, resultSet) {
+        return multiFromDB_func(type, resultSet)
     },
-    toDB: function (type, object) {
-        return toDB_func(type, object)
-    },
-    multi: {
-        fromDB: function (type, resultSet) {
-            console.log("bd Converter multi input", resultSet);
-            return multiFromDB_func(type, resultSet)
-        },
-        toDB: function (type, objects) {
-            return multiToDB_func(type, objects)
-        },
+    toDB: function (type, objects) {
+        return multiToDB_func(type, objects)
     },
     isConvertType: function(type){
         return type in convertTypes;

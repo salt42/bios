@@ -1,7 +1,7 @@
 {
     "appName": "bios",
     "server": {
-        "modulePaths": ["/src/server/routes"],
+        "modulePaths": ["/src/server/routes", "/src/server/modules"],
         "http": {
             "port": 666,
             "staticDirs": ["/src/client", "/assets"],

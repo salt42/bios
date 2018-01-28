@@ -19,18 +19,17 @@ function errorHandling(errorObject, information = null) {
 module.exports = {
     all: function(query = "*") {
         let dbResults = {};
-        let animals = animal.get.all(query);
+        let animals = animal.get.all(query, true);
 
-        dbResults.animals = {};
-        dbResults.animals.alive = animals.alive;
-        dbResults.animals.dead  = animals.dead;
-        dbResults.articles      = article.get.all(query);
-        dbResults.owner         = owner.get.all(query);
+        dbResults.animals  = animals;
+        dbResults.articles = article.get.all(query, true);
+        dbResults.owner    = owner.get.all(query, true);
 
         return dbResults;
     },
     short: function(query) {
 
+        debugger;
         // firstStart();
         let db_res = this.all(query);
         let dbResults = {};
