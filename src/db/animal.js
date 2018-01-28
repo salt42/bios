@@ -1,6 +1,5 @@
 "use strict";
-
-const log      = require("jsfair/log");
+const log     = require("jsfair/log")("db-animal");
 const DB      = require("jsfair/database");
 const h       = require("./db_helper");
 const convert = require("./dbObjectConverter");
@@ -19,17 +18,17 @@ function createAnimalResult (all){
 module.exports = {
     get: {
         all:    function (query, plainDB = false){
-            let res = h.cleanUpDoubleEntries (DB.runStatement( sqlFile, {query: query}, [0]) )[0];
+            let res = h.cleanUpDoubleEntries (DB.runStatement( sqlFile, {query: query}, [0]) [0] );
             if (!plainDB) convert.fromDB( dataType, res );
             return createAnimalResult(res);
         },
         byID:   function (query, plainDB = false){
-            let res = h.cleanUpDoubleEntries (DB.runStatement( sqlFile, {query: query}, [1]) )[0];
+            let res = h.cleanUpDoubleEntries (DB.runStatement( sqlFile, {query: query}, [1]) [0] );
             if (!plainDB) convert.fromDB( dataType, res );
             return createAnimalResult(res);
         },
         byName: function (query, plainDB = false){
-            let res = h.cleanUpDoubleEntries (DB.runStatement( sqlFile, {query: query}, [2]) )[0];
+            let res = h.cleanUpDoubleEntries (DB.runStatement( sqlFile, {query: query}, [2]) [0] );
             if (!plainDB) convert.fromDB( dataType, res );
             return createAnimalResult(res);
         },

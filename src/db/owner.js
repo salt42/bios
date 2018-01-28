@@ -1,6 +1,5 @@
 "use strict";
-
-const log      = require("jsfair/log")("db-owner.js");
+const log      = require("jsfair/log")("db-owner");
 const DB      = require("jsfair/database");
 const h       = require("./db_helper");
 const convert = require("./dbObjectConverter");

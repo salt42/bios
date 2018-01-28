@@ -1,4 +1,6 @@
+"use strict";
 const log     = require("jsfair/log")("db_helper");
+
 /* region clean up double entries */
 function cudeObjectsArray (arrayOfObjects){
     if ( arrayOfObjects.length < 1) return []; // if array is empty
@@ -14,28 +16,19 @@ function cudeObjectsArray (arrayOfObjects){
 
 function cudeArrayRecursive (array) {
     let result = [];
-    if (isEmptyArray(array)) return result;
+    if (array.length < 1) return result;
     for (let i = 0; i < array.length; i++){
-        if (!isArray(array[i])) result = cudeObjectsArray(array);
-        if (isArray(array[i]) && !isEmptyArray(array[i])){
+        if (!Array.isArray(array[i])) result = cudeObjectsArray(array);
+        if (Array.isArray(array[i]) && !Array.isEmpty(array[i])){
             result[i] = cudeArrayRecursive(array[i]);
         }
     }
     return result;
 }
 /*endregion*/
-function isArray (obj){
-    return (Array.isArray(obj));
-}
-
-function isEmptyArray (obj){
-    return (obj.length < 1)
-}
 
 let db_helper = {
-    cleanUpDoubleEntries: (results)=> {
-            return cudeArrayRecursive(results);
-        },
+    cleanUpDoubleEntries: cudeArrayRecursive,
     sortOutDeadAnimals: function(result, limit = 0, invert = false){
         if (result === null) return null;
         if (typeof limit === "boolean"){
@@ -64,7 +57,6 @@ let db_helper = {
         }
         return res;
     },
-
     limitResults: function(results, limit = 8){
         if (!results) return [];
         if (results.length < limit) limit = results.length;

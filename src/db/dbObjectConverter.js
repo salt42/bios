@@ -1,4 +1,5 @@
 "use strict";
+let log = require("jsfair/log")("dbObjectConverter.js");
 /* region std objects */
 let ownerDBObject   = {
     id: null,
@@ -45,11 +46,6 @@ let articleSet = {
     comments: {},
 };
 /*endregion*/
-let convertTypes = [
-    "animal",
-    "article",
-    "owner",
-];
 /* region convert from DB functions */
 function animalDBtoObject(a){
     let result = animalSet;
@@ -174,6 +170,8 @@ function toDB_func (type, object) {
             return objectToDB(object, ownerDBObject);
     }
 }
+/*endregion*/
+/* region multi functions */
 function multiFromDB_func (type, resultSet){
     if (resultSet.length === 0) return []; // empty array
     let objects = [];
@@ -212,10 +210,6 @@ let dbObjectConverter = {
     toDB: function (type, objects) {
         return multiToDB_func(type, objects)
     },
-    isConvertType: function(type){
-        return type in convertTypes;
-
-    }
 };
 /*endregion*/
 module.exports = dbObjectConverter;

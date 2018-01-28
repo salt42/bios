@@ -1,14 +1,10 @@
 "use strict";
-
-const DB = require("jsfair/database");
+const log     = require('jsfair/log')("liveSearch.js");
 const h = require("./db_helper");
-// const convert = require("./dbObjectConverter");
-// const error = require("./dbError");
 
 const animal  = require('./animal');
 const article = require('./article');
 const owner   = require('./owner');
-const log     = require('jsfair/log')("liveSearch.js");
 
 module.exports = {
     all: function(query = "*") {

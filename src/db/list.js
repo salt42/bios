@@ -1,9 +1,6 @@
 "use strict";
-
-const DB = require("jsfair/database");
-const h  = require("./db_helper");
-// const convert = require("./dbObjectConverter");
-// const error   = require("./dbError");
+let log = require("jsfair/log")("db-list");
+let DB = require("jsfair/database");
 
 let list = {
     get: {

@@ -1,4 +1,5 @@
 "use strict";
+let log = require("jsfair/log")("bios-routes/search");
 
 const animal     = require('../../db/animal');
 const article    = require('../../db/article');
@@ -17,35 +18,29 @@ let liveQuery = {
     }
 };
 
+let route = {
+    animals: (query)=>{ animal.get.all(query) },
+    animal:  (query)=>{ animal.get.byID(query) },
+    articles: (query)=>{ article.get.all(query) },
+    article:  (query)=>{ article.get.byID(query) },
+    owners: (query)=>{ owner.get.all(query) },
+    owner:  (query)=>{ owner.get.byID(query) },
+};
+
 hookIn.http_createRoute("/search", function(router) {
     router.get('/:type/:query*?', function(req, res) {
         try {
             let query = req.params.query;
             switch (req.params.type) {
-                /* region animals */
                 case "animals":
-                    result = animal.get.all();
-                    break;
                 case "animal":
-                    result = animal.get.byID(query);
-                    break;
-                /*endregion*/
-                /* region article */
                 case "articles":
-                    result = article.get.all();
-                    break;
                 case "article":
-                    result = article.get.byID(query);
-                    break;
-                /*endregion*/
-                /* region owner */
                 case "owners":
-                    result = owner.get.all();
-                    break;
                 case "owner":
-                    result = owner.get.byID(query);
+                    log("route called");
+                    route[req.params.type](query);
                     break;
-                /*endregion*/
                 /* region user */
                 case "user":
                     let userList = list.get.user();
