@@ -10,27 +10,17 @@ const article = require('./article');
 const owner   = require('./owner');
 const log     = require('jsfair/log')("liveSearch.js");
 
-function errorHandling(errorObject, information = null) {
-    let msg = (information !== null) ? "info:" + information + " -> " : "";
-    log.error(msg, errorObject);
-    return [];
-}
-
 module.exports = {
     all: function(query = "*") {
         let dbResults = {};
-        let animals = animal.get.all(query, true);
 
-        dbResults.animals  = animals;
+        dbResults.animals  = animal.get.all(query, true);
         dbResults.articles = article.get.all(query, true);
         dbResults.owner    = owner.get.all(query, true);
 
         return dbResults;
     },
     short: function(query) {
-
-        debugger;
-        // firstStart();
         let db_res = this.all(query);
         let dbResults = {};
 

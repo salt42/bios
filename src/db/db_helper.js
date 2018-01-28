@@ -16,7 +16,7 @@ function cudeArrayRecursive (array) {
     let result = [];
     if (isEmptyArray(array)) return result;
     for (let i = 0; i < array.length; i++){
-        if (!isArray(array[i])) result[i] = cudeObjectsArray(array);
+        if (!isArray(array[i])) result = cudeObjectsArray(array);
         if (isArray(array[i]) && !isEmptyArray(array[i])){
             result[i] = cudeArrayRecursive(array[i]);
         }
@@ -65,15 +65,12 @@ let db_helper = {
         return res;
     },
 
-    limitResults: function(results, count = 8){
-        if (count === 0) return results;
-        if (!results){
-            log.error("!results line 63 @ limitResults");
-            return [];
-        }
+    limitResults: function(results, limit = 8){
+        if (!results) return [];
+        if (results.length < limit) limit = results.length;
+        if (limit === 0) return results;
         let limitedResults = [];
-        if (results.length < count) count = results.length;
-        for (let i = 0; i < count; i++){
+        for (let i = 0; i < limit; i++){
             limitedResults[i] = results[i];
         }
         return limitedResults;

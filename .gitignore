@@ -67,3 +67,4 @@ bios.iml
 /dbsave/old/
 dbsave/old/
 /src/db/get.js
+/src/db/stdGet.js

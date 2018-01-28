@@ -65,7 +65,7 @@ defineComp("search", function(bios, $element){
                             let a = data[property][i];
                             let htmlText = " " + a.name + ", " + trans(denumS(a.species_id)) + ", " + a.died_on;
                             $('<li data-imgInfo = "' + a.species_id + '"></li>')
-                                .addClass(entryClass + "animal-dead" + " fa fa-circle")
+                                .addClass(entryClass + " animal-dead" + " fa fa-circle")
                                 .attr("type", 'animal')
                                 .attr("animal-id", a.id)
                                 .html(htmlText)

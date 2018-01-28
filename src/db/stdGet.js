@@ -7,18 +7,20 @@ const h       = require("./db_helper");
 module.exports = {
     all: function(sqlFile) {
             return function (query) {
-                let aa = DB.runStatement(sqlFile, {query: query}, [0]);
-                return h.cleanUpDoubleEntries( aa );
+                let res = DB.runStatement(sqlFile, {query: query}, [0]);
+                return h.cleanUpDoubleEntries( res );
             }
     },
     byID: function(sqlFile) {
             return function (query) {
-                return h.cleanUpDoubleEntries( DB.runStatement(sqlFile, {query: query}, [1]) );
+                let res = DB.runStatement(sqlFile, {query: query}, [1]);
+                return h.cleanUpDoubleEntries( res );
             }
     },
     byName: function(sqlFile) {
         return function (query) {
-            return h.cleanUpDoubleEntries(DB.runStatement(sqlFile, {query: query}, [2]));
+                let res = DB.runStatement(sqlFile, {query: query}, [2]);
+                return h.cleanUpDoubleEntries( res );
         }
     }
 };

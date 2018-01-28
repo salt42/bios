@@ -87,7 +87,6 @@ hookIn.http_createRoute("/search", function(router) {
                 case "all":
                     query = (req.params.type === "all") ? "all/" + query : query; // modify query that route /all/:query is treated like /live/all/:query
                     let dbResults = (liveQuery.isSubRoute(query)) ? liveSearch.all(liveQuery.getSubRouteQuery(query)) : liveSearch.short(query);
-                    debugger;
 
                     result = {
                         query: (liveQuery.isSubRoute(query)) ? liveQuery.getSubRouteQuery(query) : query,
