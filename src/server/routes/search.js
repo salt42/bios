@@ -19,12 +19,12 @@ let liveQuery = {
 };
 
 let route = {
-    animals: (query)=>{ animal.get.all(query) },
-    animal:  (query)=>{ animal.get.byID(query) },
-    articles: (query)=>{ article.get.all(query) },
-    article:  (query)=>{ article.get.byID(query) },
-    owners: (query)=>{ owner.get.all(query) },
-    owner:  (query)=>{ owner.get.byID(query) },
+    animals:  (query)=>{ return animal.get.all(query) },
+    animal:   (query)=>{ return animal.get.byID(query) },
+    articles: (query)=>{ return article.get.all(query) },
+    article:  (query)=>{ return article.get.byID(query) },
+    owners:   (query)=>{ return owner.get.all(query) },
+    owner:    (query)=>{ return owner.get.byID(query) },
 };
 
 hookIn.http_createRoute("/search", function(router) {
@@ -38,8 +38,8 @@ hookIn.http_createRoute("/search", function(router) {
                 case "article":
                 case "owners":
                 case "owner":
-                    log("route called");
-                    route[req.params.type](query);
+                    result = route[req.params.type](query);
+                    // und wo steht dann des ergebnis drin oh ha fuck
                     break;
                 /* region user */
                 case "user":

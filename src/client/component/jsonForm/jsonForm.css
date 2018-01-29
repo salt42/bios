@@ -1,19 +1,22 @@
-/*region owner*/
+button.refresh {
+    postion: absolute;
+    width: 90px;
+    height: 30px;
+}
 button.save {
     width: 90px;
     height: 30px;
 }
-jsonform.owner-details fieldset[data-name="root"] fieldset {
+json-form fieldset[data-name="root"] fieldset {
     width: 30%;
     float: left;
     margin: 5px;
 }
 
-jsonform.owner-details fieldset[data-name="root"] fieldset[data-name="hidden"] {
-    display: none;
+json-form fieldset[data-name="root"] fieldset[data-name="hidden"] {
 }
 
-jsonform.owner-details fieldset[data-name="root"] fieldset[data-name="person"] {
+json-form fieldset[data-name="root"] fieldset[data-name="person"] {
 }
 
 /*jsonform.owner-details label{*/

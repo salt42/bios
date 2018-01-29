@@ -10,6 +10,8 @@ function indexing() {
     DB.runStatement("dropLS",{});
     DB.runStatement("virtualTablesLS", {});
 }
-module.exports = {};
+module.exports = {
+
+};
 module.exports.indexing = indexing;
 DB.indexing = indexing;

@@ -1,7 +1,7 @@
 defineComp("search", function(bios, $element){
     "use strict";
     if (window.startUpLogLevel >= 2) console.log("start search UI module");
-    console.log("start search UI module");
+    // console.log("start search UI module");
     let $input = $('<input />')
         .attr("type", "text")
         .attr("name", "search")
@@ -25,7 +25,7 @@ defineComp("search", function(bios, $element){
             let entryClass = "live-search";
             // add entries
             if (data.hasOwnProperty(property)) {
-                console.log('##', property);
+                // console.log('##', property);
                 switch (property){
                     case "owners":
                         $li = $('<li class="owner-group group"></li>')
@@ -123,18 +123,17 @@ defineComp("search", function(bios, $element){
             type = $target.attr("type"),
             id = $target.attr(type + '-id')
         ;
-        console.log(type + '-id');
-        console.log($target.attr(type + '-id'));
-        console.log(id);
 
         if (!$target.hasClass("live-search")) return;
 
-        bios.loadComponent(type, "mainSection", {
-            id: id
+        bios.sections.load("main-content", type, {
+            id:id
         });
+
         $liveResults.not("hidden").addClass("hidden");
     });
 
+    /* region search bar behavior */
     $input.on("keyup", function(e) {
         $liveResults.empty()
             .removeClass("hidden");
@@ -160,7 +159,7 @@ defineComp("search", function(bios, $element){
                         searchQuery += "*";
                     // console.log("query: ", searchQuery);
                     bios.search.liveSearch(searchQuery, function(data) {
-                        console.log(data);
+                        // console.log(data);
                         if (data.query !== searchQuery) {
                             console.log("returned query is wrong");
                             return;
@@ -171,4 +170,5 @@ defineComp("search", function(bios, $element){
                 }
         }
     });
+    /*endregion*/
 });

@@ -7,23 +7,35 @@ defineComp("owner", function(bios, $element, args) {
         .appendTo($element);
 
     let $form = $("<json-form></json-form>")
-        .addClass("owner-details")
         .appendTo($element);
 
-    let $save = $('<button class="save"></button>')
-        .appendTo($element);
+    let $refresh = $("<button></button>")
+        .appendTo($element)
+        .addClass("refresh-button")
+        .text("refresh")
+        .on("click", function () {
+            bios.search.findAnimal(args.id, function(data) {
+                update(data);
+            });
+        })
+    ;
 
-    $save.on("click", function() {
-        let data = $form.data("context").getData().root;
-        console.log(data);
-        //send to sever
-    });
-    bios.initAllUI($element);
+    let $save = $("<button></button>")
+        .appendTo($element)
+        .addClass("save")
+        .text("save")
+        .on("click", function() {
+            let data = $form.getComponent().getData().root;
+            console.log(data)
+        })
+    ;
 
-    console.log(args);
+    function update(data) {
+        $form.getComponent().setData(data);
+    }
+
     bios.search.findOwner(args.id, function(data) {
-        console.log(data);
-        $form.data("context").setData(data);
+        update(data);
     });
 
     this.onDiscard = function() {};

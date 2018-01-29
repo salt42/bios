@@ -1,5 +1,6 @@
 define("search", function(bios){
     "use strict";
+
     /* region live search */
     this.liveSearch = function(searchQuery, fn, option = "short") {
         //@todo send live search request to server
@@ -61,6 +62,7 @@ define("search", function(bios){
         $.ajax({
             url: "/search/animal/" + searchQuery,
             type: "GET",
+            dataType: "json",
             success: function (resData) {
                 // console.log(resData)
                 fn(resData);

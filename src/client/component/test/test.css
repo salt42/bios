@@ -1,4 +1,5 @@
 .test-field {
+    display: none;
     background-color: yellow;
     position: absolute;
     top: 350px;

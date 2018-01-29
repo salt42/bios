@@ -24,8 +24,9 @@ module.exports = {
         },
         byID:   function (query, plainDB = false){
             let res = h.cleanUpDoubleEntries (DB.runStatement( sqlFile, {query: query}, [1]) [0] );
-            if (!plainDB) convert.fromDB( dataType, res );
-            return createAnimalResult(res);
+            if (!plainDB) res = convert.fromDB( dataType, res )[0];
+            // return createAnimalResult(res);
+            return res;
         },
         byName: function (query, plainDB = false){
             let res = h.cleanUpDoubleEntries (DB.runStatement( sqlFile, {query: query}, [2]) [0] );
