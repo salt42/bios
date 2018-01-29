@@ -22,14 +22,14 @@ defineComp("search", function(bios, $element){
             let $li = $('<li></li>');
             let $ul = $('<ul></ul>');
             let $fragment = $(document.createDocumentFragment());
-            let bgColor = "#3eb9a0";
-            let color = "black";
             let entryClass = "live-search";
             // add entries
             if (data.hasOwnProperty(property)) {
                 console.log('##', property);
                 switch (property){
                     case "owners":
+                        $li = $('<li class="owner-group group"></li>')
+                            .html(bios.trans.language("owner"));
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
                             let htmlText = " " + a.first_name + " " + a.name + ", " + a.address;
@@ -44,7 +44,8 @@ defineComp("search", function(bios, $element){
                         // console.log("here " + property, data[property]);
                         break;
                     case "animals":
-                        bgColor = "#718eaa";
+                        $li = $('<li class="animals-group group"></li>')
+                            .html(bios.trans.language("animals"));
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
                             let htmlText = " " + a.name + ", " + trans(denumS(a.species_id));
@@ -59,8 +60,8 @@ defineComp("search", function(bios, $element){
                         // console.log("here " + property, data[property]);
                         break;
                     case "deadAnimals":
-                        bgColor = "#2d6987";
-                        color = "white";
+                        $li = $('<li class="dead-animals-group group"></li>')
+                            .html(bios.trans.language("dead animals"));
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
                             let htmlText = " " + a.name + ", " + trans(denumS(a.species_id)) + ", " + a.died_on;
@@ -75,7 +76,8 @@ defineComp("search", function(bios, $element){
                         // console.log("here " + property, data[property]);
                         break;
                     case "articles":
-                        bgColor = "#ffa115";
+                        $li = $('<li class="articles-group group"></li>')
+                            .html(bios.trans.language("articles"));
                         for (let i = 0; i < data[property].length; i++) {
                             let a = data[property][i];
                             let htmlText = " " + a.name;
@@ -102,10 +104,11 @@ defineComp("search", function(bios, $element){
         let $srcElements = $(".live-search");
         for (let i = 0; i < $srcElements.length; i++){
             let text = $srcElements[i];
-            let regex = new RegExp(query, 'gi')
+            let sQuery = query.substr(0,query.length-1);
+            let regex = new RegExp(sQuery, 'gi');
             let response = text.innerText.replace(regex, function(str) {
                 return "<span class='highlight'>" + str + "</span>"
-            })
+            });
             text.innerHTML = response
 
         }

@@ -44,3 +44,8 @@ trans.set("reminder_3",   "Erinnerung 3"        );
 trans.set("encashment",   "Inkasso"             );
 trans.set("iban",         "IBAN"                );
 trans.set("bic",          "BIC"                 );
+
+trans.set("owner",        "Besitzer"            );
+trans.set("articles",     "Artikel"             );
+trans.set("animals",      "Tiere"               );
+trans.set("dead animals", "tote Tiere"          );

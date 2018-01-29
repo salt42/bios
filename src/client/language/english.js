@@ -31,3 +31,8 @@ trans.set("reminder_2",   "reminder 2"       );
 trans.set("reminder_3",   "reminder 3"       );
 trans.set("iban",         "IBAN"             );
 trans.set("bic",          "BIC"              );
+
+trans.set("owner",        "Owner"            );
+trans.set("articles",     "Articles"         );
+trans.set("animals",      "Animals"          );
+trans.set("dead animals", "Dead Animals"     );
