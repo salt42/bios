@@ -1,7 +1,14 @@
 defineComp("animal", function(bios, $element, args) {
     "use strict";
-    $("<h1>animal</h1>")
+
+    let $flashcard = $("<flashcard></flashcard>")
         .appendTo($element);
+
+    //@todo get data to comp flashcard
+    // let flashcardData = {
+    //     text: bios.trans.language("animal"),
+    //     ggfhtml: $form,
+    // };
 
     let $form = $("<json-form></json-form>")
         .appendTo($element);

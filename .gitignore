@@ -68,3 +68,5 @@ bios.iml
 dbsave/old/
 /src/db/get.js
 /src/db/stdGet.js
+/src/server/modules/translation.js
+/src/client/language/bin/

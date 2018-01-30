@@ -1,0 +1,14 @@
+flashcard div.top {
+    height: 35px;
+    width: 10vw;
+    background-color: var(--color-one);
+}
+flashcard div.top.selected {
+    height: 35px;
+    width: 10vw;
+    background-color: var(--color-normal);
+}
+flashcard div.flashcard-content {
+    background-color: var(--color-normal);
+    z-index: 5;
+}
