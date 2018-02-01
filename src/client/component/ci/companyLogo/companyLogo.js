@@ -3,5 +3,5 @@ defineComp("company-logo", function(bios, $element, args) {
 
 
 }, {
-    templatePath: "/component/companyLogo/companyLogo.html"
+    templatePath: "/component/ci/companyLogo/companyLogo.html"
 });
