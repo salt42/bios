@@ -1,0 +1,7 @@
+info {
+    position: absolute;
+    width:  calc(100vw * 0.1);
+    height: 6em;
+    background-color: var(--color-normal);
+    bottom: 1em;
+}

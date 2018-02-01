@@ -49,6 +49,12 @@ defineComp("mc-flashcard", function(bios, $element, args) {
             $contentItem
                 .addClass("selected")
             ;
+            bios.info.setData("test");
+            //
+            // let $infoField = $("info")
+            //     .append("<p>test</p>")
+            // ;
+            // console.log($infoField[0]);
         }
     }
 
