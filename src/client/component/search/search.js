@@ -126,11 +126,13 @@ defineComp("search", function(bios, $element){
 
         if (!$target.hasClass("live-search")) return;
 
-        bios.sections.load("main-content", type, {
-            id:id
+        bios.sections.load("main-content", "main-details", {
+            type: type,
+            id: id
         });
 
         $liveResults.not("hidden").addClass("hidden");
+
     });
 
     /* region search bar behavior */

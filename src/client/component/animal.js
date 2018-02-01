@@ -1,14 +1,7 @@
 defineComp("animal", function(bios, $element, args) {
     "use strict";
 
-    let $flashcard = $("<flashcard></flashcard>")
-        .appendTo($element);
-
-    //@todo get data to comp flashcard
-    // let flashcardData = {
-    //     text: bios.trans.language("animal"),
-    //     ggfhtml: $form,
-    // };
+    let id = (args && args.id) ? args.id : (bios.transferData.animal.id) ? bios.transferData.animal.id : null;
 
     let $form = $("<json-form></json-form>")
         .appendTo($element);
@@ -38,7 +31,7 @@ defineComp("animal", function(bios, $element, args) {
         $form.getComponent().setData(data);
     }
 
-    bios.search.findAnimal(args.id, function(data) {
+    bios.search.findAnimal(id, function(data) {
         update(data);
     });
 

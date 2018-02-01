@@ -6,7 +6,7 @@
 }
 #flex-grid-body .fgb-sidebar {
     flex: 5;
-    margin-right: 10px;
+    margin-right: 1px;
 }
 #flex-grid-body .fgb-main-content {
     flex: 45;
