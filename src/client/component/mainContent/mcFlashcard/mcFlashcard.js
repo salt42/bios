@@ -7,20 +7,20 @@ defineComp("mc-flashcard", function(bios, $element, args) {
     if (fcArray === null) return; //or throw error
 
 
-    console.log($("sidebar"));
-    console.log($("sidebar").width());
-    let sidebarWidth = "";
-    // $element.setAttribute("data-own-width", document.getElementById($element).offsetWidth);
-
-
     // create top region
     let $top = $("<div class='fc-top'></div>")
         .appendTo($element)
     ;
+    let $topBorder = $("<div></div>")
+        .addClass('fc-top-border')
+        .appendTo($top)
+    ;
 
     // create content region
-    let $content = $("<div class='fc-content' " + sidebarWidth + "></div>")
+    let $content = $("<div></div>")
+        .addClass('fc-content')
         .appendTo($element)
+        // .css("height", fcHeight)
     ;
 
     for (let i = 0; i < fcArray.length; i++){
@@ -39,13 +39,16 @@ defineComp("mc-flashcard", function(bios, $element, args) {
             ;
 
         // fill in data to content region
-        let $contentItem = $("<div class='fc-content-item' data-type='" + type + "' data-id='" + id + "'>" + type + id + "</div>")
-            .append($("<" + type + ">"+id+"</" + type + ">"))
-            .appendTo($content);
+        let $contentItem = $("<div class='fc-content-item' data-type='" + type + "' data-id='" + id + "'>[ " + type + " ] loaded for id [ " + id + " ]</div>")
+            .append($("<" + type + "></" + type + ">"))
+            .appendTo($content)
+        ;
 
         if (selected) {
             $topItem.addClass("selected");
-            $contentItem.addClass("selected");
+            $contentItem
+                .addClass("selected")
+            ;
         }
     }
 

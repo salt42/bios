@@ -1,38 +1,60 @@
+:root {
+    --fc-top-height: 59px;
+    --fc-top-item-height: 64px;
+}
+/* region top bar */
 mc-flashcard .fc-top {
     display: flex;
-    border-bottom: solid 1px black;
-    height: 34px;
+    height: var(--fc-top-height);
     margin-top: 2px;
+    overflow: visible;
+    position: relative;
+}
+.fc-top-border {
+    border-bottom: solid 1px black;
+    z-index: 2;
+    position: absolute;
+    top: calc(var(--fc-top-height) - 2px);
+    width: 100%;
+    box-shadow: 0 -2px 2px 2px cornflowerblue ;
 }
 mc-flashcard div.fc-top-item {
-    height: 27px;
+    height: var(--fc-top-item-height);
     width: 10vw;
+    z-index: 1;
+    padding: 5px;
     background-color: var(--color-two);
     border-top-right-radius: 80%;
-    /*border-top-left-radius: 10px;*/
+    border-top-left-radius: 5px;
     border: solid 1px black;
-    padding: 3px;
     box-shadow: 2px -2px 2px 2px cornflowerblue ;
 }
 mc-flashcard div.fc-top-item.selected {
-    height: 30px;
     width: 10vw;
     background-color: var(--color-two-dark);
     border-bottom: var(--color-two-dark) solid 1px;
+    z-index: 3;
 }
+/*endregion*/
 
+/* region content */
+mc-flashcard div.fc-content{
+    position: relative;
+    height: calc(var(--body-height) - 4px - var(--fc-top-height));
+    background-color: var(--color-two-dark);
+    z-index: 4;
+}
 mc-flashcard div.fc-content-item {
     padding-top: 10px;
     position:absolute;
-    top: calc(var(--header-height) + 37px);
-    bottom: 0;
-    right: 0;
-    left: calc((100vw /50 * 5) + 1px);
+    /*top: 0;*/
+    /*left: 0;*/
     border-left: solid black 1px;
-    background-color: var(--color-two-dark);
     z-index: 5;
     padding-left: 5px;
+    background-color: var(--color-two-dark);
 }
 mc-flashcard div.fc-content-item.selected {
-    z-index: 15;
+    z-index: 6;
 }
+/*endregion*/
