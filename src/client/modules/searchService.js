@@ -1,132 +1,60 @@
 define("search", function(bios){
     "use strict";
 
+    function serverSearch(type, searchQuery, fn) {
+        let url = "/search/" + type;
+        if (searchQuery !== null) url += "/" + searchQuery;
+        // if(type.indexOf("list") > -1) console.log('client search url', url);
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: fn
+        });
+    }
     /* region live search */
-    this.liveSearch = function(searchQuery, fn, option = "short") {
-        //@todo send live search request to server
-
+    this.liveSearch = (searchQuery, fn, option = "short")=>{
         if (option === "short"){
-            $.ajax({
-                url: "/search/live/" + searchQuery,
-                type: "GET",
-                // contentType: "application/json",
-                // data: JSON.stringify(conf),
-                success: function (resData) {
-                    // console.log(resData)
-                    if (searchQuery !== "")
-                        fn(resData);
-                }
-            });
+            serverSearch("live", searchQuery, fn);
         }
         else {
-            $.ajax({
-                url: "/search/live/all/" + searchQuery,
-                type: "GET",
-                // contentType: "application/json",
-                // data: JSON.stringify(conf),
-                success: function (resData) {
-                    // console.log(resData)
-                    if (searchQuery !== "")
-                        fn(resData);
-                }
-            });
+            serverSearch("live/all", searchQuery, fn);
         }
     };
     /*endregion*/
-
     /* region list */
-    this.getList = function (searchQuery, fn){
-        $.ajax({
-            url: "/search/list/" + searchQuery,
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                    fn(resData);
-            }
-        });
+    this.getList = (searchQuery, fn)=>{
+        serverSearch("list", searchQuery, fn);
     };
     /*endregion*/
 
     /* region animal */
-    this.findAnimals = function (searchQuery, fn){
-        $.ajax({
-            url: "/search/animals/" + searchQuery,
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                fn(resData);
-            }
-        });
+    this.findAnimals = (searchQuery, fn)=>{
+        serverSearch("animals", searchQuery,fn);
     };
-    this.findAnimal = function (searchQuery, fn){
-        $.ajax({
-            url: "/search/animal/" + searchQuery,
-            type: "GET",
-            dataType: "json",
-            success: function (resData) {
-                // console.log(resData)
-                fn(resData);
-            }
-        });
+    this.findAnimal = (searchQuery, fn)=>{
+        serverSearch("animal", searchQuery,fn);
     };
     /*endregion*/
 
     /* region article */
-    this.findArticles = function (searchQuery, fn){
-        $.ajax({
-            url: "/search/articles/" + searchQuery,
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                fn(resData);
-            }
-        });
+    this.findArticles = (searchQuery, fn)=>{
+        serverSearch("articles", searchQuery,fn);
     };
-    this.findArticle = function (searchQuery, fn){
-        $.ajax({
-            url: "/search/article/" + searchQuery,
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                fn(resData);
-            }
-        });
+    this.findArticle = (searchQuery, fn)=>{
+        serverSearch("article", searchQuery,fn);
     };
     /*endregion*/
 
     /* region owner */
-    this.findOwners = function (searchQuery, fn){
-        $.ajax({
-            url: "/search/owners/" + searchQuery,
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                fn(resData);
-            }
-        });
+    this.findOwners = (searchQuery, fn)=>{
+        serverSearch("owners", searchQuery,fn);
     };
-    this.findOwner = function (searchQuery, fn){
-        $.ajax({
-            url: "/search/owner/" + searchQuery,
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                fn(resData);
-            }
-        });
+    this.findOwner = (searchQuery, fn)=>{
+        serverSearch("owners", searchQuery,fn);
     };
     /*endregion*/
 
-    /* region user */
-    this.userSearch = function (fn){
-        $.ajax({
-            url: "/search/user",
-            type: "GET",
-            success: function (resData) {
-                // console.log(resData)
-                    fn(resData);
-            }
-        });
-    };
-    /*endregion*/
+    this.mainDetails = function (type, searchQuery, fn) {
+        serverSearch("mainDetails/" + type, searchQuery, fn);
+    }
 });

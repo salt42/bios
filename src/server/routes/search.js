@@ -6,95 +6,96 @@ const article    = require('../../db/article');
 const list       = require('../../db/list');
 const liveSearch = require('../../db/liveSearch');
 const owner      = require('../../db/owner');
+const mainDetails= require('../../db/mainDetails');
 
-let result = {};
+/* region make up live result */
+function liveResult (query, dbResults){
+    return {
+        query:       query,
+        owners:      dbResults.owner,
+        animals:     dbResults.animals.alive,
+        deadAnimals: dbResults.animals.dead,
+        articles:    dbResults.articles,
+    };
+}
+/*endregion*/
 
-let liveQuery = {
-    isSubRoute: function (query) {
-        return (query.substr(0,4) === "all/");
-    },
-    getSubRouteQuery: function (query) {
-        return query.substr(4);
-    }
-};
-
-let route = {
+/* region 1-parted url */
+// let routeOne = {
+//     type: (type)=>{return null},
+// };
+/*endregion*/
+/* region 2-parted url */
+let routeTwo = {
     animals:  (query)=>{ return animal.get.all(query) },
     animal:   (query)=>{ return animal.get.byID(query) },
     articles: (query)=>{ return article.get.all(query) },
     article:  (query)=>{ return article.get.byID(query) },
     owners:   (query)=>{ return owner.get.all(query) },
     owner:    (query)=>{ return owner.get.byID(query) },
+    list:     (query)=>{ return list.get[query]()},
+    all:      (query)=>{ return routeThree.live("all", query)},
+    live:     (query)=>{ return liveResult(query, liveSearch.short(query));
+    },
 };
+/*endregion*/
+/* region 3-parted url */
+let routeThree = {
+    mainDetails: (subType, query)=>{
+        if (subType === "animal") {
+            return mainDetails.get.byAnimal(query);
+        }
+        if (subType === "owner") {
+            return mainDetails.get.byOwner(query);
+        }
+    },
+    live: (subType, query)=>{ return liveResult(query, liveSearch.all(query));},
+};
+/*endregion*/
 
+/*region routes*/
 hookIn.http_createRoute("/search", function(router) {
-    router.get('/:type/:query*?', function(req, res) {
+    /* region 3-parted url */
+    router.get('/:type/:select/:query', function(req, res) {
+        let type = req.params.type;
+        let select = req.params.select;
+        let query = req.params.query;
+        let result;
+        // console.log("type 'n' select 'n' query", type, select, query);
         try {
-            let query = req.params.query;
-            switch (req.params.type) {
-                case "animals":
-                case "animal":
-                case "articles":
-                case "article":
-                case "owners":
-                case "owner":
-                    result = route[req.params.type](query);
-                    // und wo steht dann des ergebnis drin oh ha fuck
-                    break;
-                /* region user */
-                case "user":
-                    let userList = list.get.user();
-                    let userListActive = [];
-                    let userListInactive = [];
-
-                    for (let i = 0; i < userList.length; i++) {
-                        if (userList[i].present === 0) {
-                            userListInactive.push(userList[i]);
-                        } else {
-                            userListActive.push(userList[i]);
-                        }
-                    }
-                    result = {
-                        query: query,
-                        users: userList,
-                        usersActive: userListActive,
-                        usersInactive: userListInactive,
-                    };
-                    break;
-                /*endregion*/
-                /* region list */
-                case "list":
-                    switch (query) {
-                        case "species":
-                            result.list = list.get.species();
-                            break;
-                        case "userRoles":
-                            result.list = list.get.userRoles();
-                            break;
-
-                        case "all":
-                            result = list.get.all();
-                    }
-                    break;
-                /*endregion*/
-                /* region live search */
-                case "live":
-                case "all":
-                    query = (req.params.type === "all") ? "all/" + query : query; // modify query that route /all/:query is treated like /live/all/:query
-                    let dbResults = (liveQuery.isSubRoute(query)) ? liveSearch.all(liveQuery.getSubRouteQuery(query)) : liveSearch.short(query);
-
-                    result = {
-                        query: (liveQuery.isSubRoute(query)) ? liveQuery.getSubRouteQuery(query) : query,
-                        owners: dbResults.owner,
-                        animals: dbResults.animals.alive,
-                        deadAnimals: dbResults.animals.dead,
-                        articles: dbResults.articles,
-                    };
-                /*endregion*/
-            }
+            result = routeThree[type](select, query);
             res.json(result);
         } catch (e){
             console.log(e);
         }
     });
+    /*endregion*/
+    /* region 2-parted url */
+    router.get('/:type/:query', function(req, res) {
+        let type = req.params.type;
+        let query = req.params.query;
+        let result;
+        // console.log("type 'n' query", type, query);
+        try {
+            result = routeTwo[type](query);
+            res.json(result);
+        } catch (e){
+            console.log(e);
+        }
+    });
+    /*endregion*/
+    /* region 1-parted url */
+    // router.get('/:type', function(req, res) {
+    //     let type = req.params.type;
+    //     let result;
+    ////     console.log('only type', type);
+    //     try {
+    //         result = routeOne[type](query);
+    //         res.json(result);
+    //     } catch (e){
+    //         console.log(e);
+    //     }
+    // });
+    /*endregion*/
 });
+/*endregion*/

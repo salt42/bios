@@ -1,0 +1,8 @@
+fc-overview {
+    position: absolute;
+    width:  calc(100vw * 0.08);
+    left:  calc(100vw * 0.005);
+    height: 6em;
+    background-color: var(--color-normal);
+    padding: 10px;
+}

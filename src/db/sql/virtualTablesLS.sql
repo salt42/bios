@@ -19,3 +19,9 @@ INSERT INTO ArticleSearch
 INSERT INTO OwnerSearch
   SELECT id, name, name_2, first_name, first_name_2, address, zip, city, address_2, zip_2, city_2
   FROM owner;
+
+--   --#run
+--   INSERT INTO animal_owner
+--   SELECT id, owner_id
+--   FROM animal;
+--   this expression is used to create the animal_owner hashtable after importing old data

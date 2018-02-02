@@ -1,12 +1,11 @@
 defineComp("mc-flashcard", function(bios, $element, args) {
     "use strict";
 
-    //todo workaround
-    let fcArray = (args && Array.isArray(args)) ? args : (bios.transferData.fc && Array.isArray(bios.transferData.fc)) ? bios.transferData.fc : null;
+    let type = args[0].type;
+    let id   = args[0].id;
+    let showOverview = !!args[1];
 
-    if (fcArray === null) return; //or throw error
-
-
+    /* region set up flashcard environment */
     // create top region
     let $top = $("<div class='fc-top'></div>")
         .appendTo($element)
@@ -20,58 +19,71 @@ defineComp("mc-flashcard", function(bios, $element, args) {
     let $content = $("<div></div>")
         .addClass('fc-content')
         .appendTo($element)
-        // .css("height", fcHeight)
     ;
 
-    for (let i = 0; i < fcArray.length; i++){
-        let selected = (fcArray[i].selected && fcArray[i].selected === true);
-        let type = fcArray[i].type;
-        let id = fcArray[i].content.id;
-        //@todo workarond
-        bios.transferData[type] = {};
-        bios.transferData[type]["id"]= fcArray[i].content.id;
+    let $overview = $("<fc-overview></fc-overview>");
+    if(showOverview){
+        $overview
+            .appendTo($("sidebar"));
+    }
+    /*endregion*/
 
-        // fill in data to top region
-        let $topItem = $("<div class='fc-top-item' data-type='" + type + "' data-id='" + id + "'></div>")
-            .appendTo($top)
-            .text(fcArray[i].top.name)
-            .append("<br/>" + fcArray[i].top.info)
+    if (showOverview){
+        bios.search.mainDetails(type, id, function (data) {
+            createOverview(data);
+        } );
+    }
+
+    bios.search.mainDetails(type, id, function (data) {
+        createFlashcards(data);
+
+        $(".fc-top-item").on("click", function (e) {
+            changeSelected(e);
+        });
+    } );
+
+    /* region create single flashcards */
+    function createFlashcards(fcArray){
+        for (let i = 0; i < fcArray.length; i++){
+            let type = fcArray[i].type;
+            let dataAttr = "data-type='" + type + "' data-id='" + fcArray[i].id + "'";
+
+            // fill in data to top region
+            let $topItem = $("<div class='fc-top-item' " + dataAttr + "></div>")
+                .appendTo($top)
             ;
 
-        // fill in data to content region
-        let $contentItem = $("<div class='fc-content-item' data-type='" + type + "' data-id='" + id + "'>[ " + type + " ] loaded for id [ " + id + " ]</div>")
-            .append($("<" + type + "></" + type + ">"))
-            .appendTo($content)
-        ;
-
-        if (selected) {
-            $topItem.addClass("selected");
-            $contentItem
-                .addClass("selected")
+            // fill in data to content region
+            let $contentItem = $("<div class='fc-content-item' " + dataAttr + ">[ " + type + " ] loaded for id [ " + fcArray[i].id + " ]</div>")
+                .append($("<" + type + dataAttr + "></" + type + ">"))
+                .appendTo($content)
             ;
-            bios.info.setData("test");
-            //
-            // let $infoField = $("info")
-            //     .append("<p>test</p>")
-            // ;
-            // console.log($infoField[0]);
+
+            // check if card is selected
+            if (fcArray[i].selected) {
+                $topItem.addClass("selected");
+                $contentItem.addClass("selected");
+            }
+        }
+    }
+    /*endregion*/
+    function createOverview(data){
+        for (let i = 0; i < data.length; i++) {
+            let type = data[i].type;
+            let dataAttr = "data-type='" + type + "' data-id='" + data[i].id + "'";
+            let classAttr = (data[i].selected) ? " selected" :"";
+
+            $("<li class='fco-item hidden" + classAttr + "' " + dataAttr + "></li>")
+                .appendTo($overview)
+            ;
         }
     }
 
-    let $allTop = $(".fc-top-item");
-    let $allCon = $(".fc-content-item");
-
-    $allTop.on("click", function (e) {
-        changeSelected(e);
-    });
-
     function changeSelected(e){
         let $ele = e.target;
-        console.log("outch, you hit me on ", $ele);
-        let dType = $ele.dataset.type;
-        let dID = $ele.dataset.id;
-        $allTop.removeClass("selected");
-        $allCon.removeClass("selected");
-        $("[data-type='" + dType + "'][data-id='" + dID + "']").addClass("selected");
+        $(".fc-top-item").removeClass("selected");
+        $(".fc-content-item").removeClass("selected");
+        $("mc-flashcard [data-type='" + $ele.dataset.type + "'][data-id='" + $ele.dataset.id + "']").addClass("selected");
     }
+
 });

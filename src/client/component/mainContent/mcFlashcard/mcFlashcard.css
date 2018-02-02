@@ -14,8 +14,9 @@ mc-flashcard .fc-top {
     border-bottom: solid 1px black;
     z-index: 2;
     position: absolute;
+    left: 2px;
     top: calc(var(--fc-top-height) - 2px);
-    width: 100%;
+    width: calc(100% - 2px);
     box-shadow: 0 -2px 2px 2px cornflowerblue ;
 }
 mc-flashcard div.fc-top-item {
@@ -43,13 +44,11 @@ mc-flashcard div.fc-content{
     height: calc(var(--body-height) - 4px - var(--fc-top-height));
     background-color: var(--color-two-dark);
     z-index: 4;
+    border-left: solid black 1px;
 }
 mc-flashcard div.fc-content-item {
     padding-top: 10px;
     position:absolute;
-    /*top: 0;*/
-    /*left: 0;*/
-    border-left: solid black 1px;
     z-index: 5;
     padding-left: 5px;
     background-color: var(--color-two-dark);

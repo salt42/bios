@@ -126,10 +126,13 @@ defineComp("search", function(bios, $element){
 
         if (!$target.hasClass("live-search")) return;
 
-        bios.sections.load("main-content", "main-details", {
+        bios.sections.load("main-content", "mc-flashcard",[
+            {
             type: type,
             id: id
-        });
+            },
+            true
+        ]);
 
         $liveResults.not("hidden").addClass("hidden");
 

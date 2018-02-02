@@ -1,7 +1,9 @@
 defineComp("animal", function(bios, $element, args) {
     "use strict";
 
-    let id = (args && args.id) ? args.id : (bios.transferData.animal.id) ? bios.transferData.animal.id : null;
+
+    let serviceData = bios.dataService.get("animal");
+    let id = (serviceData !== null) ? serviceData.id : (args && args.id) ? args.id : null;
 
     let $form = $("<json-form></json-form>")
         .appendTo($element);
@@ -11,9 +13,7 @@ defineComp("animal", function(bios, $element, args) {
         .addClass("refresh-button")
         .text("refresh")
         .on("click", function () {
-            bios.search.findAnimal(args.id, function(data) {
-                update(data);
-            });
+            setData(id);
         })
     ;
 
@@ -27,13 +27,17 @@ defineComp("animal", function(bios, $element, args) {
         })
     ;
 
+    function setData(id) {
+        bios.search.findAnimal(id, function(data) {
+            update(data);
+        });
+    }
+
     function update(data) {
         $form.getComponent().setData(data);
     }
 
-    bios.search.findAnimal(id, function(data) {
-        update(data);
-    });
+    setData(id);
 
 
 

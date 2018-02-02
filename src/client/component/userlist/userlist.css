@@ -3,7 +3,7 @@ header ul.userList {
     margin-right: 15px;
     margin-left: 25px;
 }
-header ul.userList li.userEntry {
+header ul.userList li.userlist-user-entry {
     background-color: var(--color-one);
     float: right;
     margin-right: 5px;
