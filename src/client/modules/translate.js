@@ -23,8 +23,11 @@ define("trans", function(bios){
     }
     /*endregion*/
 
-    /* region get language */
-    this.language = function(str) {
+    /* region get translation */
+    this.language = translate;
+    this.late = translate;
+
+    function translate (str) {
         let s = str.toLowerCase();
         if (!(!transStrings.get(s)))
             str = transStrings.get(s);
@@ -32,6 +35,35 @@ define("trans", function(bios){
     };
     /*endregion*/
 
+    this.age = function (birthday){
+        return calculateAge(birthday);
+    };
+    function calculateAge(birthday){
+        let today = new Date();
+        let birthdayDate = new Date(birthday);
+        if (isNaN(birthday)){
+            let date = birthday
+                .substr(0,10)
+                .split('.');
+            birthdayDate = new Date (date[1] + '.' + date[0] + '.' + date[2]);
+            if (isNaN(birthdayDate))console.log('still sth wrong', date)
+        }
+        let age = Math.floor((today-birthdayDate) / (24 * 60 * 60 * 1000))/ 365.25;
+        if(isNaN(age)) return '';
+        age =  age.toFixed(1).split('.');
+        return age[0] + ' ' + translate('years') + ' ' + (age[1] * 12/ 10).toFixed(0) + ' ' + translate('months') ;
+    }
+    function calculateYears(days) {
+        let y = 0;
+        while (days > 365.25){
+            y++;
+            days = days - 365.25;
+        }
+        return {
+            years: y,
+            rest: days,
+        };
+    }
     /* region enum */
     this.enum = {
         gender(value){
@@ -39,6 +71,9 @@ define("trans", function(bios){
         },
         userRole(value){
             return Enum("user_role", value);
+        },
+        species(value){
+            return Enum("species", value);
         },
     };
     /*endregion*/
@@ -67,7 +102,7 @@ define("trans", function(bios){
 
     function _Decode(list, value){
         if(error) return value;
-        return list[value]
+        return translate(list[value])
     }
     /*endregion*/
 

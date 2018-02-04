@@ -57,4 +57,7 @@ define("search", function(bios){
     this.mainDetails = function (type, searchQuery, fn) {
         serverSearch("mainDetails/" + type, searchQuery, fn);
     }
+    this.getName = function (type, searchQuery, fn) {
+        serverSearch("getName/" + type, searchQuery, fn);
+    }
 });

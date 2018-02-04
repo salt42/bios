@@ -1,0 +1,20 @@
+fc-overview {
+    display: flex;
+    flex-direction: column;
+}
+fc-overview ul.owner {
+    order: 1;
+    flex: 2 auto;
+}
+fc-overview ul.animal {
+    order: 2;
+    flex: 4 auto;
+}
+fc-overview ul.treatment {
+    order: 3;
+    flex: 4 auto;
+}
+fc-overview ul.dead {
+    order: 4;
+    flex: 1 auto;
+}

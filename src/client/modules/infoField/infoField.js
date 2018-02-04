@@ -1,8 +1,6 @@
 define("info", function(bios) {
     "use strict";
 
-    $("sidebar").append($("<info></info>"));
-
     let data = "";
 
     this.setData = (setData) => {
@@ -15,7 +13,7 @@ define("info", function(bios) {
     };
 
     function update(){
-        let $infoField = $("info")
-            .append(data)
+        $("info")
+            .html(data)
     }
 });

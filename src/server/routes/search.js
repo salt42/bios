@@ -49,7 +49,8 @@ let routeThree = {
             return mainDetails.get.byOwner(query);
         }
     },
-    live: (subType, query)=>{ return liveResult(query, liveSearch.all(query));},
+    live:     (subType, query)=>{ return liveResult(query, liveSearch.all(query));},
+    getName: (subType, query)=>{ return mainDetails.get.nameOf[subType](query)}
 };
 /*endregion*/
 

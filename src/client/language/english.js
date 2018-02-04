@@ -4,10 +4,24 @@ let helper;
 
 //Enums
 helper = "GENDER";
-trans.set(helper + "_" + "0", "male"    );
-trans.set(helper + "_" + "1", "female"  );
-trans.set(helper + "_" + "2", "unknown" );
+let i = 0;
+trans.set(helper + "_" + i++, "male"    );
+trans.set(helper + "_" + i++, "female"  );
+trans.set(helper + "_" + i++, "unknown" );
 
+helper = "SPECIES";
+i = 1;
+trans.set(helper + "_" + i++, "dog"     );
+trans.set(helper + "_" + i++, "cat"     );
+trans.set(helper + "_" + i++, "bird"    );
+trans.set(helper + "_" + i++, "rodent"  );
+trans.set(helper + "_" + i++, "turtle"  );
+trans.set(helper + "_" + i++, "horse"   );
+trans.set(helper + "_" + i++, "cow"     );
+trans.set(helper + "_" + i++, "pig"     );
+trans.set(helper + "_" + i++, "deer"    );
+trans.set(helper + "_" + i++, "unknown" );
+trans.set(helper + "_" + i++, "calf"    );
 
 trans.set("owner_id",     "owner ID"         );
 trans.set("first_name",   "first name"       );

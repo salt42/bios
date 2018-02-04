@@ -3,10 +3,14 @@
     font-family: Bahnschrift;
     --bg-dark: #3a383a;
     --bg-not-so-dark: #525052;
+    --bg-light: wheat;
 
     --color-dark: #121212;
     --color-normal: #d4d4d4;
-    
+
+    --window-height: 100vh;
+    --window-width: 100vw;
+
     --color-one: #718eaa;
     --color-one-dark: #2d6987;
     --color-two: #6ceebf;
@@ -14,11 +18,17 @@
     --color-three: #ffa115;
     --color-three-dark: #c56c15;
 
-    --header-height: 4em;
+    --top-bar: 4em;
+
+    --header-height: 4.5em;
     --header-img-height: calc(var(--header-height) * 0.9);
-    --sidebar-width: 10vw;
-    --body-height: calc(100vh - var(--header-height));
-    --content-width: calc(100vw - var(--sidebar-width));
+
+    --body-height: calc(var(--window-height) - var(--header-height));
+    --sidebar-width: calc(var(--window-width) * 0.1 );
+    --content-width: calc(var(--window-width) - var(--sidebar-width) - 1em);
+
+    --slight-shadow-inset: 0 0 2px 2px var(--bg-not-so-dark) inset;
+
 }
 
 .color-one {

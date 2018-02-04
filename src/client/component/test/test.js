@@ -26,7 +26,7 @@ defineComp("test", function(bios, $element){
     if (true){
         resultText += "bios.trans.species" + ":" + end;
         for (i=1; i < 4; i++){
-            let result = bios.trans.decode.species(i);
+            let result = bios.trans.enum.species(i);
             resultText += (typeof result !== "string") ? "ERROR on " + i + end : "success on " + i + " = " + result + end;
         }
         resultText += end;

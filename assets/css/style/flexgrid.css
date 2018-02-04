@@ -1,5 +1,6 @@
 #flex-grid-body {
     display: flex;
+    height: var(--body-height);
 }
 #flex-grid-body .fgb-item {
     height: var(--body-height);

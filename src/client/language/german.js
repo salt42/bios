@@ -4,9 +4,27 @@ let helper;
 
 //Enums
 helper = "GENDER";
-trans.set(helper + "_" + "0", "männlich"  );
-trans.set(helper + "_" + "1", "weiblich"  );
-trans.set(helper + "_" + "2", "unbekannt" );
+let i = 0;
+trans.set(helper + "_" + i++, "männlich"  );
+trans.set(helper + "_" + i++, "weiblich"  );
+trans.set(helper + "_" + i++, "unbekannt" );
+
+helper = "SPECIES";
+i = 0;
+trans.set(helper + "_" + i++, "Hund"        );
+trans.set(helper + "_" + i++, "Katze"       );
+trans.set(helper + "_" + i++, "Vogel"       );
+trans.set(helper + "_" + i++, "Nagetier"    );
+trans.set(helper + "_" + i++, "Schildkröte" );
+trans.set(helper + "_" + i++, "Pferd"       );
+trans.set(helper + "_" + i++, "Rind"        );
+trans.set(helper + "_" + i++, "Schwein"     );
+trans.set(helper + "_" + i++, "Wild"        );
+trans.set(helper + "_" + i++, "unbekannt"   );
+trans.set(helper + "_" + i++, "Kalb"        );
+
+trans.set("unknown",       "unbekannt"         );
+trans.set("years",         "Jahre"             );
 
 // translations default in lowercase !!!
 trans.set("gender",       "geschlecht"          );

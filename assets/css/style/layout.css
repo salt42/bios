@@ -1,8 +1,18 @@
-/*region layout*/
-body {
-    padding-top: var(--header-height);
+header {
+    height: var(--header-height);
 }
-/*endregion*/
+content {
+    margin-top: var(--header-height);
+    height: var(--body-height);
+}
+content main-content section#top-bar {
+    height: var(--top-bar);
+    background-color: var(--color-normal);
+}
+content main-content section#main-content {
+    height: calc(var(--body-height) - var(--top-bar));
+}
+
 /*region util*/
 .break:after {
     content:"\000A";

@@ -21,26 +21,31 @@ defineComp("mc-flashcard", function(bios, $element, args) {
         .appendTo($element)
     ;
 
-    let $overview = $("<fc-overview></fc-overview>");
-    if(showOverview){
-        $overview
-            .appendTo($("sidebar"));
-    }
     /*endregion*/
 
+    /* region create overview*/
     if (showOverview){
+        if(showOverview){
+            bios.sections.load("sidebar", "fc-overview");
+        }
+
         bios.search.mainDetails(type, id, function (data) {
             createOverview(data);
         } );
     }
+    function createOverview(data){
+        let fcOverviewComp = bios.sections.get("sidebar");
+        fcOverviewComp.setData(data);
+    }
+    /*endregion*/
 
-    bios.search.mainDetails(type, id, function (data) {
-        createFlashcards(data);
-
-        $(".fc-top-item").on("click", function (e) {
-            changeSelected(e);
-        });
-    } );
+    // bios.search.mainDetails(type, id, function (data) {
+    //     createFlashcards(data);
+    //
+    //     $(".fc-top-item").on("click", function (e) {
+    //         changeSelected(e);
+    //     });
+    // } );
 
     /* region create single flashcards */
     function createFlashcards(fcArray){
@@ -67,17 +72,6 @@ defineComp("mc-flashcard", function(bios, $element, args) {
         }
     }
     /*endregion*/
-    function createOverview(data){
-        for (let i = 0; i < data.length; i++) {
-            let type = data[i].type;
-            let dataAttr = "data-type='" + type + "' data-id='" + data[i].id + "'";
-            let classAttr = (data[i].selected) ? " selected" :"";
-
-            $("<li class='fco-item hidden" + classAttr + "' " + dataAttr + "></li>")
-                .appendTo($overview)
-            ;
-        }
-    }
 
     function changeSelected(e){
         let $ele = e.target;
@@ -85,5 +79,6 @@ defineComp("mc-flashcard", function(bios, $element, args) {
         $(".fc-content-item").removeClass("selected");
         $("mc-flashcard [data-type='" + $ele.dataset.type + "'][data-id='" + $ele.dataset.id + "']").addClass("selected");
     }
-
+    this.onLoad = function() {
+    };
 });

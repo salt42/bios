@@ -9,9 +9,12 @@
     <body>
 
         <header></header>
-        <div id="flex-grid-body">
-            <section id="sidebar" class="fgb-item fgb-sidebar" default="sidebar"></section>
-            <section id="main-content" class="fgb-item fgb-main-content" default="dashboard"></section>
-        </div>
+        <content id="flex-grid-body">
+            <sidebar class="fgb-item fgb-sidebar" ></sidebar>
+            <main-content class="fgb-item fgb-main-content" >
+                <section id="top-bar" default=""></section>
+                <section id="main-content" default="dashboard"></section>
+            </main-content>
+        </content>
     </body>
 </html>
