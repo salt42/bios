@@ -1,0 +1,38 @@
+/* region header */
+header {
+    display: flex;
+}
+vendor.fgh-column {
+    flex: 5;
+}
+company.fgh-column {
+    flex: 25;
+}
+head-panel.fgh-column {
+    flex: 20;
+}
+/*endregion*/
+/* region <vendor> */
+header vendor {
+    display: flex;
+    justify-content: flex-start;
+}
+header vendor>v_style {
+    order: 2;
+}
+/* endregion */
+/* region <head-panel> */
+header head-panel {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+header head-panel user-list {
+    flex: 1;
+    align-self: flex-end;
+}
+header head-panel search {
+    flex: 1;
+    align-self: flex-start;
+}
+/* endregion */

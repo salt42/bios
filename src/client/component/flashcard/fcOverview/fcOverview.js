@@ -80,16 +80,24 @@ defineComp("fc-overview", function(bios, $element, args) {
         return $("<p></p>")
             .addClass("weight")
             .html( weight + " kg" )
-            ;
+        ;
     }
     function fillInDetails(e){
-        $("div#fco-selected")
-            .empty()
-            .append( createNameTag( $(e.currentTarget).data("name") ) )
-            .prepend( createSpeciesTag($(e.currentTarget).data("typeOf")) )
-            .append( createAgeTag( $(e.currentTarget).data("birthday") ) )
-            .append( createWeightTag( $(e.currentTarget).data("weight") ) )
-        ;
+        if($(e.currentTarget).data("type") === "animal"){
+            $("div#fco-selected")
+                .empty()
+                .append( createNameTag( $(e.currentTarget).data("name") ) )
+                .prepend( createSpeciesTag($(e.currentTarget).data("typeOf")) )
+                .append( createAgeTag( $(e.currentTarget).data("birthday") ) )
+                .append( createWeightTag( $(e.currentTarget).data("weight") ) )
+            ;
+        }
+        if($(e.currentTarget).data("type") === "owner"){
+            $("div#fco-selected")
+                .empty()
+                .append( createNameTag( $(e.currentTarget).data("name") ) )
+            ;
+        }
     }
 
 }, {

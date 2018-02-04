@@ -1,0 +1,46 @@
+fc-overview {
+    padding: 5px;
+}
+fc-overview>ul {
+    overflow: auto;
+    overflow-x: hidden;
+    box-shadow: var(--slight-shadow-inset);
+    background-color: var(--color-normal);
+}
+fc-overview ul.dead {
+    color: white;
+    background-color: var(--bg-dark);
+}
+
+.fco-treatment,
+.fco-animal {
+    margin: 5px;
+}
+/*region inner design*/
+p.weight,
+p.name{
+    text-align: right;
+    padding: 5px;
+}
+span.species,
+span.age {
+    font-style: italic;
+    float: left;
+}
+#fco-selected span.age {
+    font-size: large;
+}
+#fco-selected p.name,
+#fco-selected p.weight  {
+    font-size: x-large;
+}
+/*endregion*/
+/* region info box */
+div#fco-selected {
+    position: absolute;
+    top: var(--header-height);
+    left: 10vw;
+    height: var(--top-bar);
+    width: 15vw;
+}
+/*endregion*/

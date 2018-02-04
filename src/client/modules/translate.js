@@ -51,7 +51,8 @@ define("trans", function(bios){
         let age = Math.floor((today-birthdayDate) / (24 * 60 * 60 * 1000))/ 365.25;
         if(isNaN(age)) return '';
         age =  age.toFixed(1).split('.');
-        return age[0] + ' ' + translate('years') + ' ' + (age[1] * 12/ 10).toFixed(0) + ' ' + translate('months') ;
+        let months = (age[1] === "0") ? "" : ' ' + (age[1] * 12/ 10).toFixed(0) + ' ' + translate('months');
+        return age[0] + ' ' + translate('years') + months ;
     }
     function calculateYears(days) {
         let y = 0;

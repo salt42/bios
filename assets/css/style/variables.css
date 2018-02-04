@@ -23,9 +23,10 @@
     --header-height: 4.5em;
     --header-img-height: calc(var(--header-height) * 0.9);
 
-    --body-height: calc(var(--window-height) - var(--header-height));
-    --sidebar-width: calc(var(--window-width) * 0.1 );
-    --content-width: calc(var(--window-width) - var(--sidebar-width) - 1em);
+    --body-height:    calc(var(--window-height) - var(--header-height));
+    --sidebar-width:  calc(var(--window-width) * 0.1 );
+    --content-height: calc(var(--body-height) - var(--top-bar));
+    --content-width:  calc(var(--window-width) - var(--sidebar-width) - 1em);
 
     --slight-shadow-inset: 0 0 2px 2px var(--bg-not-so-dark) inset;
 

@@ -1,0 +1,36 @@
+/*region sidebar flex*/
+sidebar {
+    display: flex;
+    flex-direction: column;
+}
+sidebar>* {
+    flex: 0 0;
+}
+sidebar div#sidebar-components {
+    flex: 1 auto;
+}
+/*endregion*/
+
+/*region sidebar div#sidebar-components flex*/
+sidebar div#sidebar-components {
+    display: flex;
+    flex-direction: column;
+}
+sidebar div#sidebar-components section,
+sidebar div#sidebar-components remember-me,
+sidebar div#sidebar-components info {
+
+}
+sidebar div#sidebar-components section {
+    order: 1;
+    flex: 2 auto;
+}
+sidebar div#sidebar-components remember-me {
+    order: 2;
+    flex: 1 auto;
+}
+sidebar div#sidebar-components info {
+    order: 3;
+    flex: 1 auto;
+}
+/*endregion*/
