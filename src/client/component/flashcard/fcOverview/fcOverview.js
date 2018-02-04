@@ -8,8 +8,6 @@ defineComp("fc-overview", function(bios, $element, args) {
             let $fragmentT = $(document.createDocumentFragment());
             let $fragmentD = $(document.createDocumentFragment());
 
-            console.log(data);
-
             data.sort(function (a, b) {
                 a.name = (!a.name || a.name === null || a.name === "") ? bios.trans.late("unknown") : a.name;
                 b.name = (!b.name || b.name === null || b.name === "") ? "unknown" : b.name;
@@ -52,10 +50,8 @@ defineComp("fc-overview", function(bios, $element, args) {
             .attr("data-weight", data.weight)
             .append( createNameTag(data.name) )
         ;
-        if (data.type === "animal"){
-            $ele.prepend( createSpeciesTag(data.typeOf) );
-        }
-        if(data.selected === true) fillInDetails({currentTarget: $ele});
+        if (data.type === "animal") $ele.prepend( createSpeciesTag(data.typeOf) );
+        if (data.selected === true) fillInDetails({currentTarget: $ele});
         return $ele;
     }
     function createSpeciesTag(specie) {

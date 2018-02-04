@@ -16,20 +16,18 @@ sidebar div#sidebar-components {
     display: flex;
     flex-direction: column;
 }
-sidebar div#sidebar-components section,
-sidebar div#sidebar-components remember-me,
-sidebar div#sidebar-components info {
+sidebar div#sidebar-components section {
 
 }
-sidebar div#sidebar-components section {
+sidebar div#sidebar-components section#sidebar {
     order: 1;
     flex: 2 auto;
 }
-sidebar div#sidebar-components remember-me {
+sidebar div#sidebar-components section#remember-me {
     order: 2;
     flex: 1 auto;
 }
-sidebar div#sidebar-components info {
+sidebar div#sidebar-components section#info {
     order: 3;
     flex: 1 auto;
 }

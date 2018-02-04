@@ -1,4 +1,5 @@
 info {
+    height: 100%;
     box-shadow: var(--slight-shadow-inset);
     background-color: var(--color-normal);
 }

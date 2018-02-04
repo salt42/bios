@@ -2,6 +2,8 @@ defineComp("mc-flashcard", function(bios, $element, args) {
     "use strict";
 
     console.log('mc-flashcard loaded');
+    bios.sections.load("remember-me", "remember-me");
+    bios.sections.load("info", "info");
 
     let type = args[0].type;
     let id   = args[0].id;
