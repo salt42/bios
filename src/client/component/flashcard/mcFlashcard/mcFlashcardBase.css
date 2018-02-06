@@ -39,14 +39,14 @@ mc-flashcard div.fc-content{
     z-index: 4;
     position: relative;
     /*height: calc(var(--body-height) - 4px - var(--fc-top-height));*/
-    background-color: var(--color-two-dark);
+    background-color: var(--color-normal);
 }
 mc-flashcard div.fc-content-item {
     z-index: 5;
     position:absolute;
     padding-top: 10px;
     padding-left: 5px;
-    background-color: var(--color-two-dark);
+    background-color: var(--color-normal);
 }
 mc-flashcard div.fc-content-item.selected {
     z-index: 6;

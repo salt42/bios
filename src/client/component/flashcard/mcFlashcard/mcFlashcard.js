@@ -2,8 +2,10 @@ defineComp("mc-flashcard", function(bios, $element, args) {
     "use strict";
 
     console.log('mc-flashcard loaded');
-    bios.sections.load("remember-me", "remember-me");
-    bios.sections.load("info", "info");
+    bios.sections.load("sidebar-middle-section", "remember-me");
+    bios.sections.load("sidebar-bottom-section", "info-field");
+
+    // bios.infoField.setData("jlkjlkjl");
 
     let type = args[0].type;
     let id   = args[0].id;
@@ -30,7 +32,7 @@ defineComp("mc-flashcard", function(bios, $element, args) {
     /* region create overview*/
     if (showOverview){
         if(showOverview){
-            bios.sections.load("sidebar", "fc-overview");
+            bios.sections.load("sidebar-top-section", "fc-overview");
         }
 
         bios.search.mainDetails(type, id, function (data) {
@@ -38,7 +40,7 @@ defineComp("mc-flashcard", function(bios, $element, args) {
         } );
     }
     function createOverview(data){
-        let fcOverviewComp = bios.sections.get("sidebar");
+        let fcOverviewComp = bios.sections.get("sidebar-top-section");
         fcOverviewComp.setData(data);
     }
     /*endregion*/

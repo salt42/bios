@@ -1,6 +1,8 @@
 defineComp("fc-overview", function(bios, $element, args) {
     "use strict";
 
+    let $selectBox = $("div#fco-selected").appendTo($("section#top-bar"));
+
     this.setData = function (data) {
         try {
             let $fragmentO = $(document.createDocumentFragment());
@@ -80,7 +82,7 @@ defineComp("fc-overview", function(bios, $element, args) {
     }
     function fillInDetails(e){
         if($(e.currentTarget).data("type") === "animal"){
-            $("div#fco-selected")
+            $selectBox
                 .empty()
                 .append( createNameTag( $(e.currentTarget).data("name") ) )
                 .prepend( createSpeciesTag($(e.currentTarget).data("typeOf")) )
@@ -89,7 +91,7 @@ defineComp("fc-overview", function(bios, $element, args) {
             ;
         }
         if($(e.currentTarget).data("type") === "owner"){
-            $("div#fco-selected")
+            $selectBox
                 .empty()
                 .append( createNameTag( $(e.currentTarget).data("name") ) )
             ;

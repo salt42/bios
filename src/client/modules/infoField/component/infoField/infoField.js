@@ -1,4 +1,4 @@
-defineComp("info", function(bios, $element, args) {
+defineComp("info-field", function(bios, $element, args) {
     "use strict";
 
 

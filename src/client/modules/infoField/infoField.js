@@ -17,7 +17,7 @@ define("info", function(bios) {
     };
 
     function update(){
-        $("info")
+        $("info-field")
             .html(data)
     }
 });

@@ -1,7 +1,9 @@
 define("rememberMe", function(bios) {
     "use strict";
 
-    $("section#remember-me").append( $("<remember-me></remember-me>"));
+    // $.document.ready(function () {
+    //     $("div#sidebar-components").append($("<remember-me></remember-me>"));
+    // });
 
     let data = [];
     let next = 0;
