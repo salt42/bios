@@ -1,9 +1,21 @@
 defineComp("fc-overview", function(bios, $element, args) {
     "use strict";
 
+    console.log('fc-overvie loaded');
     let $selectBox = $("div#fco-selected").appendTo($("section#top-bar"));
 
-    this.setData = function (data) {
+    bios.ems.onStateChange.subscribe(function(data) {
+        console.log(data);
+        console.log(data.state === "liveSearch");
+        console.log(data.data);
+        if (data.state === "liveSearch"){
+            bios.search.mainDetails(data.data.type, data.data.id, function (dbData) {
+                processData(dbData);
+            } );
+        }
+    });
+    //dem hier feuern
+    function processData (data) {
         try {
             let $fragmentO = $(document.createDocumentFragment());
             let $fragmentA = $(document.createDocumentFragment());
@@ -39,7 +51,8 @@ defineComp("fc-overview", function(bios, $element, args) {
             console.log("error in fcOverview.setData")
             console.log(e);
         }
-    };
+    }
+
     function appendStylesAndData(data){
         let $ele = $("<li></li>")
             .addClass( "foo-item fco-" + data.type )

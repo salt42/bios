@@ -13,16 +13,7 @@
     <span class="title">Average: </span><span class="value average">0</span>%
 </div>
 <div id="sidebar-components">
-    <section id="sidebar-top-section" default=""></section>
-    <section id="sidebar-middle-section" default=""></section>
-    <section id="sidebar-bottom-section" default=""></section>
-    <script>
-        function setHeight (){
-            let height_one = ( $('div#sidebar-components').height() ) / 4;
-            $('div#sidebar-components section').css("height", height_one);
-            $('div#sidebar-components section#sidebar-top-section').css("height", height_one * 2);
-        }
-        setHeight();
-        $( window ).resize(console.log('reszied'));
-    </script>
+    <section id="section-sidebar-top" default=""></section>
+    <section id="section-sidebar-middle" default=""></section>
+    <section id="section-sidebar-bottom-" default=""></section>
 </div>

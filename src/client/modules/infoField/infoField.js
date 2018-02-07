@@ -1,6 +1,6 @@
 define("info", function(bios) {
     "use strict";
-
+console.log(bios);
     // this.onLoad( function (){
     //     bios.sections.load("info", "info");
     // });
@@ -17,7 +17,7 @@ define("info", function(bios) {
     };
 
     function update(){
-        $("info-field")
+        $("info-field")//
             .html(data)
     }
 });
