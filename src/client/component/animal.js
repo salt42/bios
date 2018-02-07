@@ -1,14 +1,14 @@
 defineComp("animal", function(bios, $element, args) {
     "use strict";
 
-
-    let serviceData = bios.dataService.get("animal");
-    let id = (serviceData !== null) ? serviceData.id : (args && args.id) ? args.id : null;
+    console.log('animal loading');
+    let id   = $element.data("id");
+    console.log('animal', id);
 
     let $form = $("<json-form></json-form>")
         .appendTo($element);
 
-    let $refresh = $("<button></button>")
+    let $refreshButton = $("<button></button>")
         .appendTo($element)
         .addClass("refresh-button")
         .text("refresh")
@@ -17,7 +17,7 @@ defineComp("animal", function(bios, $element, args) {
         })
     ;
 
-    let $save = $("<button></button>")
+    let $saveButton = $("<button></button>")
         .appendTo($element)
         .addClass("save")
         .text("save")

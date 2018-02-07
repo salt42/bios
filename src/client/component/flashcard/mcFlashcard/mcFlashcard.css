@@ -1,9 +1,82 @@
-@import "mcFlashcardBase.css";
-@import "mcFlashcardFlex.css";
+:root {
+    --fc-top-height: calc(var(--top-bar) * 4 / 6);
+    --fc-top-item-height: calc((var(--top-bar) * 4 / 6) + 5px);
+}
+/* region top bar */
+mc-flashcard .fc-top {
+    height: var(--fc-top-height);
+    position: relative;
+}
+.fc-top-border {
+    --inset-border: 0.5px;
+    border-bottom: solid 1px black;
+    z-index: 2;
+    position: absolute;
+    height: var(--fc-top-height);
+    width: calc(100% - 2px);
+    box-shadow: 0 calc(var(--inset-border) * -1) var(--inset-border) var(--inset-border) var(--bg-not-so-dark) inset;
+}
+mc-flashcard div.fc-top-item {
+    height: var(--fc-top-item-height);
+    z-index: 1;
+    background-color: var(--color-two-dark);
+    padding: 5px;
+    border: var(--bg-dark) solid 1px;
+    /*border-top-right-radius: 80%;*/
+    /*border-top-left-radius: 5px;*/
+    /*border: solid 1px black;*/
+    /*box-shadow: 2px -2px 2px 2px cornflowerblue ;*/
+    /*box-shadow: var(--slight-shadow-inset);*/
+}
+mc-flashcard div.fc-top-item.selected {
+    width: 10vw;
+    background-color: var(--color-normal);
+    border: var(--bg-dark) solid 1px;
+    z-index: 3;
+}
+/*endregion*/
 
-/*region under Construct */
-mc-flashcard *{
-    min-width: 30px;
-    min-height: 30px;
+/* region content */
+mc-flashcard div.fc-content{
+    z-index: 4;
+    position: relative;
+    /*height: calc(var(--body-height) - 4px - var(--fc-top-height));*/
+    background-color: var(--color-normal);
+    border-left: solid 1px black;
+}
+mc-flashcard div.fc-content-item {
+    z-index: 5;
+    position:absolute;
+    padding-top: 10px;
+    padding-left: 5px;
+    background-color: var(--color-normal);
+}
+mc-flashcard div.fc-content-item.selected {
+    z-index: 6;
+}
+/*endregion*/
+
+/* region FLEX*/
+/*region top ./. content*/
+mc-flashcard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+mc-flashcard .fc-top {
+    order: 1;
+    flex: 0 auto;
+}
+mc-flashcard div.fc-content {
+    order: 2;
+    flex: 1 auto;
+}
+/*endregion*/
+
+mc-flashcard .fc-top {
+    display: flex;
+}
+mc-flashcard .fc-top div.fc-top-item {
+    flex: 1 auto 10vw;
 }
 /*endregion*/

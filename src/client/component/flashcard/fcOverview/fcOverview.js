@@ -1,20 +1,16 @@
 defineComp("fc-overview", function(bios, $element, args) {
     "use strict";
 
-    console.log('fc-overvie loaded');
+    console.log('Comp fc-overvie loaded');
     let $selectBox = $("div#fco-selected").appendTo($("section#top-bar"));
 
     bios.ems.onStateChange.subscribe(function(data) {
-        console.log(data);
-        console.log(data.state === "liveSearch");
-        console.log(data.data);
         if (data.state === "liveSearch"){
             bios.search.mainDetails(data.data.type, data.data.id, function (dbData) {
                 processData(dbData);
             } );
         }
     });
-    //dem hier feuern
     function processData (data) {
         try {
             let $fragmentO = $(document.createDocumentFragment());
@@ -26,6 +22,11 @@ defineComp("fc-overview", function(bios, $element, args) {
                 a.name = (!a.name || a.name === null || a.name === "") ? bios.trans.late("unknown") : a.name;
                 b.name = (!b.name || b.name === null || b.name === "") ? "unknown" : b.name;
                 return ((a.name.toLowerCase() < b.name.toLowerCase()) ? -1 : ((a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : 0));
+            });
+
+            bios.ems.flashcard.next({
+                origin: "overview",
+                data: data,
             });
 
             for (let i = 0; i < data.length; i++) {
