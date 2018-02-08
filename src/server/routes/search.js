@@ -43,10 +43,10 @@ let routeTwo = {
 let routeThree = {
     mainDetails: (subType, query)=>{
         if (subType === "animal") {
-            return mainDetails.get.byAnimal(query);
+            return mainDetails.getBy.animal(query);
         }
         if (subType === "owner") {
-            return mainDetails.get.byOwner(query);
+            return mainDetails.getBy.owner(query);
         }
     },
     live:     (subType, query)=>{ return liveResult(query, liveSearch.all(query));},

@@ -1,9 +1,5 @@
 define("info", function(bios) {
     "use strict";
-console.log(bios);
-    // this.onLoad( function (){
-    //     bios.sections.load("info", "info");
-    // });
 
     let data = "";
 

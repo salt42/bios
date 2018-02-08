@@ -1,107 +1,111 @@
 "use strict";
 const log     = require("jsfair/log")("db-mainDetails.js");
 
-const animalOwnerDB = require("./animalOwner");
+const weight    = require("./weight");
+const treatment = require("./treatment");
+const animOwner = require("./animalOwner");
 
-function createResult(queryType, queryID, owner, animals, treatment){
-    queryID = parseInt(queryID);
+let emptyWeight = {
+    type: "weight",
+    id: 0,
+    animal_id: 0,
+    treatment: null,
+    weight: 0.00,
+    comment: ""
+};
+let emptyTreatment = {
+    type: "treatment",
+    id: 0,
+    animal_id: 0,
+    treatment: null,
+    weight: 0.00,
+    comment: ""
+};
+
+/* region data prepare */
+function removeDoubles(dbResult){
     let result = [];
-    let obj = {};
-    for (let i= 0; i < owner.length; i++){
-        let dataID = parseInt(owner[i]);
-        obj = {
-            type: "owner",
-            id: dataID,
-            selected: (queryType === "owner" && queryID === dataID),
-        };
-        obj = patchDetails("owner", obj);
-        result.push(obj);
-    }
-    for (let i= 0; i < animals.length; i++){
-        let dataID = parseInt(animals[i]);
-        obj = {
-            type: "animal",
-            id: dataID,
-            selected: (queryType === "animal" && queryID === dataID),
-        };
-        obj = patchDetails("animal", obj);
-        result.push(obj);
+    let doubles = [];
+    for (let i = 0; i < dbResult.length; i++){
+        if(!doubles.indexOf(dbResult[i]) > -1){
+            doubles.push(dbResult[i]);
+            result.push(dbResult[i]);
+        }
     }
     return result;
 }
 
-function getAOIDs(type, query) {
-    let ret = [];
-    let call = (type === "animal") ? type + "ByOwner" : type + "ByAnimal";
-
-    if (Array.isArray(query)){
-        for (let i = 0; i < query.length; i++) {
-            ret = ret.concat(animalOwnerDB.get.idsOf[call](query[i]));
-        }
-    } else {
-        ret = animalOwnerDB.get.idsOf[call](query)
-    }
-    return ret;
+function createResult(searchedByType, query, allOwnerIDs, allAnimalsIDs){
+    let result = getData(searchedByType, query, allOwnerIDs, allAnimalsIDs);
+    result = makeUpData(result);
+    return result;
 }
 
-function patchDetails(type, obj){
-    let res = exp.get.detailsOf[type](obj.id)[0];
-    obj.name = "";
-    for( let property in res){
-        if( res.hasOwnProperty(property)){
-            switch(property){
-                case 'first_name':
-                    obj.name =  res[property] + " " + obj.name;
-                    break;
-                case 'name':
-                    obj.name +=  (isEmpty(res[property])) ? "unknown" : res[property];
-                    break;
-                case 'died':
-                case 'cave':
-                    obj.state =  (isEmpty(res[property])) ? 0 : res[property];
-                    break;
-                case 'species_id':
-                case 'gender':
-                    obj.typeOf =  (isEmpty(res[property])) ? 0 : res[property];
-                    break;
-                default:
-                    obj[property] = res[property];
-            }
+function getData(queryType, query, allOwnerIDs, allAnimalsIDs){
+    let obj = [];
+    for (let i = 0; i < allOwnerIDs.length; i++) {
+        let ownerData = animOwner.get.detailsOf.owner(allOwnerIDs[i]);
+        ownerData.type = "owner";
+        ownerData.selected = (queryType === "owner" && query === allOwnerIDs[i]);
+        obj.push( ownerData );
+    }
+    for (let i = 0; i < allAnimalsIDs.length; i++) {
+        allAnimalsIDs[i] = parseInt(allAnimalsIDs[i]);
+        query = parseInt(query);
+        let animalData = animOwner.get.detailsOf.animal(allAnimalsIDs[i]);
+        animalData.type = "animal";
+        animalData.selected = (queryType === "animal" && query === allAnimalsIDs[i]);
+        animalData.weight = weight.get.lastWeigth(allAnimalsIDs[i]);
+        animalData.treatments = treatment.get.allTreatments(allAnimalsIDs[i]);
+        for (let i = 0; i < animalData.treatments.length; i++) {
+            animalData.treatments[i].type = "treatment";
         }
+        obj.push( animalData );
     }
     return obj;
 }
 
-function isEmpty(value){
-    if( !value || value === null || value === "" || value === " ") return true;
-    return false;
-}
-
-let exp = {
-    get: {
-        byOwner:    function (query, plainDB = false){
-            let animalIDs = animalOwnerDB.get.idsOf.animalByOwner(query);
-
-            let ownerIDs = getAOIDs("owner", animalIDs);
-            return createResult("owner", query, ownerIDs, animalIDs);
-        },
-        byAnimal:   function (query, plainDB = false){
-            let ownerIDs = animalOwnerDB.get.idsOf.ownerByAnimal(query);
-
-            let animalIDs = getAOIDs("animal", ownerIDs);
-
-            return createResult("animal", query, ownerIDs, animalIDs);
-        },
-        // byTreatment: function (query, plainDB = false){ },
-        detailsOf: {
-            owner: function (query){
-                return animalOwnerDB.get.detailsOf.owner(query);
-            },
-            animal: function (query){
-                return animalOwnerDB.get.detailsOf.animal(query);
-            }
-        },
+function makeUpData(resultObjects) {
+    for (let i = 0; i < resultObjects.length; i++) {
+      let obj = resultObjects[i];
+      switch(obj.type){
+          case 'owner':
+              resultObjects[i].name = obj.first_name + " " + obj.name;
+              resultObjects[i].typeOf = obj.gender;
+              resultObjects[i].state = null;
+              break;
+          case 'animal':
+              // weight
+              if (obj.weight === null){
+                  resultObjects[i].weight = emptyWeight;
+                  resultObjects[i].weight.animal_id = obj.id;
+              }
+              // treatment
+              if (obj.treatments.length < 1){
+                  resultObjects[i].treatments.push(emptyTreatment);
+                  resultObjects[i].treatments[0].animal_id = obj.id;
+              }
+              resultObjects[i].typeOf = obj.species_id;
+              resultObjects[i].state = obj.died;
+              break;
+          default:
+      }
     }
-};
+    return resultObjects;
+}
+/*endregion*/
 
-module.exports = exp;
+module.exports = {
+    getBy: {
+        owner: function (query){
+            let allAnimalsIDs = removeDoubles(animOwner.get.idsBy.owner(query));
+            let allOwnerIDs   = removeDoubles(animOwner.get.idsBy.animal(allAnimalsIDs));
+            return createResult("owner", query, allOwnerIDs, allAnimalsIDs);
+        },
+        animal: function (query){
+            let allOwnerIDs   = removeDoubles(animOwner.get.idsBy.animal(query));
+            let allAnimalsIDs = removeDoubles(animOwner.get.idsBy.owner(allOwnerIDs));
+            return createResult("animal", query, allOwnerIDs, allAnimalsIDs);
+        },
+    },
+};

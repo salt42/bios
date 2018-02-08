@@ -4,56 +4,63 @@ const DB      = require("jsfair/database");
 
 const sqlFile = "animalOwner";
 
-function createResult(type, dbResult){
-    let result = [];
-    let doubles = {};
-    for (let i = 0; i < dbResult.length; i++){
-        if(!doubles[dbResult[i][type]]){
-            doubles[dbResult[i][type]] = true;
-            result.push(dbResult[i][type]);
+let cleanUpBy = {
+    animal: function (dbResult){
+        let result = [];
+        for (let i = 0; i < dbResult.length; i++) {
+            result.push(dbResult[i].owner);
         }
-    }
-    return result;
-}
-
-let exp = {
-    get:{
-        idsOf:
-            {
-                animalByOwner:    function (query, plainDB = false) {
-                    let dbRes = DB.runStatement(sqlFile, {query: query}, [1]) [0];
-                    return createResult("animal", dbRes);
-                },
-                ownerByAnimal:   function (query, plainDB = false) {
-                    let dbRes = DB.runStatement(sqlFile, {query: query}, [0]) [0];
-                    return createResult("owner", dbRes);
-                },
-            },
-        // byTreatment: function (query, plainDB = false){ },
-        detailsOf: {
-            owner: function (query){
-                return DB.runStatement( sqlFile, {query: query}, [2]) [0];
-            },
-            animal: function (query){
-                let details = DB.runStatement( sqlFile, {query: query}, [3]) [0];
-                let lastWeight = exp.get.lastWeightByAnimalID(query);
-                details[0].weight = (lastWeight) ? lastWeight.weight : "0,00";
-                return details;
-            },
-        },
-        weightsByAnimalID: function (query){
-            let w = DB.runStatement( sqlFile, {query: query}, [4]) [0];
-            if(w === [])
-            w.sort(function(a,b){
-                return ((a.id > b.id) ? -1 : ((a.id < b.id) ? 1 : 0));
-            });
-            return w;
-        },
-        lastWeightByAnimalID: function (query){
-            return exp.get.weightsByAnimalID(query)[0];
-        },
-
-    }
+        return result;
+    },
+    owner: function (dbResult){
+        let result = [];
+        for (let i = 0; i < dbResult.length; i++) {
+            result.push(dbResult[i].animal);
+        }
+        return result;
+    },
 };
 
-module.exports = exp;
+function getData(type, query){
+    if(type === "animal") return DB.runStatement(sqlFile, {query: query}, [1]) [0];
+    return DB.runStatement(sqlFile, {query: query}, [0]) [0];
+}
+
+module.exports = {
+    get: {
+        idsBy: {
+            owner: function (query) {
+                if (Array.isArray(query)) {
+                    let result = [];
+                    for (let i = 0; i < query.length; i++) {
+                        result = result.concat(getData("owner", query[i]))
+                    }
+                    return cleanUpBy.owner(result);
+
+                } else {
+                    return cleanUpBy.owner(getData("owner", query));
+                }
+            },
+            animal: function (query) {
+                if (Array.isArray(query)) {
+                    let result = [];
+                    for (let i = 0; i < query.length; i++) {
+                        result = result.concat(getData("animal", query[i]))
+                    }
+                    return cleanUpBy.animal(result);
+
+                } else {
+                    return cleanUpBy.animal(getData("animal", query));
+                }
+            },
+        },
+        detailsOf: {
+            owner: function (ownerID) {
+                return DB.runStatement(sqlFile, {query: ownerID}, [2]) [0][0];
+            },
+            animal: function (animalID) {
+                return DB.runStatement(sqlFile, {query: animalID}, [3]) [0][0];
+            },
+        },
+    }
+};

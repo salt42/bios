@@ -1,2 +1,79 @@
-@import "fcOverviewBase.css";
-@import "fcOverviewFlex.css";
+fc-overview {
+    padding: 5px;
+}
+fc-overview>ul {
+    overflow: auto;
+    overflow-x: hidden;
+    box-shadow: var(--slight-shadow-inset);
+    background-color: var(--color-normal);
+}
+fc-overview ul.dead {
+    color: white;
+    background-color: var(--bg-dark);
+}
+
+.fco-treatment,
+.fco-animal {
+    margin: 5px;
+}
+.fco-treatment {
+    border-bottom: solid 1px black;
+}
+/*region inner design*/
+p.weight,
+p.name{
+    text-align: right;
+    padding: 5px;
+}
+span.species,
+span.age {
+    font-style: italic;
+    float: left;
+}
+#fco-selected span.age {
+    font-size: large;
+}
+#fco-selected p.name,
+#fco-selected p.weight  {
+    font-size: x-large;
+}
+/*endregion*/
+/* region info box */
+div#fco-selected {
+    position: absolute;
+    top: var(--header-height);
+    left: 10vw;
+    height: var(--top-bar);
+    width: 15vw;
+}
+/*endregion*/
+/* region flex */
+fc-overview {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+fc-overview ul.owner {
+    order: 1;
+    flex: 2 auto;
+    min-height: 2em;
+}
+fc-overview ul.animal {
+    order: 2;
+    flex: 4 auto;
+    min-height: 2em;
+}
+fc-overview ul.treatment {
+    order: 3;
+    flex: 4 auto;
+    min-height: 2em;
+}
+fc-overview ul.dead {
+    position: absolute;
+    min-height: 1em;
+    width: 1em;
+    height: 1em;
+    top: calc(var(--header-height) + var(--top-bar));
+    left: calc(var(--sidebar-width) - 1em);
+}
+/*endregion*/
