@@ -23,6 +23,10 @@ trans.set(helper + "_" + i++, "deer"    );
 trans.set(helper + "_" + i++, "unknown" );
 trans.set(helper + "_" + i++, "calf"    );
 
+//core trans
+trans.set("liveSearch placeholder",     "Search..."         );
+
+
 trans.set("owner_id",     "owner ID"         );
 trans.set("first_name",   "first name"       );
 trans.set("name",         "name"             );

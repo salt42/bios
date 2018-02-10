@@ -1,11 +1,15 @@
-defineComp("search", function(bios, $element){
+defineComp("live-search", function(bios, template){
     "use strict";
+
+    let $element = this.$ele;
+
     if (window.startUpLogLevel >= 2) console.log("start search UI module");
-    // console.log("start search UI module");
     let $input = $('<input />')
+        .attr("id", "fixed-header-drawer-exp")
+        .addClass("mdl-textfield__input")
         .attr("type", "text")
         .attr("name", "search")
-        .attr("placeholder", "Search...")
+        .attr("placeholder", bios.trans.late("liveSearch placeholder") )
         .appendTo($element);
 
     let $liveResults = $('<ul></ul>')
@@ -173,4 +177,8 @@ defineComp("search", function(bios, $element){
         }
     });
     /*endregion*/
-});
+}
+// ,{
+//     templatePath: "/component/liveSearch/liveSearch.html"
+// }
+);
