@@ -1,14 +1,16 @@
-define("Config", function() {
+define("Config", function(g) {
+    g.AppState.setDebug(true);
+
     this.States = [{
         name: "therapySession",
         url: "/therapySession",//string, regex, function
-        section: [
+        sections: [
             ["main-content", "therapy-session"],
         ],
     },{
         name: "reception",
         url: "/reception",//string, regex, function
-        section: [
+        sections: [
             ["main-content", "d-reception"],
         ],
         sub: [{
@@ -21,7 +23,7 @@ define("Config", function() {
     },{
         name: "administration",
         url: "/a/animal/:id",//string, regex, function
-        section: [
+        sections: [
             ["main-content", "administration"],
         ],
     }

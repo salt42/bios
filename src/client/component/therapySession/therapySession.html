@@ -1,32 +1,98 @@
-<div id="queue">
-    <div class="d-ts-queue d-ts-queue-first"></div>
+<!--<div id="queue">-->
+    <!--<div class="bios-ts-queue bios-ts-queue-first"></div>-->
+<!--</div>-->
+
+<!--<table  class="mdl-data-table mdl-js-data-table mdl-data-table&#45;&#45;selectable mdl-shadow&#45;&#45;2dp bios-ts-queue bios-ts-queue-next">-->
+    <!--<thead>-->
+    <!--<tr>-->
+        <!--<th class="mdl-data-table__cell&#45;&#45;non-numeric">owner</th>-->
+        <!--<th>animal name</th>-->
+        <!--<th>reason</th>-->
+    <!--</tr>-->
+    <!--</thead>-->
+    <!--<tbody>-->
+    <!--<tr class="list-item">-->
+        <!--<td class="mdl-data-table__cell&#45;&#45;non-numeric bios-ts-queue list-item">Söllner, Hans</td>-->
+        <!--<td>Charly</td>-->
+        <!--<td>smoke comes out</td>-->
+    <!--</tr>-->
+    <!--</tbody>-->
+<!--</table>-->
+<div id="bios-queue">
+    <div class="mdl-card mdl-shadow--2dp bios-queue-item bios-queue-item selected">
+        <div class="mdl-card__title mdl-card--expand">
+            <h4>
+                <span class="name">Söllner, Hans<br></span>
+                <span class="animal">Charly<br></span>
+                <span class="reason">smoke comes out</span>
+            </h4>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                next
+            </a>
+            <div class="mdl-layout-spacer"></div>
+        </div>
+    </div>
+    <div class="mdl-card mdl-shadow--2dp bios-queue-item">
+        <div class="mdl-card__title mdl-card--expand">
+            <h4>
+                <span class="name">Söllner, Hans<br></span>
+                <span class="animal">Charly<br></span>
+                <span class="reason">smoke comes out</span>
+            </h4>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                later
+            </a>
+            <div class="mdl-layout-spacer"></div>
+        </div>
+    </div>
+    <div class="mdl-card mdl-shadow--2dp bios-queue-item">
+        <div class="mdl-card__title mdl-card--expand">
+            <h4>
+                <span class="name">Söllner, Hans<br></span>
+                <span class="animal">Charly<br></span>
+                <span class="reason">smoke comes out</span>
+            </h4>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                later
+            </a>
+            <div class="mdl-layout-spacer"></div>
+        </div>
+    </div>
 </div>
 
-<table  class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp d-ts-queue d-ts-queue-next">
-    <thead>
-    <tr>
-        <th class="mdl-data-table__cell--non-numeric">owner</th>
-        <th>animal name</th>
-        <th>reason</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr class="list-item">
-        <td class="mdl-data-table__cell--non-numeric d-ts-queue list-item">Söllner, Hans</td>
-        <td>Charly</td>
-        <td>smoke comes out</td>
-    </tr>
-    </tbody>
-</table>
-
-
-<template class="d-ts-queue list-item-template">
-    <tr class="list-item">
-        <td class="mdl-data-table__cell--non-numeric d-ts-queue">Söllner, Hans</td>
-        <td>Charly</td>
-        <td>smoke comes out</td>
-    </tr>
+<template class="bios-ts-queue list-item-template">
+    <div class="mdl-card mdl-shadow--2dp bios-queue-item">
+        <div class="mdl-card__title mdl-card--expand">
+            <h4>
+                <span class="name"><br></span>
+                <span class="animal"><br></span>
+                <span class="reason"></span>
+            </h4>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"></a>
+            <div class="mdl-layout-spacer"></div>
+        </div>
+    </div>
 </template>
-<template class="d-ts-queue list-item-template-first">
-    <div class="d-ts-queue list-item-first"></div>
+<template class="bios-ts-queue list-item-template-first">
+    <div class="mdl-card mdl-shadow--2dp bios-queue-item bios-queue-item selected">
+        <div class="mdl-card__title mdl-card--expand">
+            <h4>
+                <span class="name"><br></span>
+                <span class="animal"><br></span>
+                <span class="reason"></span>
+            </h4>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"></a>
+            <div class="mdl-layout-spacer"></div>
+        </div>
+    </div>
 </template>
