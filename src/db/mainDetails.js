@@ -5,21 +5,31 @@ const weight    = require("./weight");
 const treatment = require("./treatment");
 const animOwner = require("./animalOwner");
 
-let emptyWeight = {
-    type: "weight",
-    id: 0,
-    animal_id: 0,
-    treatment: null,
-    weight: 0.00,
-    comment: ""
+function resultProto() {
+    return {
+        owner:  [],
+        animal: [],
+    }
+}
+
+function emptyWeight(animalID) {
+    return {
+        type: "weight",
+        id: 0,
+        animal_id: animalID,
+        treatment: null,
+        weight: "0,00",
+        comment: "",
+    }
 };
-let emptyTreatment = {
-    type: "treatment",
-    id: 0,
-    animal_id: 0,
-    treatment: null,
-    weight: 0.00,
-    comment: ""
+function emptyTreatment(animalID) {
+    return {
+        type: "treatment",
+        name: "new customer",
+        id: 0,
+        animal_id: animalID,
+        treatment: null,
+    }
 };
 
 /* region data prepare */
@@ -36,62 +46,58 @@ function removeDoubles(dbResult){
 }
 
 function createResult(searchedByType, query, allOwnerIDs, allAnimalsIDs){
-    let result = getData(searchedByType, query, allOwnerIDs, allAnimalsIDs);
-    result = makeUpData(result);
+    let result = getData(allOwnerIDs, allAnimalsIDs);
+    result = makeUpData(searchedByType, query, result);
     return result;
 }
 
-function getData(queryType, query, allOwnerIDs, allAnimalsIDs){
-    let obj = [];
+function getData(allOwnerIDs, allAnimalsIDs){
+    let obj = resultProto();
     for (let i = 0; i < allOwnerIDs.length; i++) {
         let ownerData = animOwner.get.detailsOf.owner(allOwnerIDs[i]);
-        ownerData.type = "owner";
-        ownerData.selected = (queryType === "owner" && query === allOwnerIDs[i]);
-        obj.push( ownerData );
+        obj.owner.push( ownerData );
     }
     for (let i = 0; i < allAnimalsIDs.length; i++) {
-        allAnimalsIDs[i] = parseInt(allAnimalsIDs[i]);
-        query = parseInt(query);
         let animalData = animOwner.get.detailsOf.animal(allAnimalsIDs[i]);
-        animalData.type = "animal";
-        animalData.selected = (queryType === "animal" && query === allAnimalsIDs[i]);
         animalData.weight = weight.get.lastWeigth(allAnimalsIDs[i]);
         animalData.treatments = treatment.get.allTreatments(allAnimalsIDs[i]);
-        for (let i = 0; i < animalData.treatments.length; i++) {
-            animalData.treatments[i].type = "treatment";
-        }
-        obj.push( animalData );
+        obj.animal.push( animalData );
     }
     return obj;
 }
 
-function makeUpData(resultObjects) {
-    for (let i = 0; i < resultObjects.length; i++) {
-      let obj = resultObjects[i];
-      switch(obj.type){
-          case 'owner':
-              resultObjects[i].name = obj.first_name + " " + obj.name;
-              resultObjects[i].typeOf = obj.gender;
-              resultObjects[i].state = null;
-              break;
-          case 'animal':
-              // weight
-              if (obj.weight === null){
-                  resultObjects[i].weight = emptyWeight;
-                  resultObjects[i].weight.animal_id = obj.id;
-              }
-              // treatment
-              if (obj.treatments.length < 1){
-                  resultObjects[i].treatments.push(emptyTreatment);
-                  resultObjects[i].treatments[0].animal_id = obj.id;
-              }
-              resultObjects[i].typeOf = obj.species_id;
-              resultObjects[i].state = obj.died;
-              break;
-          default:
-      }
+function makeUpData(queryType, query, resultObject) {
+    for (let i = 0; i < resultObject.owner.length; i++) {
+        // add identifiers
+        resultObject.owner[i].id = parseInt(resultObject.owner[i].id);
+        query = parseInt(query);
+        resultObject.owner[i].type     = "owner";
+        resultObject.owner[i].selected = (queryType === "owner" && query === resultObject.owner[i].id);
+        resultObject.owner[i].name     = resultObject.owner[i].first_name + " " + resultObject.owner[i].name;
+        resultObject.owner[i].typeOf   = resultObject.owner[i].gender;
+        resultObject.owner[i].state    = null;
     }
-    return resultObjects;
+    for (let i = 0; i < resultObject.animal.length; i++) {
+        // add identifiers
+        resultObject.animal[i].id = parseInt(resultObject.animal[i].id);
+        query = parseInt(query);
+        resultObject.animal[i].type = "animal";
+        resultObject.animal[i].selected = (queryType === "animal" && query === resultObject.animal[i].id);
+        // no weight:
+        if (resultObject.animal[i].weight === null){
+          resultObject.animal[i].weight = emptyWeight(resultObject.animal[i].id);
+        }
+        // no treatment:
+        if (resultObject.animal[i].treatments.length < 1){
+          resultObject.animal[i].treatments.push(emptyTreatment(resultObject.animal[i].id));
+        }
+        for (let i_t = 0; i_t < resultObject.animal[i].treatments.length; i_t++) {
+            resultObject.animal[i].treatments[i_t].type = "treatment";
+        }
+        resultObject.animal[i].typeOf = resultObject.animal[i].species_id;
+        resultObject.animal[i].state = resultObject.animal[i].died;
+    }
+    return resultObject;
 }
 /*endregion*/
 

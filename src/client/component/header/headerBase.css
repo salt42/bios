@@ -1,12 +1,12 @@
-header {
-    position: fixed;
-    z-index: 1000;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--header-height);
-    background-color: var(--bg-dark);
-}
+/*header {*/
+    /*position: fixed;*/
+    /*z-index: 1000;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*height: var(--header-height);*/
+    /*background-color: var(--bg-dark);*/
+/*}*/
 header img {
     margin: calc(var(--header-height) * 0.05);
     margin-bottom: 0;

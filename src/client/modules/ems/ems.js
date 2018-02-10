@@ -7,7 +7,7 @@ define("ems", function(bios) {
     // Event Management System
 
     // register needed events
-    this.onStateChange = new Rx.ReplaySubject();
+    this.onStateChange = new Rx.ReplaySubject(1);
     this.infoFeed = new Rx.ReplaySubject();
     this.flashcard = new Rx.ReplaySubject();
 
@@ -15,12 +15,8 @@ define("ems", function(bios) {
         switch (data.type){
             case 'animal':
                 bios.sections.load("main-content", "mc-flashcard", function() {
-                    this.onStateChange.next({
-                        state: "liveSearch",
-                        data: data
-                    });
-                }.bind(this));
-
+                    bios.ems_data.ems_liveSearch_data(data);
+                });
                 break;
         }
     };

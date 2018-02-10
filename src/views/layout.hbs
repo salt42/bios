@@ -3,18 +3,21 @@
     <head>
         <meta charset="utf-8">
         <title>{{title}}</title>
-
+        <link rel="stylesheet" href="/libs/material/material.min.css">
+        <script src="/libs/material/material.min.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         {{headerIncludes}}
     </head>
     <body>
-
-        <header></header>
-        <content id="flex-grid-body">
-            <sidebar class="fgb-item fgb-sidebar" ></sidebar>
-            <main-content class="fgb-item fgb-main-content" >
-                <section id="top-bar" default=""></section>
-                <section id="main-content" default="dashboard"></section>
-            </main-content>
-        </content>
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header">
+            </header>
+                <link-bar class="mdl-layout__drawer"></link-bar>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <section id="main-content" default="dashboard"></section>
+                </div>
+            </main>
+        </div>
     </body>
 </html>
