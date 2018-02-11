@@ -1,0 +1,25 @@
+div.user-list-selector {
+    position: absolute;
+    display:  block;
+    top: 0;
+    right: 0;
+    border: solid 1px black;
+    border-top: none;
+    padding: 5px;
+    background-color: var(--color-one);
+    z-index: 3;
+}
+div.user-list-selector input {
+    box-shadow: none;
+}
+/*header ul.userList {*/
+    /*float: right;*/
+    /*margin-right: 15px;*/
+    /*margin-left: 25px;*/
+/*}*/
+/*header ul.userList li.userlist-entry {*/
+    /*background-color: var(--color-one);*/
+    /*float: right;*/
+    /*margin-right: 5px;*/
+    /*margin-left: 5px;*/
+/*}*/
