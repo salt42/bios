@@ -1,5 +1,9 @@
-header {
+header,
+.mdl-layout__header-row {
     height: var(--header-height);
+}
+.mdl-layout__header {
+    background-color: var(--color-one-dark);
 }
 content {
     margin-top: var(--header-height);
