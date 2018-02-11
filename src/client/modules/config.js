@@ -1,5 +1,5 @@
 define("Config", function(g) {
-    g.AppState.setDebug(true);
+    g.AppState.setDebug(false);
 
     this.States = [{
         name: "therapySession",
