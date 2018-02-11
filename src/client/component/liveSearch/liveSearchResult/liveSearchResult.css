@@ -1,0 +1,22 @@
+live-search-result {
+    position: absolute;
+    right:  0;
+    width: 450px;
+    color: black;
+}
+live-search-result>li{
+    display: block;
+}
+li.group {
+    background-color: var(--color-one-dark);
+}
+live-search-result li.live-search-result-item {
+    background-color: var(--color-one);
+}
+span.highlight{
+    color: lightgrey;
+}
+live-search-result li.live-search-result-item:hover{
+    color: black;
+    background-color: var(--color-one-dark);
+}
