@@ -16,7 +16,8 @@
     "client": {
         "coreModules": {
             "appState": true,
-            "templateUtils": true
+            "templateUtils": true,
+            "globalUtils": true
         },
         "coreComponents": {
             "section": true
