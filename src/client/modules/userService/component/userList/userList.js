@@ -12,6 +12,7 @@ defineComp("user-list", function(bios, template){
        ;
 
         bios.search.getList("user", setData);
+
     };
     function setData (users) {
         $('.user-list', $element).appendTemplate(".template-user-list-item", users, function (template, value){
@@ -25,7 +26,12 @@ defineComp("user-list", function(bios, template){
     }
 
     function toggleList(e) {
-        $('.user-list', $element).toggleClass("hidden");
+        let switchElement = $('.user-list', $element)
+            .toggleClass("hidden");
+        if ( switchElement.hasClass("hidden") )
+            switchElement.removeOuterClick();
+        else
+            switchElement.hidesOnOuterClick ( $('.user-list-selector') );
     }
 
     function toggleActiveUser(e){
