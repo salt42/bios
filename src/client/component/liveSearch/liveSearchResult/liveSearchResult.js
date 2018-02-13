@@ -87,7 +87,10 @@ defineComp("live-search-result", function(bios, template, args) {
         }
         highlight(data.query);
         bios.rxLiveSearch.upStream.next($element);
-
+        $element.hidesOnOuterClick();
+        $('li.live-search-result-item', $element).on("click", function (e) {
+            let target = $(e.target);
+        })
     };
 
     function highlight(query) {
