@@ -7,11 +7,12 @@ header company-vcard {
     /* position:  absolute; */
     /* left: 40vw; */
     margin-right: 10vw;
+    width: 250px;
 }
 /* region <vendor> */
 header vendor {
     position:  absolute;
-    left: 10vw;
+    left: 55px; /*from mdl design  .mdl-layout__drawer-button*/
     height: var(--header-height);
     color: #718eaa;
 }

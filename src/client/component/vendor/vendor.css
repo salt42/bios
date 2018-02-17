@@ -78,18 +78,21 @@ header vendor p span + span {
     header vendor p span::after {
         display: block;
     }
+    vendor img {
+        height: calc(var(--header-height) / 2)
+    }
 }
-@media (min-width: 45em) {
+@media (min-width: 37.5em) {
     header vendor p {
         font-size: 2em;
     }
 }
-@media (min-width: 48em) {
+@media (min-width: 43.3em) {
     header vendor p {
         font-size: 3.5em;
     }
 }
-@media (min-width: 60em) {
+@media (min-width: 49em) {
     header vendor p {
         font-size: 5em;
     }
