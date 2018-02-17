@@ -7,7 +7,7 @@ defineComp("user-list", function(bios, template){
     this.onLoad = function () {
         console.log("loaded user-list COMP");
        $('.user-list-selector-name')
-           .text( bios.trans.late("UL selector") )
+           .text( bios.trans.late("User") )
            .on("click", toggleList)
        ;
 

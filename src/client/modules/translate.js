@@ -4,6 +4,8 @@ define("trans", function(bios){
     let transStrings = window.trans;
     let speciesList;
     let userRolesList;
+    bios.needTranslation = [];
+
 
     let error = false;
 
@@ -31,6 +33,7 @@ define("trans", function(bios){
         let s = str.toLowerCase();
         if (!(!transStrings.get(s)))
             str = transStrings.get(s);
+        else bios.needTranslation.push(str);
         return str;
     };
     /*endregion*/
@@ -126,4 +129,8 @@ define("trans", function(bios){
         }
     }
     /* endregion*/
+
+    this.log = function(){
+        console.log('needs translation: ', bios.needTranslation);
+    }
 });

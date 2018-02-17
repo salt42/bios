@@ -8,6 +8,7 @@ div.user-list-selector {
     padding: 5px;
     background-color: var(--color-one);
     z-index: 3;
+    min-width: 90px;
 }
 div.user-list-selector input {
     box-shadow: none;

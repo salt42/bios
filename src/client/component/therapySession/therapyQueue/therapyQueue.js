@@ -33,11 +33,11 @@ defineComp("therapy-queue",  function (bios, template, args) {
         let c = 0;
         console.log(data);
         $('#bios-queue').appendTemplate(".bios-ts-queue.list-item-template", data, function (fragment, value){
-            let call = "later";
+            let call = bios.trans.late("later treatment");
             if (c === 0){
                 $('div.bios-queue-item', fragment).addClass("selected");
                 c++;
-                call = "next";
+                call = bios.trans.late("next treatment");
             }
             $('div.bios-queue-item', fragment).attr("data-id", value.animal_id);
             $('span.name', fragment).text(value.name + ', ' + value.first_name);
@@ -45,6 +45,7 @@ defineComp("therapy-queue",  function (bios, template, args) {
             $('span.reason', fragment).text(value.reason);
             $('div.mdl-card__actions a', fragment).text(call);
         });
+        bios.trans.log();
     };
 
 
