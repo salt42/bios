@@ -21,6 +21,19 @@ define("Config", function(g) {
             // ],
         }]
     },{
+        name: "office",
+        url: "/office",//string, regex, function
+        sections: [
+            ["main-content", "office"],
+        ],
+        sub: [{
+            name: "home",
+            url: "/",
+            // section: [//aber wir können auch sagen wir bauen des feature spaäter ein
+            //     ["main-content", "treatment-home"],
+            // ],
+        }]
+    },{
         name: "administration",
         url: "/a/animal/:id",//string, regex, function
         sections: [

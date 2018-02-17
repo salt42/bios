@@ -4,6 +4,12 @@
 defineComp("reception",  function (bios, template, args) {
     "use strict";
 
+    let $element = this.$ele;
+
+    this.onLoad = function(){
+        $('p', $element).html(bios.trans.late("department::reception"));
+    }
+
 }, {
     templatePath: "/component/departments/reception/reception.html"
 });
