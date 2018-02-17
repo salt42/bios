@@ -50,5 +50,5 @@ defineComp("therapy-queue",  function (bios, template, args) {
 
 
 }, {
-    templatePath: "/component/therapySession/therapyQueue/therapyQueue.html"
+    templatePath: "/component/departments/therapySession/therapyQueue/therapyQueue.html"
 });

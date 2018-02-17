@@ -1,6 +1,3 @@
-/**
- * Created by Fry on 17.02.2018.
- */
 defineComp("reception-dashboard",  function (bios, template, args) {
     "use strict";
 
@@ -52,7 +49,7 @@ defineComp("reception-dashboard",  function (bios, template, args) {
 
     function createCardStrings (type, objData) {
         if(type === "img"){
-            return "<img src='" + objData + "' class='tsd-card-image' alt='image'>";
+            return "<img src='" + objData + "' class='reception-dash-card-image' alt='image'>";
         } else if (type === "html"){
             return objData;
         } else {
@@ -61,5 +58,5 @@ defineComp("reception-dashboard",  function (bios, template, args) {
     }
 
 }, {
-    templatePath: "/component/therapySession/therapySessionDashboard/therapySessionDashboard.html"
+    templatePath: "/component/departments/reception/receptionDashboard/receptionDashboard.html"
 });

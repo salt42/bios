@@ -5,5 +5,5 @@ defineComp("therapy-session",  function (bios, template, args) {
     "use strict";
 
 }, {
-    templatePath: "/component/therapySession/therapySession.html"
+    templatePath: "/component/departments/therapySession/therapySession.html"
 });

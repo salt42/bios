@@ -1,7 +1,4 @@
-/**
- * Created by Fry on 17.02.2018.
- */
-defineComp("therapy-session-dashboard",  function (bios, template, args) {
+defineComp("office-dashboard",  function (bios, template, args) {
     "use strict";
 
     //dummy data
@@ -34,7 +31,7 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
 
     this.onLoad = function (){
         data = prepareData (data);
-        $('#ts-dash-cards').appendTemplate(".template-ts-dash-cards", data, function (fragment, value){
+        $('#office-cards').appendTemplate(".template-office-cards", data, function (fragment, value){
             $('span.top', fragment).html(value.top);
             $('a.mdl-js-button', fragment).html(value.bottom);
         });
@@ -52,7 +49,7 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
 
     function createCardStrings (type, objData) {
         if(type === "img"){
-            return "<img src='" + objData + "' class='ts-dash-card-image' alt='image'>";
+            return "<img src='" + objData + "' class='office-dash-card-image' alt='image'>";
         } else if (type === "html"){
             return objData;
         } else {
@@ -61,5 +58,5 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
     }
 
 }, {
-    templatePath: "/component/therapySession/therapySessionDashboard/therapySessionDashboard.html"
+    templatePath: "/component/departments/office/officeDashboard/officeDashboard.html"
 });

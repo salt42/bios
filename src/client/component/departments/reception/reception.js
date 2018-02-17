@@ -5,5 +5,5 @@ defineComp("reception",  function (bios, template, args) {
     "use strict";
 
 }, {
-    templatePath: "/component/reception/reception.html"
+    templatePath: "/component/departments/reception/reception.html"
 });
