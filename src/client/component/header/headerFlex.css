@@ -12,15 +12,6 @@ head-panel.fgh-column {
     flex: 20;
 }
 /*endregion*/
-/* region <vendor> */
-header vendor {
-    display: flex;
-    justify-content: flex-start;
-}
-header vendor>v_style {
-    order: 2;
-}
-/* endregion */
 /* region <head-panel> */
 header head-panel {
     display: flex;

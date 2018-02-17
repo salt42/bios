@@ -1,3 +1,7 @@
+body{
+    background-color: var(--bg);
+}
+
 header,
 .mdl-layout__header-row {
     height: var(--header-height);

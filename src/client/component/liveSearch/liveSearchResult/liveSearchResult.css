@@ -9,9 +9,11 @@ live-search-result>li{
 }
 li.group {
     background-color: var(--color-one-dark);
+    display: block;
 }
 live-search-result li.live-search-result-item {
     background-color: var(--color-one);
+    display: block;
 }
 span.highlight{
     color: lightgrey;

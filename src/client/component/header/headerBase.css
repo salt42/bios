@@ -12,22 +12,6 @@ header img {
     margin-bottom: 0;
     height: var(--header-img-height);
 }
-/* region <vendor> */
-header vendor {
-    position: relative;
-    height: var(--header-height);
-    color: #718eaa;
-}
-header vendor>v_style {
-    font-size: xx-large;
-}
-header vendor img {
-    background-image: radial-gradient(white, gray);
-    border-radius: 10px;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 0;
-}
-/* endregion */
 /* region <head-panel> */
 header head-panel {
     position: relative;

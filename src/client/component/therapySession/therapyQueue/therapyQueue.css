@@ -1,0 +1,52 @@
+:root {
+    --bios-queue-item-next-width: 10vw;
+    --bios-queue-item-width: 5vw;
+    --bios-queue-hight: 5em;
+}
+
+@keyframes bios-queue-slide-in-rtl {
+    from {
+        width: var(--bios-queue-item-width);
+    }
+    to {
+        width: var(--bios-queue-item-next-width);
+    }
+}
+@keyframes bios-queue-slide-out-rtl {
+    from {
+        width: var(--bios-queue-item-next-width);
+    }
+    to {
+        width: var(--bios-queue-item-width);
+    }
+}
+
+therapy-session div#bios-queue {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.bios-queue-item {
+    float: left;
+    width: var(--bios-queue-item-width);
+    animation-name: bios-queue-slide-out-rtl;
+    animation-duration: 300ms;
+}
+.bios-queue-item.selected,
+.bios-queue-item:hover
+{
+    width: var(--bios-queue-item-next-width);
+    animation-name: bios-queue-slide-in-rtl;
+    animation-duration: 300ms;
+}
+
+.bios-queue-item > div.mdl-card__actions {
+    background-color: var(--color-one-dark);
+    height: 52px;
+    padding: 16px;
+}
+
+div.mdl-card__actions .mdl-button.mdl-button--colored
+{
+    color: white;
+}

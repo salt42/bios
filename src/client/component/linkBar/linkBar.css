@@ -1,0 +1,5 @@
+link-bar span.mdl-layout-title {
+    line-height: var(--header-height);
+    background-color: var(--color-one-dark);
+    color: white;
+}

@@ -55,23 +55,6 @@ defineComp("live-search", function(bios, template) {
             console.log('get', upstream);
             console.log($('live-search-result-item', upstream));
         });
-
-        // $liveResults.on("click", function(e) {
-        //     let $target = $(e.target),
-        //         type = $target.attr("type"),
-        //         id = $target.attr(type + '-id')
-        //     ;
-        //
-        //     if (!$target.hasClass("live-search")) return;
-        //
-        //     bios.ems.ems_LiveSearch ({
-        //         type: type,
-        //         id: id
-        //     });
-        //     $input.val("");
-        //     $liveResults.not("hidden").addClass("hidden");
-        //
-        // });
     };
 }
 ,{

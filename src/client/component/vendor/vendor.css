@@ -1,0 +1,97 @@
+header vendor>v_style {
+    font-size: xx-large;
+}
+header vendor img {
+    /*background-image: radial-gradient(white, gray);*/
+    /*border-radius: 10px;*/
+    /*border-top-right-radius: 0;*/
+    /*border-bottom-left-radius: 0;*/
+}
+/* endregion */
+
+/* region <vendor> flex*/
+header vendor {
+    display: flex;
+    justify-content: flex-start;
+}
+header vendor>v_style {
+    order: 2;
+}
+/* endregion */
+/* region test */
+header vendor p {
+    color: #fff;
+    font-family: Avenir Next, Helvetica Neue, Helvetica, Tahoma, sans-serif;
+    font-size: 1em;
+    font-weight: 700;
+}
+header vendor p span {
+    display: inline-block;
+    position: relative;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-perspective: 500;
+    perspective: 500;
+    -webkit-font-smoothing: antialiased;
+}
+header vendor p span::before,
+header vendor p span::after {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: -1px;
+    -webkit-transform-origin: left top;
+    transform-origin: left top;
+    -webkit-transition: all ease-out 0.3s;
+    transition: all ease-out 0.3s;
+    content: attr(data-text);
+}
+header vendor p span::before {
+    z-index: 1;
+    color: rgba(0,0,0,0.2);
+    -webkit-transform: scale(1.1, 1) skew(0deg, 20deg);
+    transform: scale(1.1, 1) skew(0deg, 20deg);
+}
+header vendor p span::after {
+    z-index: 2;
+    color: var(--color-one);
+    text-shadow: -1px 0 1px var(--color-one-dark), 1px 0 1px rgba(0,0,0,0.8);
+    -webkit-transform: rotateY(-40deg);
+    transform: rotateY(-40deg);
+}
+header vendor p span:hover::before {
+    -webkit-transform: scale(1.1, 1) skew(0deg, 5deg);
+    transform: scale(1.1, 1) skew(0deg, 5deg);
+}
+header vendor p span:hover::after {
+    -webkit-transform: rotateY(-10deg);
+    transform: rotateY(-10deg);
+}
+header vendor p span + span {
+    /* margin-left: 0.3em; */
+}
+@media (min-width: 10em) {
+    header vendor p {
+        font-size: 1em;
+    }
+    header vendor p span::before,
+    header vendor p span::after {
+        display: block;
+    }
+}
+@media (min-width: 45em) {
+    header vendor p {
+        font-size: 2em;
+    }
+}
+@media (min-width: 48em) {
+    header vendor p {
+        font-size: 3.5em;
+    }
+}
+@media (min-width: 60em) {
+    header vendor p {
+        font-size: 5em;
+    }
+}
+/*endregion*/

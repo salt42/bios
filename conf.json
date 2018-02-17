@@ -22,7 +22,7 @@
         "coreComponents": {
             "section": true
         },
-        "preCss": ["/css/style.css", "/libs/font-awesome-4.7.0/css/font-awesome.min.css", "/libs/jsonForm/src/jsonForm.css"],
+        "preCss": ["/css/style.css", "/libs/jsonForm/src/jsonForm.css"],
         "postCss": [],
         "preScript": ["/libs/jsonForm/src/jsonForm.js", "/language/english.js"],
         "postScript": [],

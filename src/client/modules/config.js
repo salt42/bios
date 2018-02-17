@@ -11,11 +11,11 @@ define("Config", function(g) {
         name: "reception",
         url: "/reception",//string, regex, function
         sections: [
-            ["main-content", "d-reception"],
+            ["main-content", "reception"],
         ],
         sub: [{
             name: "home",
-            url: "/",//schau mal wie schwer des zu implen is
+            url: "/",
             // section: [//aber wir können auch sagen wir bauen des feature spaäter ein
             //     ["main-content", "treatment-home"],
             // ],

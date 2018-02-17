@@ -17,6 +17,7 @@ defineComp("live-search-result", function(bios, template, args) {
             if (!data.hasOwnProperty(property)) continue;
             if (data[property].length === 0 || property === "query") continue;
             let type;
+            let itemTemplate = ".template-live-search-result-item";
             // add entries
             switch (property){
                 case "owners":
@@ -26,7 +27,7 @@ defineComp("live-search-result", function(bios, template, args) {
 
                     $('ul.items', 'li.group-' + type)
                         .empty()
-                        .appendTemplate(".template-live-search-result-item", data.owners, function (template, value) {
+                        .appendTemplate(itemTemplate, data.owners, function (template, value) {
                         $('li', template)
                             .addClass("fa-user")
                             .attr("type", type)
@@ -42,7 +43,7 @@ defineComp("live-search-result", function(bios, template, args) {
 
                     $('ul.items', 'li.group-' + type)
                         .empty()
-                        .appendTemplate(".template-live-search-result-item", data.animals, function (fragment, value) {
+                        .appendTemplate(itemTemplate, data.animals, function (fragment, value) {
                         $('li', fragment)
                             .addClass("fa-paw")
                             .attr("type", type)
@@ -52,13 +53,14 @@ defineComp("live-search-result", function(bios, template, args) {
                     });
                     break;
                 case "deadAnimals":
+                    console.log(property);
                     type = "animal-d";
                     $('li.group-' + type).removeClass("hidden");
                     $('span', 'li.group-' + type).html(bios.trans.late("live search result " + type));
 
                     $('ul.items', 'li.group-animal-d')
                         .empty()
-                        .appendTemplate(".template-live-search-result-item", data.deadAnimals, function (fragment, value) {
+                        .appendTemplate(itemTemplate, data.deadAnimals, function (fragment, value) {
                         $('li', fragment)
                             .addClass("fa-circle")
                             .attr("type", type)
@@ -86,11 +88,34 @@ defineComp("live-search-result", function(bios, template, args) {
             }
         }
         highlight(data.query);
-        bios.rxLiveSearch.upStream.next($element);
         $element.hidesOnOuterClick();
+        $('input#fixed-header-drawer-exp').on('click', function () {
+            $element.removeClass("hidden");
+            $element.hidesOnOuterClick($('input#fixed-header-drawer-exp'));
+        });
         $('li.live-search-result-item', $element).on("click", function (e) {
-            let target = $(e.target);
-        })
+            console.log('click');
+            let $target = $(e.target);
+            let type = $target.attr("type");
+            let id = $target.attr(type + '-id');
+            console.log($target );
+            console.log(type);
+            console.log(id );
+
+            if (!$target.hasClass("live-search")) return;
+
+            bios.ems.ems_LiveSearch ({
+                type: type,
+                id: id
+            });
+            // $input.val("");
+            $element.not("hidden").addClass("hidden");
+        });
+
+        // $element.on("click", function(e) {
+        //
+        // });
+        bios.rxLiveSearch.upStream.next($element);
     };
 
     function highlight(query) {
