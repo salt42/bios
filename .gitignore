@@ -70,3 +70,4 @@ dbsave/old/
 /src/db/stdGet.js
 
 /src/client/language/bin/
+/src/component/test/
