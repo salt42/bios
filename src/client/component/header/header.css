@@ -3,10 +3,13 @@ header img {
     margin-bottom: 0;
     height: var(--header-img-height);
 }
+div.mdl-textfield.mdl-js-textfield.mdl-textfield--expandable {
+    margin-right: 40%;
+}
 header company-vcard {
     /* position:  absolute; */
     /* left: 40vw; */
-    margin-right: 10vw;
+    margin-right: 5vw;
     width: 250px;
 }
 /* region <vendor> */
