@@ -5,8 +5,8 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
     "use strict";
 
     let $element = this.$ele;
-    //dummy data
     let data = [];
+    /* region dummy data */
 
     function dummy (count, data) {
         let i = 0;
@@ -32,6 +32,7 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
     }
 
     data = dummy(3, data);
+    /*endregion*/
 
     this.onLoad = function (){
         data = prepareData (data);
@@ -53,14 +54,16 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
         ;
         $('.mdl-card').hover(turnOnSettingsHovered, turnOffSettingsHovered);
 
-        $('a', $element).on("click", function (e) {
-            let target = $(e.target);
-            if(target.attr("url"))
-                bios.AppState.goToUrl(target.attr("url"));
-            // if(target.attr("state"))
-            //     bios.AppState.goToState(target.attr("state"));
-        });
+        $('a', $element).on("click", callLink);
     };
+
+    function callLink(e){
+        let target = $(e.target);
+        if(target.attr("url"))
+            bios.AppState.goToUrl(target.attr("url"));
+        // if(target.attr("state"))
+        //     bios.AppState.goToState(target.attr("state"));
+    }
 
     function turnOnSettingsHovered(e) {
         if($(e.target).has("div.settings-icon")) {
