@@ -1,12 +1,16 @@
 .reception-dash-card-image{
 
 }
+reception-dashboard .mdl-card {
+    min-height: 200px;
+}
 div.reception-dash-cards {
     margin-right: 2vw;
     margin-bottom: 10px;
     float: left;
     width: 18vw;
 }
+
 
 .mdl-card__actions {
     background-color: var(--color-one-dark);

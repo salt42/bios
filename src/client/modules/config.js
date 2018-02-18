@@ -14,8 +14,8 @@ define("Config", function(g) {
             ["main-content", "reception"],
         ],
         sub: [{
-            name: "home",
-            url: "/",
+            name: "queue",
+            url: "/queue",
             // section: [//aber wir können auch sagen wir bauen des feature spaäter ein
             //     ["main-content", "treatment-home"],
             // ],
@@ -38,6 +38,12 @@ define("Config", function(g) {
         url: "/a/animal/:id",//string, regex, function
         sections: [
             ["main-content", "administration"],
+        ],
+    },{
+        name: '<div class="settings-icon"></div>settings',
+        url: "/settings",//string, regex, function
+        sections: [
+            ["main-content", "bios-settings"],
         ],
     }
     // ,{

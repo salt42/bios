@@ -3,3 +3,10 @@ link-bar span.mdl-layout-title {
     background-color: var(--color-one-dark);
     color: white;
 }
+.link-bar-image {
+    height: 40px;
+}
+link-bar div.settings-icon {
+    height: 40px;
+    width: 40px;
+}

@@ -11,21 +11,21 @@ defineComp("therapy-queue",  function (bios, template, args) {
             first_name: "Hans",
             animal: "Charly",
             animal_id: 123,
-            reason: "Smmoke comes out"
+            reason: "Smoke comes out"
         },
         {
             name: "Söllner",
             first_name: "Hans",
             animal: "Charly",
             animal_id: 234,
-            reason: "Smmoke comes out"
+            reason: "Smoke comes out"
         },
         {
             name: "Söllner",
             first_name: "Hans",
             animal: "Charly",
             animal_id: 345,
-            reason: "Smmoke comes out"
+            reason: "Smoke comes out"
         }
     ];
 

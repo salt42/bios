@@ -21,26 +21,26 @@
     }
 }
 
-therapy-session div#bios-queue {
+therapy-session>div#bios-queue {
     position: absolute;
     bottom: 0;
     right: 0;
 }
-.bios-queue-item {
+therapy-session>div#bios-queue>.bios-queue-item {
     float: left;
     width: var(--bios-queue-item-width);
     animation-name: bios-queue-slide-out-rtl;
     animation-duration: 300ms;
 }
-.bios-queue-item.selected,
-.bios-queue-item:hover
+therapy-session>div#bios-queue>.bios-queue-item.selected,
+therapy-session>div#bios-queue>.bios-queue-item:hover
 {
     width: var(--bios-queue-item-next-width);
     animation-name: bios-queue-slide-in-rtl;
     animation-duration: 300ms;
 }
 
-.bios-queue-item > div.mdl-card__actions {
+therapy-session>div#bios-queue>.bios-queue-item > div.mdl-card__actions {
     background-color: var(--color-one-dark);
     height: 52px;
     padding: 16px;
@@ -49,4 +49,31 @@ therapy-session div#bios-queue {
 div.mdl-card__actions .mdl-button.mdl-button--colored
 {
     color: white;
+}
+
+div.mdl-card__title therapy-queue {
+    position: relative;
+}
+div.mdl-card__title therapy-queue *{
+    position: relative;
+    flex: none;
+    overflow: hidden;
+    padding: 2px;
+}
+div.mdl-card__title therapy-queue div#bios-queue {
+    position: relative;
+}
+div.mdl-card__title therapy-queue div#bios-queue div.mdl-card{
+    height: 4em;
+    width: 4em;
+    float: left;
+    min-height: 0;
+}
+div.mdl-card__title therapy-queue div#bios-queue div.mdl-card > .mdl-card__actions{
+    height: 1em;
+    width: 4em;
+}
+div.mdl-card__title therapy-queue div#bios-queue div div h4 span {
+    font-size: small;
+
 }

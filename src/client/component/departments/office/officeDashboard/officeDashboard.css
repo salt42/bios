@@ -1,6 +1,11 @@
 .office-dash-card-image{
 
 }
+
+office-dashboard .mdl-card {
+    min-height: 200px;
+}
+
 div.office-dash-cards {
     margin-right: 2vw;
     margin-bottom: 10px;

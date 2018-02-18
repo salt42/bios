@@ -1,0 +1,13 @@
+div.settings-icon {
+    background-image: url('/img/ui-kit/settings.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+div.settings-icon:hover,
+div.settings-icon.hovered,
+*:hover>div.settings-icon {
+    background: url('/img/ui-kit/settings_a.gif');
+    background-repeat: no-repeat;
+    background-size: contain;
+}

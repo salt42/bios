@@ -7,7 +7,7 @@ defineComp("therapy-session",  function (bios, template, args) {
     let $element = this.$ele;
 
     this.onLoad = function(){
-        $('p', $element).html(bios.trans.late("department::therapy session"));
+        $('p#dash-info', $element).html(bios.trans.late("department::therapy session"));
     }
 
 }, {
