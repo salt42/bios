@@ -20,13 +20,13 @@ fc-overview ul.dead {
     border-bottom: solid 1px black;
 }
 /*region inner design*/
-p.weight,
-p.name{
+fc-overview p.weight,
+fc-overview p.name{
     text-align: right;
     padding: 5px;
 }
-span.species,
-span.age {
+fc-overview span.species,
+fc-overview span.age {
     font-style: italic;
     float: left;
 }

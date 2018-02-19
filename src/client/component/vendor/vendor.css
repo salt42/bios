@@ -6,10 +6,10 @@ header vendor img {
     /*border-radius: 10px;*/
     /*border-top-right-radius: 0;*/
     /*border-bottom-left-radius: 0;*/
-    height: calc(var(--header-height) / 9);
+    height: calc(var(--header-height) / 12);
     position: absolute;
-    top: -0.07em;
-    left: 1.27em;
+    top: -0.19em;
+    left: 1.14em;
 }
 /* endregion */
 

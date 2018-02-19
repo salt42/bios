@@ -20,7 +20,7 @@
 
     --top-bar: 4em;
 
-    --header-height: 5.5em;
+    --header-height: 7.5em;
     --header-img-height: calc(var(--header-height) * 0.9);
 
     --body-height:    calc(var(--window-height) - var(--header-height));
