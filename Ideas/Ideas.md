@@ -6,6 +6,7 @@
 * #### Caldendar
 
 * #### Email client
++ erinnerungsfunktion
 
 * #### Push Notifikations (via PC Names)
 

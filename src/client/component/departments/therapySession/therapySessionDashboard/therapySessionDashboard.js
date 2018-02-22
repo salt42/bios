@@ -6,8 +6,19 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
 
     let $element = this.$ele;
     let data = [];
-    /* region dummy data */
+    let dashboardDefaults = [{
+        type: "html::text",
+        text: "<div class='settings-icon'></div>",
+        buttonText: "Settings",
+        buttonUrl: "/therapySession/settings"
+    },{
+        type: "element::text",
+        element: 'therapy-queue',
+        text: "ts dashboard queue",
+        buttonUrl: "/therapySession/queue"
+    }];
 
+    /* region dummy data */
     function dummy (count, data) {
         let i = 0;
         while (i < count) {
@@ -15,41 +26,46 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
             data.push({
                 type: "text::text",
                 text: "type text::text",
-                buttonText: "type text::text"
+                buttonText: "type text::text",
+                buttonUrl: ""
             });
             data.push({
                 type: "html::text",
-                text: "<div class='settings-icon'></div>",
-                buttonText: "Settings (type html::text)"
+                text: "<div style='background: blue; width: 30px; height:30px;'></div>",
+                buttonText: "Settings (type html::text)",
+                buttonUrl: ""
             });
             data.push({
                 type: "img::html",
                 text: "/img/ui-kit/default/employ_male.png",
-                buttonText: "<span>type img::html</span>"
+                buttonText: "<span>type img::html</span>",
+                buttonUrl: ""
             });
         }
         return data;
     }
-
-    data = dummy(3, data);
+    data = dummy(2, data);
     /*endregion*/
 
     this.onLoad = function (){
+        data = data.concat(dashboardDefaults);
         data = prepareData (data);
         $('#ts-dash-cards')
             // append items
             .appendTemplate(".template-ts-dash-cards", data, function (fragment, value){
-                $('span.top', fragment).html(value.top);
-                $('a.mdl-js-button', fragment).html(value.bottom);
-            })
-            //append queue as last item
-            .appendTemplate(".template-ts-dash-cards", [{item: 'therapy-queue', text: "ts dashboard queue"}], function (fragment, value){
-                $('div.mdl-card__title', fragment)
-                    .empty()
-                    .append($(value.item));
-                $('a.mdl-js-button', fragment)
-                    .attr("url", "/therapySession/queue")
-                    .html(bios.trans.late(value.text));
+                if(value.element){
+                    $('div.mdl-card__title', fragment)
+                        .empty()
+                        .append($(value.element));
+                    $('a.mdl-js-button', fragment)
+                        .html(bios.trans.late(value.text))
+                        .attr("url", value.buttonUrl);
+                } else {
+                    $('span.top', fragment).html(value.top);
+                    $('a.mdl-js-button', fragment)
+                        .html(value.bottom)
+                        .attr("url", value.buttonUrl);
+                }
             })
         ;
         $('.mdl-card').hover(turnOnSettingsHovered, turnOffSettingsHovered);
@@ -87,13 +103,12 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
     }
 
     function createCardStrings (type, objData) {
-        if(type === "img"){
+        if(type === "img")
             return "<img src='" + objData + "' class='ts-dash-card-image' alt='image'>";
-        } else if (type === "html"){
-            return objData;
-        } else {
+        else if (type === "text")
             return "<span>" + objData + "</span>";
-        }
+        else
+            return objData;
     }
 
 }, {

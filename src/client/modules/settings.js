@@ -6,6 +6,10 @@ define("settings", function(bios) {
 
     let company = {};
     let companyLogoPath = "";
+
+    this.settings = {};
+
+    /* region company */
     function getCompanyDataFromServer () {
         // let url = "/settings/company";
         // $.ajax({
@@ -33,4 +37,18 @@ define("settings", function(bios) {
     this.company = company;
 
     this.companyLogo = companyLogoPath;
+    /*endregion*/
+
+    this.settings.therapySession = {
+        // get settings
+    };
+    this.settings.reception = {
+        // get settings
+    };
+    this.settings.office = {
+        // get settings
+    };
+    this.settings.bios = {
+        // get settings
+    };
 });

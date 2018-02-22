@@ -21,6 +21,10 @@
     }
 }
 
+.mdl-card {
+    float:left;
+    margin-right: 5px;
+}
 therapy-session>div#bios-queue {
     position: absolute;
     bottom: 0;

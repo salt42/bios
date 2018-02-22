@@ -4,6 +4,11 @@ div.settings-icon {
     background-size: contain;
 }
 
+.dash-cards .settings-icon{
+    height: 100px;
+    width: 100px;
+}
+
 div.settings-icon:hover,
 div.settings-icon.hovered,
 *:hover>div.settings-icon {

@@ -1,9 +1,16 @@
 defineComp("reception-dashboard",  function (bios, template, args) {
     "use strict";
 
-    //dummy data
+    let $element = this.$ele;
     let data = [];
+    let dashboardDefaults = [{
+        type: "html::text",
+        text: "<div class='settings-icon'></div>",
+        buttonText: "Settings",
+        buttonUrl: "/reception/settings"
+    }];
 
+    /* region dummy data */
     function dummy (count, data) {
         let i = 0;
         while (i < count) {
@@ -11,31 +18,71 @@ defineComp("reception-dashboard",  function (bios, template, args) {
             data.push({
                 type: "text::text",
                 text: "type text::text",
-                buttonText: "type text::text"
+                buttonText: "type text::text",
+                buttonUrl: ""
             });
             data.push({
                 type: "html::text",
-                text: "<span>type html::text</span>",
-                buttonText: "type html::text"
+                text: "<div style='background: blue; width: 30px; height:30px;'></div>",
+                buttonText: "Settings (type html::text)",
+                buttonUrl: ""
             });
             data.push({
                 type: "img::html",
-                text: "img/path",
-                buttonText: "<span>type img::html</span>"
+                text: "/img/ui-kit/default/employ_male.png",
+                buttonText: "<span>type img::html</span>",
+                buttonUrl: ""
             });
         }
         return data;
     }
-
-    data = dummy(3, data);
+    data = dummy(2, data);
+    /*endregion*/
 
     this.onLoad = function (){
+        data = data.concat(dashboardDefaults);
         data = prepareData (data);
-        $('#reception-cards').appendTemplate(".template-reception-cards", data, function (fragment, value){
-            $('span.top', fragment).html(value.top);
-            $('a.mdl-js-button', fragment).html(value.bottom);
-        });
+        $('#reception-dash-cards')
+        // append items
+            .appendTemplate(".template-reception-cards", data, function (fragment, value){
+                if(value.element){
+                    $('div.mdl-card__title', fragment)
+                        .empty()
+                        .append($(value.element));
+                    $('a.mdl-js-button', fragment)
+                        .html(bios.trans.late(value.text))
+                        .attr("url", value.buttonUrl);
+                } else {
+                    $('span.top', fragment).html(value.top);
+                    $('a.mdl-js-button', fragment)
+                        .html(value.bottom)
+                        .attr("url", value.buttonUrl);
+                }
+            })
+        ;
+        $('.mdl-card').hover(turnOnSettingsHovered, turnOffSettingsHovered);
+
+        $('a', $element).on("click", callLink);
     };
+
+    function callLink(e){
+        let target = $(e.target);
+        if(target.attr("url"))
+            bios.AppState.goToUrl(target.attr("url"));
+        // if(target.attr("state"))
+        //     bios.AppState.goToState(target.attr("state"));
+    }
+
+    function turnOnSettingsHovered(e) {
+        if($(e.target).has("div.settings-icon")) {
+            $("div.settings-icon", $(e.target)).not("hovered").addClass("hovered");
+        }
+    }
+    function turnOffSettingsHovered(e) {
+        if($(e.target).has("div.settings-icon")) {
+            $("div.settings-icon", $(e.target)).removeClass("hovered");
+        }
+    }
 
     function prepareData(data) {
         for (let i = 0; i < data.length; i++) {
@@ -48,13 +95,12 @@ defineComp("reception-dashboard",  function (bios, template, args) {
     }
 
     function createCardStrings (type, objData) {
-        if(type === "img"){
-            return "<img src='" + objData + "' class='reception-dash-card-image' alt='image'>";
-        } else if (type === "html"){
-            return objData;
-        } else {
+        if(type === "img")
+            return "<img src='" + objData + "' class='ts-dash-card-image' alt='image'>";
+        else if (type === "text")
             return "<span>" + objData + "</span>";
-        }
+        else
+            return objData;
     }
 
 }, {
