@@ -1,21 +1,21 @@
 <div id="left">
-    Daten<br>
-    Besitzer<br>
-    Tier<br>
-    Gewicht<br>
-    Info.Tier<br>
-    sonstige Fälle<br>
-    emails?<br>
+    Daten<br><br><br>
+    Besitzer<br><br><br>
+    Tier<br><br><br>
+    Gewicht<br><br><br>
+    Info.Tier<br><br><br>
+    sonstige Fälle<br><br><br>
 </div>
 <div class="case">
-    <input name="case" placeholder="case description"><br>
+    <input name="case" placeholder="case description">
 </div>
-<div class="treatments"></div>
+<div class="new-treatment treatments"></div>
+<div class="old-treatments treatments"></div>
 
 <therapy-queue></therapy-queue>
 
 <template class="template-treatment">
-    <div class="treatment">
+    <div class="treatment-data treatment">
         <p>id</p><br>
         <div class="treat-head">
             Diagnose & Comment <br>
@@ -40,4 +40,12 @@
             <textarea name="medics" class="medics" placeholder=".... Mitgabe Meds ...."></textarea>
         </div>
     </div>
+    <div class="treatment-data treatment-mail hidden far fa-envelope">
+        <p>mail</p><br>
+        <div class="mail-text"></div>
+    </div>
+</template>
+<template class="template-case-button">
+    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+    </button>
 </template>
