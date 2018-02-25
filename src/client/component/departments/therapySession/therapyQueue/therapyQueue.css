@@ -25,30 +25,6 @@
     float:left;
     margin-right: 5px;
 }
-therapy-session>div#bios-queue {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-therapy-session>div#bios-queue>.bios-queue-item {
-    float: left;
-    width: var(--bios-queue-item-width);
-    animation-name: bios-queue-slide-out-rtl;
-    animation-duration: 300ms;
-}
-therapy-session>div#bios-queue>.bios-queue-item.selected,
-therapy-session>div#bios-queue>.bios-queue-item:hover
-{
-    width: var(--bios-queue-item-next-width);
-    animation-name: bios-queue-slide-in-rtl;
-    animation-duration: 300ms;
-}
-
-therapy-session>div#bios-queue>.bios-queue-item > div.mdl-card__actions {
-    background-color: var(--color-one-dark);
-    height: 52px;
-    padding: 16px;
-}
 
 div.mdl-card__actions .mdl-button.mdl-button--colored
 {

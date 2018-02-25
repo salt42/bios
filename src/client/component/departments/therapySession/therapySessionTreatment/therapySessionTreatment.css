@@ -1,0 +1,71 @@
+/* region queue */
+therapy-session-treatment div#bios-queue {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+therapy-session-treatment div#bios-queue>.bios-queue-item {
+    float: left;
+    width: var(--bios-queue-item-width);
+    animation-name: bios-queue-slide-out-rtl;
+    animation-duration: 300ms;
+}
+therapy-session-treatment div#bios-queue>.bios-queue-item.selected,
+therapy-session-treatment div#bios-queue>.bios-queue-item:hover
+{
+    width: var(--bios-queue-item-next-width);
+    animation-name: bios-queue-slide-in-rtl;
+    animation-duration: 300ms;
+}
+therapy-session-treatment div#bios-queue>.bios-queue-item > div.mdl-card__actions {
+    background-color: var(--color-one-dark);
+    height: 52px;
+}
+therapy-session-treatment .mdl-card{
+    height: 12em;
+}
+/*endregion*/
+therapy-session-treatment div#left {
+    position: fixed;
+    width: 10vw;
+    height:  100%;
+    background-color:  blue;
+}
+therapy-session-treatment div.case {
+    margin-left: 11vw;
+    background-color:  white;
+    position: relative;
+}
+therapy-session-treatment div.case input {
+    width: 99%;
+}
+therapy-session-treatment div.case div.treatment {
+    background-color:  green;
+    padding: 5px;
+    margin: 5px 0;
+    width: 99%;
+}
+
+therapy-session-treatment div.case div.treatment div.treat-head,
+therapy-session-treatment div.case div.treatment div.treat-items {
+    position: relative;
+    display: block;
+    width: 99%;
+    margin: 5px;
+    border: solid black 1px;
+}
+therapy-session-treatment div.case div.treatment div.treat-items textarea{
+    position: relative;
+    display: block;
+    width: 99%;
+}
+therapy-session-treatment div.case div.treatment textarea.comment,
+therapy-session-treatment div.case div.treatment textarea.diagnosis {
+    position: relative;
+    display: block;
+    /*margin: 5px;*/
+    border: solid black 1px;
+    width: 140px;
+    float: left;
+    width: 30%;
+}

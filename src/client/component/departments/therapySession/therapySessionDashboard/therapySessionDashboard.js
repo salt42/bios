@@ -7,16 +7,16 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
     let $element = this.$ele;
     let data = [];
     let dashboardDefaults = [{
-        type: "html::text",
-        text: "<div class='settings-icon'></div>",
-        buttonText: "Settings",
-        buttonUrl: "/therapySession/settings"
-    },{
         type: "element::text",
         element: 'therapy-queue',
         text: "ts dashboard queue",
         buttonUrl: "/therapySession/queue"
-    }];
+    },{
+        type: "html::text",
+        text: "<div class='settings-icon'></div>",
+        buttonText: "Settings",
+        buttonUrl: "/therapySession/settings"
+    },];
 
     /* region dummy data */
     function dummy (count, data) {
@@ -44,7 +44,15 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
         }
         return data;
     }
-    data = dummy(2, data);
+    // data = dummy(2, data);
+
+    data = [{
+        type: "text::text",
+        text: "next treatment",
+        buttonText: "next treatment",
+        buttonUrl: "/therapySession/treatment",
+        variables: true,
+    }];
     /*endregion*/
 
     this.onLoad = function (){
@@ -61,10 +69,16 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
                         .html(bios.trans.late(value.text))
                         .attr("url", value.buttonUrl);
                 } else {
+                    let url = value.buttonUrl;
+                    if(value.variables){
+                        let nextTreat = $($('.mdl-card')[0]);
+                        url += "/" + nextTreat.data("id");
+                    }
                     $('span.top', fragment).html(value.top);
+
                     $('a.mdl-js-button', fragment)
                         .html(value.bottom)
-                        .attr("url", value.buttonUrl);
+                        .attr("url", url);
                 }
             })
         ;
@@ -75,6 +89,7 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
 
     function callLink(e){
         let target = $(e.target);
+        console.log("clicked on Card", target);
         if(target.attr("url"))
             bios.AppState.goToUrl(target.attr("url"));
         // if(target.attr("state"))
@@ -105,8 +120,6 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
     function createCardStrings (type, objData) {
         if(type === "img")
             return "<img src='" + objData + "' class='ts-dash-card-image' alt='image'>";
-        else if (type === "text")
-            return "<span>" + objData + "</span>";
         else
             return objData;
     }

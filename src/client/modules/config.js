@@ -6,9 +6,16 @@ define("Config", function(g) {
         {
             name: "therapy session queue",
             url: "/therapySession/queue",//string, regex, function
-            skip: true, // letts append template skip this entry
+            skip: true, // lets append template skip this entry
             sections: [
                 ["main-content", "therapy-queue"],
+            ],
+        },{
+            name: "therapy session treatment",
+            url: "/therapySession/treatment/:id",//string, regex, function
+            skip: true, // lets append template skip this entry
+            sections: [
+                ["main-content", "therapy-session-treatment"],
             ],
         },{
             name: "therapy session",
@@ -17,13 +24,13 @@ define("Config", function(g) {
             sections: [
                 ["main-content", "therapy-session"],
             ],
-            sub: [{
+        /*sub: [{
                 name: "queue",
                 url: "/queue",
                 section: [//aber wir können auch sagen wir bauen des feature spaäter ein
                     ["main-content", "therapy-queue"],
                 ],
-            }]
+            }]*/
         },
     ];
     /*endregion*/
@@ -88,6 +95,6 @@ define("Config", function(g) {
     // componentHandler.upgradeElements($element[0]);
     // componentHandler.upgradeDom();
 
-
-    this.States = tsStates.concat(receptionStates, officeStates, defaultStates);
+    let a = [];
+    this.States = a.concat(tsStates, receptionStates, officeStates, defaultStates);
 });
