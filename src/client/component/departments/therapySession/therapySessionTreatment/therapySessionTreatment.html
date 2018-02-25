@@ -1,9 +1,20 @@
-<therapy-queue></therapy-queue>
 <div id="left">
-    Daten
+    Daten<br>
+    Besitzer<br>
+    Tier<br>
+    Gewicht<br>
+    Info.Tier<br>
+    sonstige Fälle<br>
+    emails?<br>
 </div>
 <div class="case">
     <input name="case" placeholder="case description"><br>
+</div>
+<div class="treatments"></div>
+
+<therapy-queue></therapy-queue>
+
+<template class="template-treatment">
     <div class="treatment">
         <p>id</p><br>
         <div class="treat-head">
@@ -29,29 +40,4 @@
             <textarea name="medics" class="medics" placeholder=".... Mitgabe Meds ...."></textarea>
         </div>
     </div>
-    <div class="treatment">
-        <p>id</p><br>
-        <div class="treat-items">
-            Diagnose & Comment <br>
-            <textarea name="diagnose" class="diagnosis" placeholder=" ....Diagnose...."></textarea>
-            <textarea name="comment" class="comment" placeholder=".... comments ...."></textarea>
-            <clear><br><br><br></clear>
-        </div>
-        <div class="treat-items">
-            Anamnese <br>
-            <textarea name="anamnesis" class="anamnesis" placeholder=".... Anamnese ...."></textarea>
-        </div>
-        <div class="treat-items">
-            Befunde <br>
-            <textarea name="findings" class="findings" placeholder=".... Befunde ...."></textarea>
-        </div>
-        <div class="treat-items">
-            Therapie <br>
-            <textarea name="therapy" class="therapy" placeholder=".... Therapie ...."></textarea>
-        </div>
-        <div class="treat-items">
-            Mitgabe Meds <br>
-            <textarea name="medics" class="medics" placeholder=".... Mitgabe Meds ...."></textarea>
-        </div>
-    </div>
-</div>
+</template>

@@ -1,6 +1,6 @@
 /* region queue */
 therapy-session-treatment div#bios-queue {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     right: 0;
 }
@@ -29,38 +29,42 @@ therapy-session-treatment div#left {
     position: fixed;
     width: 10vw;
     height:  100%;
-    background-color:  blue;
 }
 therapy-session-treatment div.case {
     margin-left: 11vw;
-    background-color:  white;
-    position: relative;
+    position: fixed;
+    background-color: var(--color-normal);
+    width: calc(100% - 11vw);
+    z-index: 10;
 }
 therapy-session-treatment div.case input {
-    width: 99%;
+    width: 90%;
 }
-therapy-session-treatment div.case div.treatment {
-    background-color:  green;
+therapy-session-treatment div.treatments {
+    margin-left: 11vw;
+    padding-top: 1em;
+}
+therapy-session-treatment div.treatments div.treatment {
     padding: 5px;
     margin: 5px 0;
     width: 99%;
 }
 
-therapy-session-treatment div.case div.treatment div.treat-head,
-therapy-session-treatment div.case div.treatment div.treat-items {
+therapy-session-treatment div.treatments div.treatment div.treat-head,
+therapy-session-treatment div.treatments div.treatment div.treat-items {
     position: relative;
     display: block;
     width: 99%;
     margin: 5px;
     border: solid black 1px;
 }
-therapy-session-treatment div.case div.treatment div.treat-items textarea{
+therapy-session-treatment div.treatments div.treatment div.treat-items textarea{
     position: relative;
     display: block;
     width: 99%;
 }
-therapy-session-treatment div.case div.treatment textarea.comment,
-therapy-session-treatment div.case div.treatment textarea.diagnosis {
+therapy-session-treatment div.treatments div.treatment textarea.comment,
+therapy-session-treatment div.treatments div.treatment textarea.diagnosis {
     position: relative;
     display: block;
     /*margin: 5px;*/
