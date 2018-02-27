@@ -4,30 +4,9 @@
 defineComp("therapy-queue",  function (bios, template, args) {
     "use strict";
 
+    let dataService = bios.departments.therapySession;
     //get data
-    let data = [
-        {
-            name: "Söllner",
-            first_name: "Hans",
-            animal: "Charly",
-            animal_id: 123,
-            reason: "Smoke comes out"
-        },
-        {
-            name: "Söllner",
-            first_name: "Hans",
-            animal: "Charly",
-            animal_id: 234,
-            reason: "Smoke comes out"
-        },
-        {
-            name: "Söllner",
-            first_name: "Hans",
-            animal: "Charly",
-            animal_id: 345,
-            reason: "Smoke comes out"
-        }
-    ];
+    let data = dataService.get.queue();
 
     this.onLoad = function () {
         let c = 0;

@@ -8,8 +8,8 @@ defineComp("therapy-session",  function (bios, template, args) {
 
     this.onLoad = function(){
         $('p#dash-info', $element).html(bios.trans.late("department::therapy session"));
-    }
+    };
 
 }, {
-    templatePath: "/component/departments/therapySession/therapySession.html"
+    templatePath: "/departments/component/therapySession/therapySession.html"
 });

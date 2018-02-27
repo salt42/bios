@@ -13,6 +13,9 @@ div.user-list-selector {
 div.user-list-selector input {
     box-shadow: none;
 }
+user-list > div.user-list-selector > span {
+    display: block;
+}
 /*header ul.userList {*/
     /*float: right;*/
     /*margin-right: 15px;*/

@@ -21,6 +21,7 @@
             Diagnose & Comment <br>
             <textarea name="diagnose" class="diagnosis" placeholder=" ....Diagnose...."></textarea>
             <textarea name="comment" class="comment" placeholder=".... comments ...."></textarea>
+            <span class="date"></span>
             <clear><br><br><br></clear>
         </div>
         <div class="treat-items">
@@ -41,11 +42,19 @@
         </div>
     </div>
     <div class="treatment-data treatment-mail hidden far fa-envelope">
-        <p>mail</p><br>
+        <p>mail</p>
+        <span class="date"></span><br>
         <div class="mail-text"></div>
     </div>
 </template>
 <template class="template-case-button">
     <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
     </button>
+</template>
+<template class="template-button-bar">
+    <div class="wrapper">
+        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect"></button>
+        <div class="show-on-click hidden" style="float:right;"></div>
+        <div class="inside-switchables hidden" style="float:right;"></div>
+    </div>
 </template>

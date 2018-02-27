@@ -3,6 +3,9 @@
  */
 defineComp("bios-settings", function (bios, template, args) {
     "use strict";
+
+    let settings = bios.settings.settings;
+
 }, {
-    templatePath: "/component/departments/settings/biosSettings/biosSettings.html"
+    templatePath: "/departments/component/settings/biosSettings/biosSettings.html"
 });

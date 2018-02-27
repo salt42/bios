@@ -39,15 +39,25 @@ therapy-session-treatment div.case {
     height: 40px;
 }
 therapy-session-treatment div.case input {
-    width: 60%;
+    width: 40%;
     height: 30px;
 }
 therapy-session-treatment div.case button {
     float: right;
     margin-right:10px;
 }
+therapy-session-treatment div.case button:before {
+    margin-right: 5px;
+}
+therapy-session-treatment div.case button.selected-filter {
+    background-color: grey;
+}
+therapy-session-treatment div.case button#delete-new-mail,
 therapy-session-treatment div.case button#delete-new {
     color: red;
+}
+therapy-session-treatment span.date {
+    float: right;
 }
 therapy-session-treatment div.treatments {
     margin-left: 11vw;
@@ -92,4 +102,7 @@ therapy-session-treatment div.treatments div.treatment textarea.diagnosis {
     width: 140px;
     float: left;
     width: 30%;
+}
+therapy-session-treatment .wrapper * {
+    display: block;
 }

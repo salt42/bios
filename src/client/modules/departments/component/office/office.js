@@ -8,5 +8,5 @@ defineComp("office",  function (bios, template, args) {
     }
 
 }, {
-    templatePath: "/component/departments/office/office.html"
+    templatePath: "/departments/component/office/office.html"
 });

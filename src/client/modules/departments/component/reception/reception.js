@@ -11,5 +11,5 @@ defineComp("reception",  function (bios, template, args) {
     }
 
 }, {
-    templatePath: "/component/departments/reception/reception.html"
+    templatePath: "/departments/component/reception/reception.html"
 });

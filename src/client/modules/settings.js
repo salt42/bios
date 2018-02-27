@@ -11,25 +11,18 @@ define("settings", function(bios) {
 
     /* region company */
     function getCompanyDataFromServer () {
+        //@todo
         // let url = "/settings/company";
         // $.ajax({
         //     url: url,
         //     type: "GET",
         //     success: fn
         // });
-        // mocking data
-        mockingData();
-    }
 
-    function mockingData() {
-        company = {
-            name: "Tierarztpraxis <br>Dr. Wendlberger & Sonntag",
-            lineOne:   "Mühlbaurstr. 45",
-            lineTwo:   "81667 München",
-            lineThree: '<br>',
-            lineFour: 'office@tierarztwendlberger.de <br> +49-89-98 06 09',
-        };
-        companyLogoPath = "/img/company/companyLogo.png";
+        // mocking data
+        let dummyData = bios.dummy.settings();
+        company = dummyData.company;
+        companyLogoPath = dummyData.companyLogoPath;
     }
 
     getCompanyDataFromServer();
