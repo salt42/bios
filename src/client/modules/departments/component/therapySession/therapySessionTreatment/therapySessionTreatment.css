@@ -45,6 +45,7 @@ therapy-session-treatment div.case input {
 therapy-session-treatment div.case button {
     float: right;
     margin-right:10px;
+    font-weight:  900;
 }
 therapy-session-treatment div.case button:before {
     margin-right: 5px;
@@ -97,7 +98,6 @@ therapy-session-treatment div.treatments div.treatment textarea.comment,
 therapy-session-treatment div.treatments div.treatment textarea.diagnosis {
     position: relative;
     display: block;
-    /*margin: 5px;*/
     border: solid black 1px;
     float: left;
     width: 30%;
@@ -111,4 +111,7 @@ therapy-session-treatment .show-on-click {
 }
 therapy-session-treatment .pair-wrapper {
      float:  right;
+}
+therapy-session-treatment .hover-new {
+    background-color: rgba(198, 36, 75, 0.3);
 }

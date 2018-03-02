@@ -120,7 +120,7 @@ define("dummy", function(bios){
                                 type: "treatment",
                                 pair: "1",
                             },
-                            id: "delete-new",
+                            id: "delete-new-treatment",
                             text: "treatment",
                             class: "hidden fas fa-minus-square",
                         }

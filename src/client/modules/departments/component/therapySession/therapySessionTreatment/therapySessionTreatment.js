@@ -22,6 +22,9 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
         prependData(treatmentData);
 
         $('button', $element).on("click", buttonActions);
+        $("#delete-new-treatment").hover(()=>{
+            _doHover('div.treatment.new');
+        });
     };
 
     /* region add buttons */
@@ -138,6 +141,10 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
             $('p', fragment).text("new");
             $('span.date', fragment).text(new Date());
         });
+    }
+
+    function _doHover(item){
+        $(item).toggleClass("hover-new");
     }
 }, {
     templatePath: "/component/departments/therapySession/therapySessionTreatment/therapySessionTreatment.html"
