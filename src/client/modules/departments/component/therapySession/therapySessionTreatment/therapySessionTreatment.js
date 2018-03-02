@@ -12,61 +12,53 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
     //@todo define treatment object data design
     let treatmentData = get.treatmentData();
 
-    let filterButtons = get.buttons();
-    let newButton = get.newButton();
-    let buttonPairs = get.buttonPairs();
+    let filterButtons = get.filterButtons();;
+    let buttonBars = get.buttonBars();
 
     this.onLoad = function(){
         //@todo get treatmentData
-        addButton(filterButtons, $('.case', $element));
-        addButtonBar(newButton[0], buttonPairs.newButton, $('.case', $element));
+        appendButton(filterButtons, $('.case', $element));
+        appendButtonBar(buttonBars[0], $('.case', $element));
         prependData(treatmentData);
 
-        //refresh by filter button
-        $('button', $element).on("click", buttonActions)
-
+        $('button', $element).on("click", buttonActions);
     };
 
-    /* region add Buttons */
-    function addButton(buttonArray, to, additionalClass){
+    /* region add buttons */
+    function appendButton(buttonArray, to, additionalClass){
         to.appendTemplate(".template-case-button", buttonArray, function (fragment, value) {
-           let button = $('button', fragment)
-               .attr("id", value.id)
-               .addClass(value.class)
-               .attr("data-type", value.type)
-               .html(value.text);
-           if (additionalClass) button.addClass(additionalClass);
-            for (let dataAttr in value.data) {
-                button.attr( 'data-' + dataAttr, value.data[dataAttr]);
-            }
+            _buttonAdd(fragment, value, additionalClass);
+        });
+    }
+    function prependButton(buttonArray, to, additionalClass){
+        to.prependTemplate(".template-case-button", buttonArray, function (fragment, value) {
+            _buttonAdd(fragment, value, additionalClass);
         });
     }
 
-    function addButtonBar(topButton, buttonPairs, to) {
-        let obj = {
-            topButton: topButton,
-            buttonPairs: buttonPairs
-        };
-        to.appendTemplate(".template-button-bar", [obj], function (fragment, value) {
-            // position the button bar
-            $('.wrapper', fragment)
-                .attr("group", value.topButton.id)
-                .addClass("float-right");
-            // modify the top-level button
-            $('button',fragment)
-                .html(value.topButton.text)
-                .addClass(value.topButton.class);
-            for (let attr in value.topButton.data) {
-                $('button',fragment).attr("data-"+attr, value.topButton.data[attr]);
-            }
-            // add the switchable buttons
+    function appendButtonBar(buttonBar, to) {
+        buttonBar = (Array.isArray(buttonBar)) ? buttonBar : [buttonBar];
+        to.appendTemplate(".template-button-bar", buttonBar, function (fragment, value) {
+            // position and mark the button bar
+            $('.wrapper', fragment).attr("group", value.wrapperID);
+            // prepend top-level button
+            prependButton([value.topButton], $('.wrapper', fragment));
+            // append switchable buttons
             $(".switchables-wrapper", fragment).appendTemplate(".template-button-pairs", value.buttonPairs, function (fragment,value){
-                addButton([value.shown], $(fragment));
-                if(value.hidden){
-                    addButton([value.hidden], $(fragment));
-                }
+                appendButton([value.shown], $(fragment));
+                if(value.hidden) appendButton([value.hidden], $(fragment));
             });
         });
+    }
+
+    function _buttonAdd(fragment, value, additionalClass){
+        let button = $('button', fragment)
+            .attr("id", value.id)
+            .html(value.text);
+        if (value.class) button.addClass(value.class);
+        if (additionalClass) button.addClass(additionalClass);
+        for (let dataAttr in value.data)
+            button.attr( 'data-' + dataAttr, value.data[dataAttr]);
     }
     /*endregion*/
     /* region button actions */

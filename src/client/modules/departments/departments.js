@@ -20,9 +20,8 @@ define("departments", function(bios) {
             queue: ()=>{ return queue; },
             treatment: {
                 // buttons: ()=>{ return therapySessionData.filterButtons.concat(therapySessionData.newButton)},
-                buttons: ()=>{ return therapySessionData.filterButtons },
-                newButton: ()=>{ return therapySessionData.newButton },
-                buttonPairs: ()=>{ return therapySessionData.buttonPairs },
+                filterButtons: ()=>{ return therapySessionData.filterButtons },
+                buttonBars: ()=>{ return therapySessionData.buttonBars },
                 treatmentData: ()=> {return therapySessionData.treatmentData}
             }
         }

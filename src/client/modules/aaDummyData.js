@@ -4,7 +4,8 @@
 define("dummy", function(bios){
     "use strict";
 
-    console.log("loading dummy");
+    // the "aaDummyData.js filename is needed to be loaded save as first module (!!dependencies!!)
+    // console.log("loading dummy");
     let departmentsDummyData = {};
     let settingsDummyData = {};
 
@@ -20,20 +21,23 @@ define("dummy", function(bios){
 
     //set data
     function setDummies() {
+        let a = {};
         /* region settings.js Module */
-        settingsDummyData.company = {
+        a.company = {
             name: "Tierarztpraxis <br>Dr. Wendlberger & Sonntag",
             lineOne:   "Mühlbaurstr. 45",
             lineTwo:   "81667 München",
             lineThree: '<br>',
             lineFour: 'office@tierarztwendlberger.de <br> +49-89-98 06 09',
         };
-        settingsDummyData.companyLogoPath = "/img/company/companyLogo.png";
+        a.companyLogoPath = "/img/company/companyLogo.png";
+        settingsDummyData = a;
         /*endregion*/
 
         /* region departments.js Module */
+        a = {};
         /* region queue */
-        departmentsDummyData.queue = [
+        a.queue = [
             {
                 name: "Söllner",
                 first_name: "Hans",
@@ -58,8 +62,8 @@ define("dummy", function(bios){
         ];
         /*endregion*/
         /* region buttons */
-        departmentsDummyData.ts = {};
-        departmentsDummyData.ts.filterButtons = [
+        a.ts = {};
+        a.ts.filterButtons = [
             {
                 data: {
                     type: "filter",
@@ -80,71 +84,73 @@ define("dummy", function(bios){
                 text: "all"
             },
         ];
-        departmentsDummyData.ts.newButton = [
+        a.ts.buttonBars = [
             {
-                data: {
-                    type: "new",
+                wrapperID: "new",
+                topButton: {
+                    data: {
+                        type: "new",
+                    },
+                    id: "new",
+                    text: "new...",
+                    class: "far fa-plus-square",
                 },
-                id: "new",
-                text: "new...",
-                class: "far fa-plus-square",
+                buttonPairs: [
+                    {
+                        shown: {
+                            data: {
+                                type: "case",
+                            },
+                            id: "add",
+                            text: "case",
+                            class: "far fa-plus-square",
+                        },
+                    },{
+                        shown: {
+                            data: {
+                                type: "treatment",
+                                pair: "1",
+                            },
+                            id: "add",
+                            text: "treatment",
+                            class: "far fa-plus-square",
+                        },
+                        hidden: {
+                            data: {
+                                type: "treatment",
+                                pair: "1",
+                            },
+                            id: "delete-new",
+                            text: "treatment",
+                            class: "hidden fas fa-minus-square",
+                        }
+                    },
+                    {
+                        shown: {
+                            data: {
+                                type: "mail",
+                                pair: "2",
+                            },
+                            id: "new-mail",
+                            text: "mail",
+                            class: "far fa-plus-square fa-envelope",
+                        },
+                        hidden: {
+                            data: {
+                                type: "mail",
+                                pair: "2",
+                            },
+                            id: "delete-new-mail",
+                            text: "mail",
+                            class: "hidden fas fa-minus-square",
+                        }
+                    },
+                ]
             }
-        ];
-        departmentsDummyData.ts.buttonPairs = {};
-        departmentsDummyData.ts.buttonPairs.newButton = [
-            {
-                shown: {
-                    data: {
-                        type: "case",
-                    },
-                    id: "add",
-                    text: "case",
-                    class: "far fa-plus-square",
-                },
-            },{
-                shown: {
-                    data: {
-                        type: "treatment",
-                        pair: "1",
-                    },
-                    id: "add",
-                    text: "treatment",
-                    class: "far fa-plus-square",
-                },
-                hidden: {
-                    data: {
-                        type: "treatment",
-                        pair: "1",
-                    },
-                    id: "delete-new",
-                    text: "treatment",
-                    class: "hidden fas fa-minus-square",
-                }
-            },
-            {
-                shown: {
-                    data: {
-                        type: "mail",
-                        pair: "2",
-                    },
-                    id: "new-mail",
-                    text: "mail",
-                    class: "far fa-plus-square fa-envelope",
-                },
-                hidden: {
-                    data: {
-                        type: "mail",
-                        pair: "2",
-                    },
-                    id: "delete-new-mail",
-                    text: "mail",
-                    class: "hidden fas fa-minus-square",
-                }
-            },
         ];
         /*endregion*/
         /* region treatment data */
-        departmentsDummyData.ts.treatmentData = [
+        a.ts.treatmentData = [
             {
                 type: "treatment",
                 diagnosis: "oldest",
@@ -164,6 +170,7 @@ define("dummy", function(bios){
             },
         ];
         /*endregion*/
+        departmentsDummyData = a;
         /*endregion*/
     }
 });
