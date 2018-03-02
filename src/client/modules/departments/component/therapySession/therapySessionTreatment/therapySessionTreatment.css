@@ -99,10 +99,16 @@ therapy-session-treatment div.treatments div.treatment textarea.diagnosis {
     display: block;
     /*margin: 5px;*/
     border: solid black 1px;
-    width: 140px;
     float: left;
     width: 30%;
 }
 therapy-session-treatment .wrapper * {
     display: block;
+}
+therapy-session-treatment .show-on-click {
+    display: block;
+    float:  right;
+}
+therapy-session-treatment .pair-wrapper {
+     float:  right;
 }

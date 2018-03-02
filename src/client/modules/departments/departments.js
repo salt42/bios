@@ -12,11 +12,7 @@ define("departments", function(bios) {
     // dummy data
     let dummy = bios.dummy.departments();
     queue = dummy.queue;
-    therapySessionData.filterButtons = dummy.ts.filterButtons;
-    therapySessionData.newButton = dummy.ts.newButton;
-    therapySessionData.newButtons = dummy.ts.newButtons;
-    therapySessionData.treatmentData = dummy.ts.treatmentData;
-    therapySessionData.deleteButtons = dummy.ts.deleteButtons;
+    therapySessionData = dummy.ts;
 
 
     let therapySession = {
@@ -26,8 +22,7 @@ define("departments", function(bios) {
                 // buttons: ()=>{ return therapySessionData.filterButtons.concat(therapySessionData.newButton)},
                 buttons: ()=>{ return therapySessionData.filterButtons },
                 newButton: ()=>{ return therapySessionData.newButton },
-                newButtons: ()=>{ return therapySessionData.newButtons },
-                deleteButtons: ()=> { return therapySessionData.deleteButtons },
+                buttonPairs: ()=>{ return therapySessionData.buttonPairs },
                 treatmentData: ()=> {return therapySessionData.treatmentData}
             }
         }

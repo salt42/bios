@@ -90,52 +90,57 @@ define("dummy", function(bios){
                 class: "far fa-plus-square",
             }
         ];
-        departmentsDummyData.ts.newButtons = [
+        departmentsDummyData.ts.buttonPairs = {};
+        departmentsDummyData.ts.buttonPairs.newButton = [
             {
-                data: {
-                    type: "case",
+                shown: {
+                    data: {
+                        type: "case",
+                    },
+                    id: "add",
+                    text: "case",
+                    class: "far fa-plus-square",
                 },
-                id: "add",
-                text: "new case",
-                class: "far fa-plus-square",
             },{
-                data: {
-                    type: "treatment",
-                    pair: "1",
+                shown: {
+                    data: {
+                        type: "treatment",
+                        pair: "1",
+                    },
+                    id: "add",
+                    text: "treatment",
+                    class: "far fa-plus-square",
                 },
-                id: "add",
-                text: "new treatment",
-                class: "far fa-plus-square",
+                hidden: {
+                    data: {
+                        type: "treatment",
+                        pair: "1",
+                    },
+                    id: "delete-new",
+                    text: "treatment",
+                    class: "hidden fas fa-minus-square",
+                }
             },
             {
-                data: {
-                    type: "mail",
-                    pair: "2",
+                shown: {
+                    data: {
+                        type: "mail",
+                        pair: "2",
+                    },
+                    id: "new-mail",
+                    text: "mail",
+                    class: "far fa-plus-square fa-envelope",
                 },
-                id: "new-mail",
-                text: "new mail",
-                class: "far fa-plus-square fa-envelope",
+                hidden: {
+                    data: {
+                        type: "mail",
+                        pair: "2",
+                    },
+                    id: "delete-new-mail",
+                    text: "mail",
+                    class: "hidden fas fa-minus-square",
+                }
             },
-        ];
-        departmentsDummyData.ts.deleteButtons = [
-            {
-                data: {
-                    type: "treatment",
-                    pair: "1",
-                },
-                id: "delete-new",
-                text: "discard new",
-                class: "hidden fas fa-exclamation-triangle",
-            },
-            {
-                data: {
-                    type: "mail",
-                    pair: "2",
-                },
-                id: "delete-new-mail",
-                text: "discard mail",
-                class: "hidden fas fa-exclamation-triangle fa-envelope",
-            }
         ];
         /*endregion*/
         /* region treatment data */

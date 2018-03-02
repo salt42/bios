@@ -14,13 +14,12 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
 
     let filterButtons = get.buttons();
     let newButton = get.newButton();
-    let newButtons = get.newButtons();
-    let deleteButtons = get.deleteButtons();
+    let buttonPairs = get.buttonPairs();
 
     this.onLoad = function(){
         //@todo get treatmentData
         addButton(filterButtons, $('.case', $element));
-        addButtonBar(newButton[0], newButtons, $('.case', $element), deleteButtons);
+        addButtonBar(newButton[0], buttonPairs.newButton, $('.case', $element));
         prependData(treatmentData);
 
         //refresh by filter button
@@ -28,14 +27,97 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
 
     };
 
-    function addNewTreat(){
-        $('.new-treatment').prependTemplate(".template-treatment",[{}], function (fragment, value) {
-            //insert data
-            $('.treatment-mail', fragment).remove();
-            $('.treatment', fragment).addClass("new");
-            $('p', fragment).text("new");
-            $('span.date', fragment).text(new Date());
+    /* region add Buttons */
+    function addButton(buttonArray, to, additionalClass){
+        to.appendTemplate(".template-case-button", buttonArray, function (fragment, value) {
+           let button = $('button', fragment)
+               .attr("id", value.id)
+               .addClass(value.class)
+               .attr("data-type", value.type)
+               .html(value.text);
+           if (additionalClass) button.addClass(additionalClass);
+            for (let dataAttr in value.data) {
+                button.attr( 'data-' + dataAttr, value.data[dataAttr]);
+            }
         });
+    }
+
+    function addButtonBar(topButton, buttonPairs, to) {
+        let obj = {
+            topButton: topButton,
+            buttonPairs: buttonPairs
+        };
+        to.appendTemplate(".template-button-bar", [obj], function (fragment, value) {
+            // position the button bar
+            $('.wrapper', fragment)
+                .attr("group", value.topButton.id)
+                .addClass("float-right");
+            // modify the top-level button
+            $('button',fragment)
+                .html(value.topButton.text)
+                .addClass(value.topButton.class);
+            for (let attr in value.topButton.data) {
+                $('button',fragment).attr("data-"+attr, value.topButton.data[attr]);
+            }
+            // add the switchable buttons
+            $(".switchables-wrapper", fragment).appendTemplate(".template-button-pairs", value.buttonPairs, function (fragment,value){
+                addButton([value.shown], $(fragment));
+                if(value.hidden){
+                    addButton([value.hidden], $(fragment));
+                }
+            });
+        });
+    }
+    /*endregion*/
+    /* region button actions */
+    function buttonActions(e) {
+        let pressedButton = $(e.target);
+        let pressedButtonID = pressedButton.attr("id");
+        let pressedButtonType = pressedButton.data("type");
+
+        if(pressedButtonType === "filter"){
+            $('.old-treatments .treatment-data').remove();
+            let filteredData = filterData(treatmentData, pressedButtonID);
+            prependData(filteredData);
+            markButton(pressedButton);
+        }
+        else if(pressedButtonType === "new") {
+            // $('bar', $('div.wrapper[group="'+pressedButtonType+'"')).toggleClass("hidden");
+            $('[data-type=new]')
+                .toggleClass("fa-plus-square")
+                .toggleClass("fa-minus-square");
+            $('.show-on-click').toggleClass("hidden");
+        }
+        else if (pressedButtonType === "treatment") {
+            if (pressedButtonID === "add") {
+                addNewTreat();
+            } else {
+                $('.new-treatment').empty();
+            }
+            toggleButtonPair(pressedButton.data("pair"));
+        } else {
+            //mail
+            toggleButtonPair(pressedButton.data("pair"));
+        }
+    }
+
+    function toggleButtonPair(pairData){
+        $('button[data-pair="'+ pairData +'"]', $element).toggleClass("hidden");
+    }
+
+    function markButton(selected) {
+        $('button').removeClass("selected-filter");
+        selected.addClass("selected-filter");
+    }
+
+    function filterData(data, by) {
+        let res = [];
+        if(by === "all" || by === "add") return data;
+        for (let i = 0; i < data.length; i++) {
+            if(data[i].type === by) res.push(data[i]);
+        }
+        if (res.length === 0) res = data;
+        return res;
     }
 
     function prependData(data){
@@ -54,113 +136,17 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
             $('span.date', fragment).text(value.date);
         });
     }
+    /*endregion*/
 
-    function filterData(data, by) {
-        let res = [];
-        if(by === "all" || by === "add") return data;
-        for (let i = 0; i < data.length; i++) {
-            if(data[i].type === by) res.push(data[i]);
-        }
-        if (res.length === 0) res = data;
-        return res;
-    }
-
-    function buttonActions(e) {
-        let pressedButton = $(e.target);
-        let pressedButtonID = pressedButton.attr("id");
-        let pressedButtonType = pressedButton.data("type");
-
-        if(pressedButtonType === "filter"){
-            $('.old-treatments .treatment-data').remove();
-            let filteredData = filterData(treatmentData, pressedButtonID);
-            prependData(filteredData);
-            markButton(pressedButton);
-        }
-        else if(pressedButtonType === "new") {
-            $('div', $('div.wrapper[group="'+pressedButtonType+'"')).toggleClass("hidden");
-        }
-        else if (pressedButtonType === "treatment") {
-            if (pressedButtonID === "add") {
-                addNewTreat();
-            } else {
-                $('.new-treatment').empty();
-            }
-            toggleButtonPair(pressedButton.data("pair"));
-        } else {
-            //mail
-            toggleButtonPair(pressedButton.data("pair"));
-        }
-    }
-
-    function addButton(buttonArray, to, additionalClass){
-        to.appendTemplate(".template-case-button", buttonArray, function (fragment, value) {
-           let button = $('button', fragment)
-               .attr("id", value.id)
-               .addClass(value.class)
-               .attr("data-type", value.type)
-               .html(value.text);
-           if (additionalClass) button.addClass(additionalClass);
-            for (let dataAttr in value.data) {
-                button.attr( 'data-' + dataAttr, value.data[dataAttr]);
-            }
+    function addNewTreat(){
+        $('.new-treatment').prependTemplate(".template-treatment",[{}], function (fragment, value) {
+            //insert data
+            $('.treatment-mail', fragment).remove();
+            $('.treatment', fragment).addClass("new");
+            $('p', fragment).text("new");
+            $('span.date', fragment).text(new Date());
         });
     }
-
-    function addButtonBar(topButton, buttonArray, to, insideSwitchablesArray) {
-        let obj = {
-            topButton: topButton,
-            buttonArray: buttonArray,
-            switchable: insideSwitchablesArray
-        };
-        to.appendTemplate(".template-button-bar", [obj], function (fragment, value) {
-            $('.wrapper', fragment)
-                .attr("group", value.topButton.id)
-                .addClass("float-right");
-            $('button',fragment)
-                .html(value.topButton.text)
-                .addClass(value.topButton.class);
-            // $('<i>')
-            //     .addClass("material-icons")
-            //     .text("more_vert")
-            //     .appendTo($('button',fragment));
-            for (let attr in value.topButton.data) {
-                $('button',fragment).attr("data-"+attr, value.topButton.data[attr]);
-            }
-            addButton(value.buttonArray, $('.show-on-click', fragment));
-            if (value.switchable)
-                addButton(value.switchable, $('.inside-switchables', fragment))
-        });
-
-        // let div = $('<div>')
-        //     .attr("group", topButton.id)
-        //     .appendTo(to)
-        //     // .attr("style", "float:right; ")
-        // ;
-        // let button = $('<button>')
-        //     .addClass("mdl-button mdl-js-button mdl-button--raised")
-        //     .attr("id", topButton.id)
-        //     .attr("data-type", "switch")
-        //     .html(topButton.text)
-        //     .appendTo(div);
-        // $('<i>')
-        //     .addClass("material-icons")
-        //     .text("more_vert")
-        //     .appendTo(button);
-
-        // addButton(buttonArray, div, "switchable " + topButton.id + "-set hidden");
-        // if (buttonArrayTwo){
-        //     addButton(buttonArrayTwo, div, )
-        // }
-
-    }
-    function toggleButtonPair(pairData){
-        $('button[data-pair="'+ pairData +'"]', $element).toggleClass("hidden");
-    }
-    function markButton(selected) {
-        $('button').removeClass("selected-filter");
-        selected.addClass("selected-filter");
-    }
-
 }, {
     templatePath: "/component/departments/therapySession/therapySessionTreatment/therapySessionTreatment.html"
 });
