@@ -22,7 +22,7 @@ define("Config", function(g) {
             url: "/therapySession/treatment/:id",//string, regex, function
             skip: true, // lets append template skip this entry
             sections: [
-                ["main-content", "therapy-session-animal-overview"],
+                ["main-content", "therapy-session-animal-overview", {id: "test"}],
             ],
         },{
             name: "therapy session",

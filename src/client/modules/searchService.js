@@ -1,67 +1,66 @@
 define("search", function(bios){
     "use strict";
 
-    function serverSearch(type, searchQuery, fn) {
+    function serverSearch(type, searchQuery) {
         let url = "/search/" + type;
         if (searchQuery !== null) url += "/" + searchQuery;
         // if(type.indexOf("list") > -1) console.log('client search url', url);
-        $.ajax({
+        return $.ajax({
             url: url,
-            type: "GET",
-            success: fn
+            type: "GET"
         });
     }
     /* region live search */
-    this.liveSearch = (searchQuery, fn, option = "short")=>{
+    this.liveSearch = (searchQuery, option = "short")=>{
         if (option === "short"){
-            serverSearch("live", searchQuery, fn);
+            return serverSearch("live", searchQuery);
         }
         else {
-            serverSearch("live/all", searchQuery, fn);
+            return serverSearch("live/all", searchQuery);
         }
     };
     /*endregion*/
     /* region list */
     this.getList = (searchQuery, fn)=>{
-        serverSearch("list", searchQuery, fn);
+        return serverSearch("list", searchQuery).then(fn);
     };
     /*endregion*/
 
     /* region animal */
     this.findAnimals = (searchQuery, fn)=>{
-        serverSearch("animals", searchQuery,fn);
+        return serverSearch("animals", searchQuery).then(fn);
     };
     this.findAnimal = (searchQuery, fn)=>{
-        serverSearch("animal", searchQuery,fn);
+        return serverSearch("animal", searchQuery).then(fn);
     };
     /*endregion*/
 
     /* region article */
     this.findArticles = (searchQuery, fn)=>{
-        serverSearch("articles", searchQuery,fn);
+        return serverSearch("articles", searchQuery).then(fn);
     };
     this.findArticle = (searchQuery, fn)=>{
-        serverSearch("article", searchQuery,fn);
+        return serverSearch("article", searchQuery).then(fn);
     };
     /*endregion*/
 
     /* region owner */
     this.findOwners = (searchQuery, fn)=>{
-        serverSearch("owners", searchQuery,fn);
+        return serverSearch("owners", searchQuery).then(fn);
     };
     this.findOwner = (searchQuery, fn)=>{
-        serverSearch("owners", searchQuery,fn);
+        return serverSearch("owners", searchQuery).then(fn);
     };
     /*endregion*/
 
     this.mainDetails = function (type, searchQuery, fn) {
-        serverSearch("mainDetails/" + type, searchQuery, fn);
+        return serverSearch("mainDetails/" + type, searchQuery).then(fn);
     }
     this.getName = function (type, searchQuery, fn) {
-        serverSearch("getName/" + type, searchQuery, fn);
+        return serverSearch("getName/" + type, searchQuery).then(fn);
     }
 
     this.customerData = function (id, typeOf, fn) {
-        serverSearch("customerData/" + id, typeOf, fn)
+        return serverSearch("customerData/" + id, typeOf).then(fn);
     }
 });

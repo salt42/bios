@@ -6,6 +6,8 @@ defineComp("therapy-session-animal-overview",  function (bios, template, args) {
 
     let $element = this.$ele;
     let id = 123;
+    // bios.appState.onAppStateChanged.subscribe()
+    console.log('#####',args);
     // let id = args.id;
     let department = "therapy-session";
     let data = bios.departments.load(department, "overview", id).therapySession;
@@ -40,6 +42,10 @@ defineComp("therapy-session-animal-overview",  function (bios, template, args) {
         let $cases = $('<div></div>');
         $element.append($cases);
 
+
+        let a = div.data("owner");
+        a = a.replace(" ", "");
+        let b = a.split(",");
     };
 }, {
     templatePath: "/component/departments/therapySession/therapySessionAnimalOverview/therapySessionAnimalOverview.html"

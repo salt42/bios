@@ -8,6 +8,8 @@ define("departments", function(bios) {
     let dummy = false;
     let module = this;
 
+    this.ready = new Rx.ReplaySubject();
+
     this.settings = {};
     this.global = {};
     this.therapySession = {};

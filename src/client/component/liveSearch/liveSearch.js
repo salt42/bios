@@ -13,6 +13,10 @@ defineComp("live-search", function(bios, template) {
         let searchQuery = "";
 
         function updateResults(data){
+            if (data.query !== searchQuery) {
+                console.log("returned query is wrong");
+                return;
+            }
             $subComp.updateResults(data);
         }
 
@@ -36,14 +40,7 @@ defineComp("live-search", function(bios, template) {
                         if (!(searchQuery.slice(-1) === "*"))
                             searchQuery += "*";
                         // console.log("query: ", searchQuery);
-                        bios.search.liveSearch(searchQuery, function(data) {
-                            // console.log(data);
-                            if (data.query !== searchQuery) {
-                                console.log("returned query is wrong");
-                                return;
-                            }
-                            updateResults(data);
-                        }, "short");
+                        bios.search.liveSearch(searchQuery, "short").then(updateResults);
                     }
             }
         });
