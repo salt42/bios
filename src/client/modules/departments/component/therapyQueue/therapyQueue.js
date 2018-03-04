@@ -4,13 +4,11 @@
 defineComp("therapy-queue",  function (bios, template, args) {
     "use strict";
 
-    let dataService = bios.departments.therapySession;
-    //get data
-    let data = dataService.get.queue();
+    let department = "therapy-queue";
+    let data = bios.departments.load(department).global.queue;
 
     this.onLoad = function () {
         let c = 0;
-        console.log(data);
         $('#bios-queue').appendTemplate(".bios-ts-queue.list-item-template", data, function (fragment, value){
             let call = bios.trans.late("later treatment");
             if (c === 0){
@@ -29,5 +27,5 @@ defineComp("therapy-queue",  function (bios, template, args) {
 
 
 }, {
-    templatePath: "/component/departments/therapySession/therapyQueue/therapyQueue.html"
+    templatePath: "/component/departments/therapyQueue/therapyQueue.html"
 });

@@ -12,10 +12,17 @@ define("Config", function(g) {
             ],
         },{
             name: "therapy session treatment",
-            url: "/therapySession/treatment/:id",//string, regex, function
+            url: "/therapySession/treatment/:id/treat",//string, regex, function
             skip: true, // lets append template skip this entry
             sections: [
                 ["main-content", "therapy-session-treatment"],
+            ],
+        },{
+            name: "therapy session treatment",
+            url: "/therapySession/treatment/:id",//string, regex, function
+            skip: true, // lets append template skip this entry
+            sections: [
+                ["main-content", "therapy-session-animal-overview"],
             ],
         },{
             name: "therapy session",

@@ -1,15 +1,12 @@
 defineComp("live-search", function(bios, template) {
     "use strict";
 
-
     let $element = this.$ele;
 
     bios.rxLiveSearch = {};
     bios.rxLiveSearch.upStream = new Rx.ReplaySubject();
 
     this.onLoad = function () {
-        console.log("loaded live-search COMP");
-        console.log("load search");
         let $subComp = $('live-search-result').getComponent();
         let $input = $('input', $element);
         

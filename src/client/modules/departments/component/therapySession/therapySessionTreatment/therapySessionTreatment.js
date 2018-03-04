@@ -5,6 +5,8 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
     "use strict";
 
     let $element = this.$ele;
+    let department = "therapy-session";
+    bios.departments.load(department);
     let dataService = bios.departments.therapySession;
     let get = dataService.get.treatment;
 
@@ -12,15 +14,13 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
     //@todo define treatment object data design
     let treatmentData = get.treatmentData();
 
-    let filterButtons = get.filterButtons();;
+    let filterButtons = get.filterButtons();
     let buttonBars = get.buttonBars();
 
     this.onLoad = function(){
-        //@todo get treatmentData
         appendButton(filterButtons, $('.case', $element));
         appendButtonBar(buttonBars[0], $('.case', $element));
-        prependData(treatmentData);
-
+        prependData(treatmentData.all, "all");
         $('button', $element).on("click", buttonActions);
         $("#delete-new-treatment").hover(()=>{
             _doHover('div.treatment.new');
@@ -71,13 +71,11 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
         let pressedButtonType = pressedButton.data("type");
 
         if(pressedButtonType === "filter"){
-            $('.old-treatments .treatment-data').remove();
-            let filteredData = filterData(treatmentData, pressedButtonID);
-            prependData(filteredData);
+            $('.old-treatments').empty();
+            prependData(treatmentData[pressedButtonID], pressedButtonID);
             markButton(pressedButton);
         }
         else if(pressedButtonType === "new") {
-            // $('bar', $('div.wrapper[group="'+pressedButtonType+'"')).toggleClass("hidden");
             $('[data-type=new]')
                 .toggleClass("fa-plus-square")
                 .toggleClass("fa-minus-square");
@@ -105,31 +103,14 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
         selected.addClass("selected-filter");
     }
 
-    function filterData(data, by) {
-        let res = [];
-        if(by === "all" || by === "add") return data;
-        for (let i = 0; i < data.length; i++) {
-            if(data[i].type === by) res.push(data[i]);
+    function prependData(data, type){
+        let i = 0;
+        while (i < data.length){
+            let comp = $('<therapy-session-single-treatment data-i="'+ i +'" data-type="'+ type +'">');
+            $('.old-treatments').prepend(comp);
+            bios.loadComponent(comp);
+            i++;
         }
-        if (res.length === 0) res = data;
-        return res;
-    }
-
-    function prependData(data){
-        $('.old-treatments').prependTemplate(".template-treatment",data, function (fragment, value) {
-            if (value.type === "mail"){
-                //insert mail
-                $('.treatment', fragment).remove();
-                $('p', fragment).text("Correspondence with owner");
-                $('.treatment-mail', fragment).removeClass("hidden");
-                $('.mail-text', fragment).html(value.text);
-            } else {
-                //insert treatment
-                $('.treatment-mail', fragment).remove();
-                $('p', fragment).text(value.diagnosis);
-            }
-            $('span.date', fragment).text(value.date);
-        });
     }
     /*endregion*/
 

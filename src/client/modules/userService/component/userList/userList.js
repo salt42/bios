@@ -1,11 +1,9 @@
 defineComp("user-list", function(bios, template){
     "use strict";
-    console.log("loading user-list COMP");
 
     let $element = this.$ele;
 
     this.onLoad = function () {
-        console.log("loaded user-list COMP");
        $('.user-list-selector-name')
            .text( bios.trans.late("User") )
            .on("click", toggleList)

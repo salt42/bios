@@ -60,4 +60,8 @@ define("search", function(bios){
     this.getName = function (type, searchQuery, fn) {
         serverSearch("getName/" + type, searchQuery, fn);
     }
+
+    this.customerData = function (id, typeOf, fn) {
+        serverSearch("customerData/" + id, typeOf, fn)
+    }
 });

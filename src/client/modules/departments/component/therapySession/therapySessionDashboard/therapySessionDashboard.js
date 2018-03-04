@@ -5,6 +5,8 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
     "use strict";
 
     let $element = this.$ele;
+    // let department = "therapy-session";
+    // bios.departments.load(department);
     let data = [];
     let dashboardDefaults = [{
         type: "element::text",

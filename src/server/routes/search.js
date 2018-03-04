@@ -6,6 +6,7 @@ const article    = require('../../db/article');
 const list       = require('../../db/list');
 const liveSearch = require('../../db/liveSearch');
 const owner      = require('../../db/owner');
+const customerData= require('../../db/customerData');
 const mainDetails= require('../../db/mainDetails');
 
 /* region make up live result */
@@ -41,6 +42,14 @@ let routeTwo = {
 /*endregion*/
 /* region 3-parted url */
 let routeThree = {
+    customerData: (subType, query)=>{
+        if (subType === "animal") {
+            return customerData.getBy.animal(query);
+        }
+        if (subType === "owner") {
+            return customerData.getBy.owner(query);
+        }
+    },
     mainDetails: (subType, query)=>{
         if (subType === "animal") {
             return mainDetails.getBy.animal(query);
@@ -67,7 +76,8 @@ hookIn.http_createRoute("/search", function(router) {
             result = routeThree[type](select, query);
             res.json(result);
         } catch (e){
-            console.log(e);
+            log("type:", type, "select:", select, "query:", query);
+            log.error(e);
         }
     });
     /*endregion*/
@@ -81,7 +91,8 @@ hookIn.http_createRoute("/search", function(router) {
             result = routeTwo[type](query);
             res.json(result);
         } catch (e){
-            console.log(e);
+            log("type:", type, "query:", query);
+            log.error(e);
         }
     });
     /*endregion*/

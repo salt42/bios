@@ -45,7 +45,7 @@ therapy-session-treatment div.case input {
 therapy-session-treatment div.case button {
     float: right;
     margin-right:10px;
-    font-weight:  900;
+    font-weight: 500;
 }
 therapy-session-treatment div.case button:before {
     margin-right: 5px;

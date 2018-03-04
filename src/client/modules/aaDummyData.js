@@ -150,15 +150,12 @@ define("dummy", function(bios){
         ];
         /*endregion*/
         /* region treatment data */
-        a.ts.treatmentData = [
+        a.ts.treatmentData = {};
+        a.ts.treatmentData.treatment = [
             {
                 type: "treatment",
                 diagnosis: "oldest",
                 date: "01.02.03"
-            },{
-                type: "mail",
-                text: "kjahskjdhjashjks",
-                date: "02.02.03"
             },{
                 type: "treatment",
                 diagnosis: "older",
@@ -169,6 +166,40 @@ define("dummy", function(bios){
                 date: "04.02.03"
             },
         ];
+        a.ts.treatmentData.mail = [
+            {
+                type: "mail",
+                text: "kjahskjdhjashjks",
+                date: "02.02.03"
+            }
+        ];
+
+        function concatANDsortByDate (a1, a2){
+            let res = a1.concat(a2);
+            res.sort((a,b)=>{
+                let da = new Date(a.date).getTime();
+                let db = new Date(b.date).getTime();
+                return (da>db) ? 1 : (da === db) ? 0 : -1;
+            });
+            return res;
+        }
+        a.ts.treatmentData.all = concatANDsortByDate(a.ts.treatmentData.treatment, a.ts.treatmentData.mail);
+
+        a.ts.cases = [
+            {
+                animal: 123,
+                description: "aua",
+                numberOfTreatments: 4
+            }
+        ];
+        a.ts.customerData = {
+            owner: [
+                122, 142
+            ],
+            animal: [
+                123, 124, 125
+            ]
+        };
         /*endregion*/
         departmentsDummyData = a;
         /*endregion*/
