@@ -173,6 +173,27 @@ define("dummy", function(bios){
                 date: "02.02.03"
             }
         ];
+        a.ts.cases = [
+            {
+                id: 42,
+                description: "aua aua Bein",
+                treatments: 10,
+                date: "01.02.02",
+                lastTreatment: "20.03.03",
+            }, {
+                id: 24,
+                description: "aua aua Kopf",
+                treatments: 4,
+                date: "01.12.12",
+                lastTreatment: "20.12.12",
+            }, {
+                id: 35,
+                description: "aua aua Bauch",
+                treatments: 2,
+                date: "13.06.04",
+                lastTreatment: "15.06.04",
+            },
+        ];
 
         function concatANDsortByDate (a1, a2){
             let res = a1.concat(a2);
@@ -185,13 +206,6 @@ define("dummy", function(bios){
         }
         a.ts.treatmentData.all = concatANDsortByDate(a.ts.treatmentData.treatment, a.ts.treatmentData.mail);
 
-        a.ts.cases = [
-            {
-                animal: 123,
-                description: "aua",
-                numberOfTreatments: 4
-            }
-        ];
         a.ts.customerData = {
             owner: [
                 122, 142

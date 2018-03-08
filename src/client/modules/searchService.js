@@ -60,7 +60,7 @@ define("search", function(bios){
         return serverSearch("getName/" + type, searchQuery).then(fn);
     }
 
-    this.customerData = function (id, typeOf, fn) {
-        return serverSearch("customerData/" + id, typeOf).then(fn);
+    this.customerData = function (id, idType) {
+        return serverSearch("customerData/" + id, idType);
     }
 });

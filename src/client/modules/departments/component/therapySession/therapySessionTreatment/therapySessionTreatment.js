@@ -5,25 +5,40 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
     "use strict";
 
     let $element = this.$ele;
-    let department = "therapy-session";
-    bios.departments.load(department);
-    let dataService = bios.departments.therapySession;
-    let get = dataService.get.treatment;
 
+    let department = "therapy-session";
+    let comp = "therapySessionTreatment";
+    let id = 123;
+    let idType = "animal";
+    bios.departments.load(department, comp, id , idType);
+
+    let dataService;
+    let get;
 
     //@todo define treatment object data design
-    let treatmentData = get.treatmentData();
-
-    let filterButtons = get.filterButtons();
-    let buttonBars = get.buttonBars();
+    let treatmentData;
+    let filterButtons;
+    let buttonBars;
 
     this.onLoad = function(){
-        appendButton(filterButtons, $('.case', $element));
-        appendButtonBar(buttonBars[0], $('.case', $element));
-        prependData(treatmentData.all, "all");
-        $('button', $element).on("click", buttonActions);
-        $("#delete-new-treatment").hover(()=>{
-            _doHover('div.treatment.new');
+        bios.departments.ready.subscribe(function(rxData){
+            if (rxData.department === department && rxData.comp === comp){
+                dataService = bios.departments.therapySession;
+                get = dataService.get.treatment;
+
+                treatmentData = get.treatmentData();
+
+                filterButtons = get.filterButtons();
+                buttonBars = get.buttonBars();
+
+                appendButton(filterButtons, $('.case', $element));
+                appendButtonBar(buttonBars[0], $('.case', $element));
+                prependData(treatmentData.all, "all");
+                $('button', $element).on("click", buttonActions);
+                $("#delete-new-treatment").hover(()=>{
+                    _doHover('div.treatment.new');
+                });
+            }
         });
     };
 
@@ -102,17 +117,15 @@ defineComp("therapy-session-treatment",  function (bios, template, args) {
         $('button').removeClass("selected-filter");
         selected.addClass("selected-filter");
     }
+    /*endregion*/
 
     function prependData(data, type){
-        let i = 0;
-        while (i < data.length){
+        for ( let i = 0; i < data.length; i++){
             let comp = $('<therapy-session-single-treatment data-i="'+ i +'" data-type="'+ type +'">');
             $('.old-treatments').prepend(comp);
             bios.loadComponent(comp);
-            i++;
         }
     }
-    /*endregion*/
 
     function addNewTreat(){
         $('.new-treatment').prependTemplate(".template-treatment",[{}], function (fragment, value) {

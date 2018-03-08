@@ -1,0 +1,32 @@
+/* region queue */
+:root {
+    --tsst-table-width: 100%;
+    --tsst-calc: calc(var(--tsst-table-width) / 20);
+}
+
+therapy-session-single-treatment table {
+    width: var(--tsst-table-width);
+    background-color: #cdcdcd;
+}
+therapy-session-single-treatment table tr.row-vis {
+    background-color: #ededed;
+}
+therapy-session-single-treatment table .col-a
+{
+    width: calc(var(--tsst-calc) * 8);
+}
+therapy-session-single-treatment table .col-b,
+therapy-session-single-treatment table .col-c,
+therapy-session-single-treatment table .col-f
+{
+    width: var(--tsst-calc);
+}
+therapy-session-single-treatment table .col-d,
+therapy-session-single-treatment table .col-e,
+therapy-session-single-treatment table .col-g
+{
+    width: calc(var(--tsst-calc) * 3);
+}
+therapy-session-single-treatment table thead td {
+    font-weight: 800;
+}

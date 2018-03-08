@@ -15,6 +15,9 @@ defineComp("therapy-session-single-treatment",  function (bios, template, args) 
             $('.date', $element).html(value.date);
             if (data.type === "treatment"){
                 $('textarea.diagnosis', fragment).html(value.diagnosis);
+                let invoice = $('treatment-invoice-plugin', fragment)
+                    .attr("data-id", 0);
+                bios.loadComponent(invoice);
             } else {  //mail
                 $('.mail-text', fragment).html(value.text);
             }
