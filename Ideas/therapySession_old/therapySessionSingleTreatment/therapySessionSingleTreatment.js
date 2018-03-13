@@ -17,11 +17,15 @@ defineComp("therapy-session-single-treatment",  function (bios, template, args) 
                 $('textarea.diagnosis', fragment).html(value.diagnosis);
                 let invoice = $('treatment-invoice-plugin', fragment)
                     .attr("data-id", 0);
-                bios.loadComponent(invoice);
             } else {  //mail
                 $('.mail-text', fragment).html(value.text);
             }
         });
+        let $ini = $('treatment-invoice-plugin');
+        for (let i = 0; i < $ini.length; i++) {
+            bios.loadComponent($( $ini[i]));
+
+        }
     };
 }, {
     templatePath: "/component/departments/therapySession/therapySessionSingleTreatment/therapySessionSingleTreatment.html"

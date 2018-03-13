@@ -16,10 +16,23 @@ function removeDoubles(dbResult){
     return result;
 }
 
-function createResult(allOwnerIDs, allAnimalsIDs){
+function createIDObject(allOwnerIDs, allAnimalsIDs){
     let result = {};
     result.owner  = allOwnerIDs;
     result.animal = allAnimalsIDs;
+    return result;
+}
+
+function getData(idObject) {
+    let result = {
+        animal: [],
+        owner: []
+    };
+    for (let section in idObject) {
+        for (let i = 0; i < idObject[section].length; i++) {
+            result[section].push(animalOwner.get.detailsOf[section](idObject[section][i]));
+        }
+    }
     return result;
 }
 /*endregion*/
@@ -29,12 +42,12 @@ module.exports = {
         owner: function (query){
             let allAnimalsIDs = removeDoubles(animalOwner.get.idsBy.owner(query));
             let allOwnerIDs   = removeDoubles(animalOwner.get.idsBy.animal(allAnimalsIDs));
-            return createResult(allOwnerIDs, allAnimalsIDs);
+            return getData( createIDObject(allOwnerIDs, allAnimalsIDs) );
         },
         animal: function (query){
             let allOwnerIDs   = removeDoubles(animalOwner.get.idsBy.animal(query));
             let allAnimalsIDs = removeDoubles(animalOwner.get.idsBy.owner(allOwnerIDs));
-            return createResult(allOwnerIDs, allAnimalsIDs);
+            return getData( createIDObject(allOwnerIDs, allAnimalsIDs) );
         },
     },
 };

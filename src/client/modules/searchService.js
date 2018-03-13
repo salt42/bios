@@ -1,15 +1,12 @@
 define("search", function(bios){
     "use strict";
+    /**
+     * @namespace Global
+     * @property {object} search
+     */
 
-    function serverSearch(type, searchQuery) {
-        let url = "/search/" + type;
-        if (searchQuery !== null) url += "/" + searchQuery;
-        // if(type.indexOf("list") > -1) console.log('client search url', url);
-        return $.ajax({
-            url: url,
-            type: "GET"
-        });
-    }
+    let serverSearch = bios.dbService.serverSearch;
+
     /* region live search */
     this.liveSearch = (searchQuery, option = "short")=>{
         if (option === "short"){

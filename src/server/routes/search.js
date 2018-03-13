@@ -71,7 +71,7 @@ hookIn.http_createRoute("/search", function(router) {
         let select = req.params.select;
         let query = req.params.query;
         let result;
-        // console.log("type 'n' select 'n' query", type, select, query);
+        // log("type 'n' select 'n' query", type, select, query);
         try {
             result = routeThree[type](select, query);
             res.json(result);
@@ -86,7 +86,7 @@ hookIn.http_createRoute("/search", function(router) {
         let type = req.params.type;
         let query = req.params.query;
         let result;
-        // console.log("type 'n' query", type, query);
+        // log("type 'n' query", type, query);
         try {
             result = routeTwo[type](query);
             res.json(result);

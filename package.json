@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/salt42/bios#readme",
   "dependencies": {
-    "express-hbs": "^1.0.4"
+    "express-hbs": "^1.0.4",
+    "mdi": "^2.1.99"
   }
 }

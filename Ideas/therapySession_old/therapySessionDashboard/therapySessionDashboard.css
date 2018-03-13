@@ -1,0 +1,17 @@
+.ts-dash-card-image{
+    height: 100px;
+}
+therapy-session-dashboard .mdl-card {
+    min-height: 200px;
+}
+
+div.ts-dash-cards {
+    margin-right: 2vw;
+    margin-bottom: 10px;
+    float: left;
+}
+
+.mdl-card__actions {
+    background-color: var(--color-one-dark);
+
+}

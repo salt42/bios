@@ -4,6 +4,7 @@
 defineComp("therapy-queue",  function (bios, template, args) {
     "use strict";
 
+    let $element = this.$ele;
     let department = "therapy-queue";
     let data;
     bios.departments.load(department);
@@ -13,6 +14,7 @@ defineComp("therapy-queue",  function (bios, template, args) {
             if(rxData.department === department){
                 data = bios.departments.global.treatmentQueue;
                 let c = 0;
+                $('#bios-queue').empty();
                 $('#bios-queue').appendTemplate(".bios-ts-queue.list-item-template", data, function (fragment, value){
                     let call = bios.trans.late("later treatment");
                     if (c === 0){

@@ -13,10 +13,15 @@ defineComp("treatment-invoice-plugin", function (bios, template, args) {
         tax: 0.19
     }];
 
-    this.onLoad = function () {
+    this.onLoad = function ($e) {
         // add data ()=>{}
-        $('tbody', $element).prependTemplate(".template-treatment-invoice-plugin-row", testData, setRow);
+
+        // setTimeout(() => {
+        //     console.log(  $e);
+        //     $('.data-body', $e).html('<tr>a#####</tr>');
+        $('tbody', $element).appendTemplate(".template-treatment-invoice-plugin-row", testData, setRow);
         addNewRow();
+        // }, 5000);
         // visualisation($('table', $element));
 
         // functionality

@@ -1,0 +1,41 @@
+therapy-session-single-treatment .treat-items{
+    width: 45%;
+}
+
+therapy-session-single-treatment {
+    position:  relative;
+    padding: 5px;
+    margin: 5px 0;
+    width: 99%;
+    border-bottom: solid 2px bisque;
+}
+
+therapy-session-single-treatment div.treat-head,
+therapy-session-single-treatment div.treat-items {
+    position: relative;
+    display: block;
+    width: 99%;
+    margin: 5px;
+    float: left;
+}
+therapy-session-single-treatment div.treat-items textarea{
+    position: relative;
+    display: block;
+    width: 99%;
+}
+
+therapy-session-single-treatment div.treatment.new div.treat-items textarea{
+    min-height: 3em;
+}
+therapy-session-single-treatment div.treatment.new div.treat-items textarea.findings ,
+therapy-session-single-treatment div.treatment.new div.treat-items textarea.therapy {
+    min-height: 6em;
+}
+therapy-session-single-treatment div.treatments div.treatment textarea.comment,
+therapy-session-single-treatment div.treatments div.treatment textarea.diagnosis {
+    position: relative;
+    display: block;
+    border: solid black 1px;
+    float: left;
+    width: 30%;
+}

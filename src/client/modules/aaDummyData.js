@@ -3,6 +3,10 @@
  */
 define("dummy", function(bios){
     "use strict";
+    /**
+     * @namespace Global
+     * @property {object} dummy
+     */
 
     // the "aaDummyData.js filename is needed to be loaded save as first module (!!dependencies!!)
     // console.log("loading dummy");
@@ -156,7 +160,8 @@ define("dummy", function(bios){
                 type: "treatment",
                 diagnosis: "oldest",
                 date: "01.02.03"
-            },{
+            },
+            {
                 type: "treatment",
                 diagnosis: "older",
                 date: "03.02.03"

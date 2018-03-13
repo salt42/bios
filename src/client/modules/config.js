@@ -15,14 +15,14 @@ define("Config", function(g) {
             url: "/therapySession/treatment/:id/treat",//string, regex, function
             skip: true, // lets append template skip this entry
             sections: [
-                ["main-content", "therapy-session-treatment"],
+                ["main-content", "therapy-session-case"],
             ],
         },{
             name: "therapy session treatment",
             url: "/therapySession/treatment/:id",//string, regex, function
             skip: true, // lets append template skip this entry
             sections: [
-                ["main-content", "therapy-session-animal-overview", {id: "test"}],
+                ["main-content", "therapy-session-overview", {id: "test"}],
             ],
         },{
             name: "therapy session",

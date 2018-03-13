@@ -3,17 +3,19 @@
  */
 define("departments", function(bios) {
     "use strict";
+    /**
+     * @namespace Global
+     * @property {object} departments
+     */
 
     // data service for sub components
     let dummy = false;
     let module = this;
-    let therapySessionData;
+    let therapySessionData = {};
     let initialized = {
         module: false,
         loadTherapySession: {},
     };
-
-    this.ready = new Rx.ReplaySubject();
 
     this.settings = {};
     this.global = {};
@@ -22,29 +24,32 @@ define("departments", function(bios) {
     this.office = {};
 
     /**
+     * @memberOf Global.departments
+     * ready ...
+     * @type {Rx.ReplaySubject}
+     */
+    this.ready = new Rx.ReplaySubject(10);
+
+    /**
+     * @memberOf Global.departments
      * load ... get all needed data
      * @param department
      * @param comp
      * @param id
      * @param idType string type belonging to id
-     * @returns {Promise}
      */
     this.load = (department, comp, id, idType)=>{
-        return new Promise(function (resolve, reject){
-            let a = [];
-            let iniData = {
-                department: department,
-                comp: comp,
-                id: id,
-                idType: idType,
-            };
-            a.push( _load_module() );
-            a.push( _load(iniData) );
-
-            Promise.all(a).then ( function() {
-                module.ready.next(iniData);
-                resolve();
-            });
+        let a = [];
+        let iniData = {
+            department: department,
+            comp: comp,
+            id: id,
+            idType: idType,
+        };
+        a.push( _load_module(iniData) );
+        a.push( _load(iniData) );
+        Promise.all(a).then ( function() {
+            module.ready.next(iniData);
         });
     };
 
@@ -53,8 +58,8 @@ define("departments", function(bios) {
      * @returns {Promise}
      * @private
      */
-    function _load_module(){
-            return new Promise(function (resolve, reject){
+    function _load_module(iniData){
+        return new Promise(function (resolve, reject){
             if (!initialized.module){
                 // load settings
                 // module.settings = ??
@@ -80,18 +85,20 @@ define("departments", function(bios) {
                     break;
                 case "therapy-session":
                     therapySessionData = dummy.ts;
-                    /* usage of _load_TS_dispatcher is not so nice reading,
-                       but leads to direct (pseudo dynamic) function calls instead of multiple ifs
+                    /* usage of _load_TS_dispatcher is not so nice reading, but leads to direct (pseudo dynamic) function calls instead of multiple ifs
                        & reduces this switch to default + special cases (departments with dash)*/
-                    if(_load_dispatcher["ts"][iniData.comp])
+                    if(_load_dispatcher["ts"][iniData.comp]){
                         a.push( _load_dispatcher["ts"][iniData.comp](iniData) );
+                    }
                     break;
                 default:
-                    // if(_load_dispatcher[iniData.department][iniData.comp])
-                        // a.push( _load_dispatcher[iniData.department][iniData.comp](iniData) );
+                    if(_load_dispatcher[iniData.department][iniData.comp])
+                        a.push( _load_dispatcher[iniData.department][iniData.comp](iniData) );
                     break;
             }
-            Promise.all(a).then( resolve() );
+            Promise.all(a).then( function(){
+                resolve();
+            } );
         });
     }
 
@@ -116,13 +123,19 @@ define("departments", function(bios) {
      */
     let _load_dispatcher = {
         ts: {
-            therapySessionAnimalOverview: _load_therapySessionAnimalOverview,
-            therapySessionTreatment:      _load_therapySessionTreatment,
+            therapySessionCustomerDataView: _load_therapySessionCustomerDataView,
+            therapySessionAnimalOverview:   _load_therapySessionAnimalOverview,
+            therapySessionTreatment:        _load_therapySessionTreatment,
         },
         reception: {},
         office: {},
     };
 
+    function _load_therapySessionCustomerDataView(iniData) {
+        return _get_customerData(iniData).then(function(){
+            module._createAPI['ts']['customerData']();
+        });
+    }
     /**
      * _load_therapySessionAnimalOverview ... load all needed data ´for overview
      * @param iniData
@@ -134,7 +147,7 @@ define("departments", function(bios) {
             let a = [];
             //load all cases by animal id
             a.push( _load_TS_cases(iniData.id) );
-            a.push( _load_TS_customerData("animal", iniData.id) );
+            // a.push( _load_TS_customerData("animal", iniData.id) );
 
             Promise.all(a)
                 .then(function(){
@@ -154,11 +167,10 @@ define("departments", function(bios) {
     function _load_therapySessionTreatment(iniData, resolve) {
         return new Promise(function (resolve, reject){
             let a = [];
-            a.push( _load_TS_customerData(iniData.idType, iniData.id) );
-
+            a.push( _load_therapySessionCustomerDataView(iniData));
             Promise.all(a)
                 .then(function(){
-                    _createAPI_therapySession(iniData.comp);
+                    // module._createAPI["ts"][iniData.comp];
                     initialized.therapySession = iniData;
                     resolve();
                 });
@@ -172,24 +184,41 @@ define("departments", function(bios) {
             resolve();
         });
     }
-    function _load_TS_customerData(type, id) {
-        //@todo  -- promise fails in this way
-        // return bios.search.customerData(type, id).then( function (data){
-        //     module.therapySession.customer = data;
-        // });
+    function _get_customerData(iniData) {
+        return new Promise(function (resolve, reject){
+            let customerData;
+            bios.dataService.customerData(iniData.idType, iniData.id).then(function(data){
+                customerData = data;
+                therapySessionData.customerData = customerData;
+                resolve();
+            });
+        });
     }
-    function _createAPI_therapySession(comp) {
-        if (comp === "therapySessionTreatment"){
-            therapySessionData = sortArraysByDate_recursive(therapySessionData);
-            module.therapySession.get = {
-                treatment: {
-                    filterButtons: ()=>{ return therapySessionData.filterButtons },
-                    buttonBars: ()=>{ return therapySessionData.buttonBars },
-                    treatmentData: ()=> {return therapySessionData.treatmentData},
+    module._createAPI = {
+        common: (sub)=>{
+            if(sub === "ts"){
+                if(!module.therapySession.get) module.therapySession.get = {};
+            }
+        },
+        ts: {
+            customerData: ()=>{
+                module._createAPI.common("ts");
+                module.therapySession.get.customerData = ()=>{
+                    return therapySessionData.customerData
                 }
-            };
+            },
+            therapySessionTreatment: ()=>{
+                module._createAPI.common("ts");
+                module.therapySession.get = {
+                    treatment: {
+                        filterButtons: ()=>{ return therapySessionData.filterButtons },
+                        buttonBars: ()=>{ return therapySessionData.buttonBars },
+                        treatmentData: ()=> {return therapySessionData.treatmentData},
+                    }
+                };
+            }
         }
-    }
+    };
     /*endregion*/
     /* region Reception */
     function _load_reception(){

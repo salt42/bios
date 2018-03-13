@@ -1,0 +1,13 @@
+therapy-session-customer-data-view {}
+
+therapy-session-customer-data-view li.owner,
+therapy-session-customer-data-view li.animal
+{
+    display: block;
+}
+therapy-session-customer-data-view ul.owner,
+therapy-session-customer-data-view ul.animal
+{
+    margin-bottom: 5px;
+    border-bottom: solid 1px black;
+}

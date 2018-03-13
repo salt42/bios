@@ -1,4 +1,4 @@
-<div id="left">
+<div id="case-left">
     Daten<br><br><br>
     Besitzer<br><br><br>
     Tier<br><br><br>
@@ -6,14 +6,15 @@
     Info.Tier<br><br><br>
     sonstige Fälle<br><br><br>
 </div>
-<div class="case">
-    <input name="case" placeholder="case description">
+<div id="case-right">
+    <div class="case">
+        <input name="case" placeholder="case description">
+    </div>
+    <clear></clear>
+    <div class="new-treatment treatments"></div>
+    <div class="old-treatments treatments"></div>
+    <therapy-queue></therapy-queue>
 </div>
-<div class="new-treatment treatments"></div>
-<div class="old-treatments treatments"></div>
-
-<therapy-queue></therapy-queue>
-
 <template class="template-treatment">
     <div class="treatment-data treatment">
         <p>id</p><br>
@@ -47,15 +48,7 @@
         <div class="mail-text"></div>
     </div>
 </template>
-<template class="template-case-button">
-    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
-    </button>
-</template>
 <template class="template-button-bar">
     <div class="wrapper">
-        <div class="switchables-wrapper show-on-click hidden"></div>
     </div>
-</template>
-<template class="template-button-pairs">
-    <div class="pair-wrapper"></div>
 </template>
