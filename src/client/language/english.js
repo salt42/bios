@@ -1,6 +1,8 @@
 window.trans = new Map();
 
 let helper;
+//information
+trans.set("bios_language", "en_en");
 
 //Enums
 helper = "GENDER";
@@ -54,3 +56,14 @@ trans.set("owner",        "Owner"            );
 trans.set("articles",     "Articles"         );
 trans.set("animals",      "Animals"          );
 trans.set("dead animals", "Dead Animals"     );
+
+//live search
+trans.set("live search result animal", "Animals");
+trans.set("live search result animal-d", "Dead Animals");
+trans.set("live search result article", "Articles");
+trans.set("live search result owner", "Owner");
+
+//treatment department
+trans.set("next treatment", "next treatment");
+trans.set("later treatment", "later treatment");
+trans.set("user", "User");

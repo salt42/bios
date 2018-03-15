@@ -7,7 +7,7 @@ const list       = require('../../db/list');
 const liveSearch = require('../../db/liveSearch');
 const owner      = require('../../db/owner');
 const customerData= require('../../db/customerData');
-const mainDetails= require('../../db/mainDetails');
+// const mainDetails= require('../../db/mainDetails');
 
 /* region make up live result */
 function liveResult (query, dbResults){

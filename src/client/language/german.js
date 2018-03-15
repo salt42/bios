@@ -1,6 +1,8 @@
 window.trans = new Map();
 
 let helper;
+//information
+trans.set("bios_language", "de_de");
 
 //Enums
 helper = "GENDER";

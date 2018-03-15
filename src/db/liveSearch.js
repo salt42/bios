@@ -1,6 +1,6 @@
 "use strict";
 const log     = require('jsfair/log')("liveSearch.js");
-const h = require("./db_helper");
+const h = require("./helper/db_helper");
 
 const animal  = require('./animal');
 const article = require('./article');

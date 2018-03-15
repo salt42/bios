@@ -28,7 +28,6 @@ defineComp("therapy-queue",  function (bios, template, args) {
                     $('span.reason', fragment).text(value.reason);
                     $('div.mdl-card__actions a', fragment).text(call);
                 });
-                bios.trans.log();
             }
         });
     };

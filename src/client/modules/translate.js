@@ -1,10 +1,12 @@
 define("trans", function(bios){
     "use strict";
 
+    let self = this;
     let transStrings = window.trans;
     let speciesList;
     let userRolesList;
-    bios.needTranslation = [];
+    let file = _translate("bios_language");
+    bios.needTranslation = {};
 
 
     let error = false;
@@ -30,12 +32,16 @@ define("trans", function(bios){
     this.late = translate;
 
     function translate (str) {
+        logList();
+        return _translate(str);
+    }
+    function _translate (str) {
         let s = str.toLowerCase();
         if (!(!transStrings.get(s)))
             str = transStrings.get(s);
-        else bios.needTranslation.push(str);
+        else bios.needTranslation[str]= str ;
         return str;
-    };
+    }
     /*endregion*/
 
     this.age = function (birthday){
@@ -130,7 +136,13 @@ define("trans", function(bios){
     }
     /* endregion*/
 
-    this.log = function(){
-        console.log('needs translation: ', bios.needTranslation);
+    function logList(){
+        if(jQuery.isEmptyObject(bios.needTranslation)) return;
+        let obj = {
+            language_file: file,
+            phrases: bios.needTranslation,
+        };
+        console.log('needs translation: ', obj);
     }
+    this.log = logList;
 });

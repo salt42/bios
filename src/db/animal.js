@@ -1,8 +1,8 @@
 "use strict";
 const log     = require("jsfair/log")("db-animal");
 const DB      = require("jsfair/database");
-const h       = require("./db_helper");
-const convert = require("./dbObjectConverter");
+const h       = require("./helper/db_helper");
+const convert = require("./helper/dbObjectConverter");
 
 const sqlFile  = "animals";
 const dataType = "animal";
