@@ -9,7 +9,6 @@ defineComp("reception-dashboard",  function (bios, template, args) {
         buttonText: "Settings",
         buttonUrl: "/reception/settings"
     }];
-
     /* region dummy data */
     function dummy (count, data) {
         let i = 0;
@@ -41,10 +40,11 @@ defineComp("reception-dashboard",  function (bios, template, args) {
 
     this.onLoad = function (){
         data = data.concat(dashboardDefaults);
+        this.data = data;
         data = prepareData (data);
-        $('#reception-dash-cards')
+        $('#reception-dash-cards', $element)
         // append items
-            .appendTemplate(".template-reception-cards", data, function (fragment, value){
+            .appendTemplate("#template-reception-dashboard-reception-cards", data, function (fragment, value){
                 if(value.element){
                     $('div.mdl-card__title', fragment)
                         .empty()

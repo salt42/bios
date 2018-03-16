@@ -15,7 +15,7 @@ defineComp("therapy-queue",  function (bios, template, args) {
                 data = bios.departments.global.treatmentQueue;
                 let c = 0;
                 $('#bios-queue').empty();
-                $('#bios-queue').appendTemplate(".bios-ts-queue.list-item-template", data, function (fragment, value){
+                $('#bios-queue').appendTemplate("#template-therapy-queue-item", data, function (fragment, value){
                     let call = bios.trans.late("later treatment");
                     if (c === 0){
                         $('div.bios-queue-item', fragment).addClass("selected");

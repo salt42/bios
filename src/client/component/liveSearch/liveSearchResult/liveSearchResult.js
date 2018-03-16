@@ -6,18 +6,20 @@ defineComp("live-search-result", function(bios, template, args) {
     // console.log("loading live-search-result COMP");
 
     let $element = this.$ele;
+    bios.rxLiveSearch.stream.subscribe(function (data) {
+        updateResults(data);
+    });
 
-    this.onLoad = function () {
-        // console.log("loaded live-search-result COMP");
-    };
+    this.onLoad = function () {};
 
-    this.updateResults = function (data) {
+    function updateResults (data) {
         $element.removeClass("hidden");
         for (let property in data) {
             if (!data.hasOwnProperty(property)) continue;
             if (data[property].length === 0 || property === "query") continue;
             let type;
-            let itemTemplate = ".template-live-search-result-item";
+            let itemTemplate = "#template-live-search-result-item";
+            console.log($(itemTemplate));
             // add entries
             switch (property){
                 case "owners":
@@ -53,7 +55,6 @@ defineComp("live-search-result", function(bios, template, args) {
                     });
                     break;
                 case "deadAnimals":
-                    console.log(property);
                     type = "animal-d";
                     $('li.group-' + type).removeClass("hidden");
                     $('span', 'li.group-' + type).html(bios.trans.late("live search result " + type));
@@ -93,29 +94,7 @@ defineComp("live-search-result", function(bios, template, args) {
             $element.removeClass("hidden");
             $element.hidesOnOuterClick($('input#fixed-header-drawer-exp'));
         });
-        $('li.live-search-result-item', $element).on("click", function (e) {
-            console.log('click');
-            let $target = $(e.target);
-            let type = $target.attr("type");
-            let id = $target.attr(type + '-id');
-            console.log($target );
-            console.log(type);
-            console.log(id );
-
-            if (!$target.hasClass("live-search")) return;
-
-            bios.ems.ems_LiveSearch ({
-                type: type,
-                id: id
-            });
-            // $input.val("");
-            $element.not("hidden").addClass("hidden");
-        });
-
-        // $element.on("click", function(e) {
-        //
-        // });
-        bios.rxLiveSearch.upStream.next($element);
+        $('li.live-search-result-item', $element).on("click", onEntryClick);
     };
 
     function highlight(query) {
@@ -136,50 +115,22 @@ defineComp("live-search-result", function(bios, template, args) {
         return bios.trans.decode.species(value);
     }
 
-    this.getResult = function (){
-        return $element;
-    };
-    //
-    // $liveResults.on("click", function(e) {
-    //     let $target = $(e.target),
-    //         type = $target.attr("type"),
-    //         id = $target.attr(type + '-id')
-    //     ;
-    //
-    //     if (!$target.hasClass("live-search")) return;
-    //
-    //     bios.ems.ems_LiveSearch ({
-    //         type: type,
-    //         id: id
-    //     });
-    //     $input.val("");
-    //     $liveResults.not("hidden").addClass("hidden");
-    //
-    // });
+    function onEntryClick (e) {
+        let $target = $(e.target);
+        if (!$target.hasClass("live-search-result-item")) {
+            $target = $target.parent(); //needed if click is on highlighted <span>
+            if (!$target.hasClass("live-search-result-item")) return;
+        }
+        let type = $target.attr("type");
+        // bios.ems.ems_LiveSearch (transData);
+        bios.rxLiveSearch.liveSearchSelect.next({
+            target: $target,
+            type:   type,
+            id:     $target.attr(type + '-id'),
+        });
+        $element.not("hidden").addClass("hidden");
     }
-    ,{
-        templatePath: "/component/liveSearch/liveSearchResult/liveSearchResult.html"
-    }
-);
-
-
-// <ul class="demo-list-icon mdl-list">
-//     <li class="mdl-list__item">
-//     <span class="mdl-list__item-primary-content">
-//     <i class="material-icons mdl-list__item-icon">person</i>
-//     Bryan Cranston
-// </span>
-// </li>
-// <li class="mdl-list__item">
-//     <span class="mdl-list__item-primary-content">
-//     <i class="material-icons mdl-list__item-icon">person</i>
-//     Aaron Paul
-// </span>
-// </li>
-// <li class="mdl-list__item">
-//     <span class="mdl-list__item-primary-content">
-//     <i class="material-icons mdl-list__item-icon">person</i>
-//     Bob Odenkirk
-// </span>
-// </li>
-// </ul>
+}
+,{
+    templatePath: "/component/liveSearch/liveSearchResult/liveSearchResult.html"
+});

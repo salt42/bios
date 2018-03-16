@@ -2,13 +2,15 @@ defineComp("live-search", function(bios, template) {
     "use strict";
 
     let $element = this.$ele;
+    let $input;
 
     bios.rxLiveSearch = {};
-    bios.rxLiveSearch.upStream = new Rx.ReplaySubject();
+    bios.rxLiveSearch.stream = new Rx.ReplaySubject();
+    bios.rxLiveSearch.liveSearchSelect = new Rx.ReplaySubject();
 
     this.onLoad = function () {
         let $subComp = $('live-search-result').getComponent();
-        let $input = $('input', $element);
+        $input = $('input', $element);
         
         let searchQuery = "";
 
@@ -17,7 +19,8 @@ defineComp("live-search", function(bios, template) {
                 console.log("returned query is wrong");
                 return;
             }
-            $subComp.updateResults(data);
+            bios.rxLiveSearch.stream.next(data);
+            // $subComp.updateResults(data);
         }
 
         /* region search bar behavior */
@@ -25,7 +28,7 @@ defineComp("live-search", function(bios, template) {
             // $liveResults.empty()
             //     .removeClass("hidden");
             searchQuery = $input.val();
-            console.log('key up', e.keyCode);
+            // console.log('key up', e.keyCode);
             switch (e.keyCode) {
                 case 16: // = shift
                 case 20: // = caps lock
@@ -45,11 +48,10 @@ defineComp("live-search", function(bios, template) {
             }
         });
         /*endregion*/
-        bios.rxLiveSearch.upStream.subscribe(function(upstream){
-            console.log('get', upstream);
-            console.log($('live-search-result-item', upstream));
-        });
     };
+    bios.rxLiveSearch.liveSearchSelect.subscribe(function (element) {
+        $input.val("");
+    });
 }
 ,{
     templatePath: "/component/liveSearch/liveSearch.html"

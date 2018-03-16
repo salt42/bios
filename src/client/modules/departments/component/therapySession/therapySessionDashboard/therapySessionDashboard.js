@@ -60,13 +60,13 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
     this.onLoad = function (){
         data = data.concat(dashboardDefaults);
         data = prepareData (data);
-        $('#ts-dash-cards')
+        $('#ts-dash-cards', $element)
             // append items
-            .appendTemplate(".template-ts-dash-cards", data, function (fragment, value){
+            .appendTemplate("#template-therapy-session-dash-cards", data, function (fragment, value){
                 if(value.element){
                     $('div.mdl-card__title', fragment)
                         .empty()
-                        .append($(value.element));
+                        .append($(value.element, $element));
                     $('a.mdl-js-button', fragment)
                         .html(bios.trans.late(value.text))
                         .attr("url", value.buttonUrl);
