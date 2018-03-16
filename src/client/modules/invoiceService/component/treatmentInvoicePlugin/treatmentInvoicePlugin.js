@@ -19,7 +19,7 @@ defineComp("treatment-invoice-plugin", function (bios, template, args) {
         // setTimeout(() => {
         //     console.log(  $e);
         //     $('.data-body', $e).html('<tr>a#####</tr>');
-        $('tbody', $element).appendTemplate(".template-treatment-invoice-plugin-row", testData, setRow);
+        $('tbody', $element).appendTemplate("#template-treatment-invoice-plugin-row", testData, setRow);
         addNewRow();
         // }, 5000);
         // visualisation($('table', $element));
