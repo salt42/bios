@@ -44,7 +44,7 @@ defineComp("reception-dashboard",  function (bios, template, args) {
         data = prepareData (data);
         $('#reception-dash-cards', $element)
         // append items
-            .appendTemplate("#template-reception-dashboard-reception-cards", data, function (fragment, value){
+            .appendTemplate("#template-reception-cards", data, function (fragment, value){
                 if(value.element){
                     $('div.mdl-card__title', fragment)
                         .empty()

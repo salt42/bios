@@ -31,7 +31,7 @@ defineComp("office-dashboard",  function (bios, template, args) {
 
     this.onLoad = function (){
         data = prepareData (data);
-        $('#office-cards').appendTemplate(".template-office-cards", data, function (fragment, value){
+        $('#office-cards').appendTemplate("#template-office-cards", data, function (fragment, value){
             $('span.top', fragment).html(value.top);
             $('a.mdl-js-button', fragment).html(value.bottom);
         });

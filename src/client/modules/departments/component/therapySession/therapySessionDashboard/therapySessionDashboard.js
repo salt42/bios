@@ -62,7 +62,7 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
         data = prepareData (data);
         $('#ts-dash-cards', $element)
             // append items
-            .appendTemplate("#template-therapy-session-dash-cards", data, function (fragment, value){
+            .appendTemplate("#template-therapy-session-cards", data, function (fragment, value){
                 if(value.element){
                     $('div.mdl-card__title', fragment)
                         .empty()
