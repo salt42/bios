@@ -8,7 +8,7 @@ defineComp("link-bar", function (bios, template, args) {
         $('span.mdl-layout-title').html('BIOS nav');
 
         let navbar = $('nav.mdl-navigation');
-        navbar.appendTemplate(".template-nav-link-url", bios.Config.States, function (navEntry, value) {
+        navbar.appendTemplate("#template-link-bar-url-link", bios.Config.States, function (navEntry, value) {
             $('a', navEntry)
                 .attr("url", value.url)
                 .html(value.name);
