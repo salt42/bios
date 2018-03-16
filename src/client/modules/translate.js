@@ -7,6 +7,7 @@ define("trans", function(bios){
     let userRolesList;
     let file = _translate("bios_language");
     bios.needTranslation = {};
+    let logTriggered = false;
 
 
     let error = false;
@@ -138,11 +139,17 @@ define("trans", function(bios){
 
     function logList(){
         if(jQuery.isEmptyObject(bios.needTranslation)) return;
-        let obj = {
-            language_file: file,
-            phrases: bios.needTranslation,
-        };
-        console.log('needs translation: ', obj);
+        if(!logTriggered){
+            logTriggered = true;
+            setTimeout(function(){
+                let obj = {
+                    language_file: file,
+                    phrases: bios.needTranslation,
+                };
+                console.log('needs translation: ', obj);
+                logTriggered = false;
+            }, 2000);
+        }
     }
     this.log = logList;
 });
