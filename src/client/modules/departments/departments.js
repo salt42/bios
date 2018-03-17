@@ -14,7 +14,8 @@ define("departments", function(bios) {
     let therapySessionData = {};
     let initialized = {
         module: false,
-        loadTherapySession: {},
+        queue:  false,
+        other:  new Rx.ReplaySubject(),
     };
 
     this.settings = {};
@@ -64,6 +65,10 @@ define("departments", function(bios) {
                 // load settings
                 // module.settings = ??
                 initialized.module = true;
+                initialized.other.next({
+                    type: "module",
+                    data: {},
+                });
             }
             resolve();
         });
@@ -118,8 +123,15 @@ define("departments", function(bios) {
                 raw[i].url = "/therapySession/treatment/" + raw[i].animal_id;
                 res.push(raw[i]);
             }
-            module.global.treatmentQueue = res;
+            module.global.treatmentQueue = {
+                queue: res,
+                next:  res[0],
+            };
             resolve(module.global.treatmentQueue);
+            initialized.other.next({
+                type: "ts-queue",
+                data: module.global.treatmentQueue.next,
+            });
         });
     }
 
@@ -187,30 +199,37 @@ define("departments", function(bios) {
     }
     function _load_dashboard(inidata) {
         return new Promise(function (resolve, reject){
-            let dash_defaults = [{
-                type: "element::text",
-                element: 'therapy-queue',
-                text: "therapy-queue",
-                buttonUrl: "/therapySession/queue"
-            },{
-                type: "html::text",
-                text: "<div class='settings-icon'></div>",
-                buttonText: "Settings",
-                buttonUrl: "/therapySession/settings"
-            },];
-            module.therapySession.dashboard = {};
-            module.therapySession.cards = [];
-            //load data
-            // module.therapySession.cards = dashDummy(2, data);
-            module.therapySession.cards = [{
-                type: "text::text",
-                text: "next treatment",
-                buttonText: "next treatment",
-                buttonUrl: "/therapySession/treatment",
-                variables: true,
-            }];
-            module.therapySession.cards = module.therapySession.cards.concat(dash_defaults);
-            resolve();
+            _load_treatmentQueue().then(function(){
+                let dash_defaults = [{
+                    type: "element::text",
+                    element: 'therapy-queue',
+                    text: "therapy-queue",
+                    buttonUrl: "/therapySession/queue"
+                },{
+                    type: "html::text",
+                    text: "<div class='settings-icon'></div>",
+                    buttonText: "Settings",
+                    buttonUrl: "/therapySession/settings"
+                },];
+
+                module.therapySession.dashboard = {};
+                module.therapySession.cards = [];
+                //load data
+                // module.therapySession.cards = dashDummy(2, data);
+                console.log(module.global.treatmentQueue.next);
+                let next = module.global.treatmentQueue.next;
+                module.therapySession.cards = [{
+                    type: "html::text",
+                    text: '<div>' + next.first_name + ' ' + next.name + '<br>' +
+                            next.animal + '<br>' +
+                            next.reason + '<br></div>',
+                    buttonText: next.animal,
+                    buttonUrl: "/therapySession/treatment/" + next.animal_id,
+                    variables: true,
+                }];
+                module.therapySession.cards = module.therapySession.cards.concat(dash_defaults);
+                resolve();
+            });
         });
     }
     function dashDummy (count, data) {

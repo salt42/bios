@@ -6,9 +6,18 @@ therapy-session-overview therapy-queue {
 }
 therapy-session-overview > .mdl-card {
     /* height: 183px; */
-    width: 25vw;
+    width: 29.5vw;
+}
+therapy-session-overview > .mdl-card .mdl-card__supporting-text {
+     height: 65vh;
 }
 .therapy-session-overview > .mdl-card__title {
     color: #fff;
     height: 176px;
+}
+therapy-session-overview > therapy-queue > #bios-queue > .mdl-card
+{
+    float: none;
+    width: 10vw;
+    margin-bottom: 10px;
 }

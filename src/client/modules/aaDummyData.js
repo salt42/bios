@@ -41,7 +41,7 @@ define("dummy", function(bios){
         /* region departments.js Module */
         a = {};
         /* region queue */
-        a.queue = [
+        bios.dataService.saveMemory("queue", [
             {
                 name: "Söllner",
                 first_name: "Hans",
@@ -63,7 +63,7 @@ define("dummy", function(bios){
                 animal_id: 345,
                 reason: "Smoke comes out"
             }
-        ];
+        ]);
         /*endregion*/
         /* region buttons */
         a.ts = {};

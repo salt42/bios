@@ -1,0 +1,22 @@
+<ul>
+    <li id="cdv-owners" class="owner fa fa-user">
+        <ul #for="owner of owners">
+            <li class="cdv-owner">
+                <div>{{owner.id}}<br>{{owner.first_name}} {{owner.name}} <br>
+                    ????? hä?
+                </div>
+            </li>
+        </ul>
+    </li>
+    <li id="cdv-animals" class="animal fa fa-paw">
+        <ul #for="animal of animals">
+            <li class="cdv-animal" #data="id:animal.id">
+                <div #data="id:animal.id">
+                    {{animal.species_id}} art <br>
+                    {{animal.name}} name <br>
+                    {{animal.birthday}} geb <br>
+                </div>
+            </li>
+        </ul>
+    </li>
+</ul>

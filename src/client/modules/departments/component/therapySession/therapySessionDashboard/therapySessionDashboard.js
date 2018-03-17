@@ -58,19 +58,11 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
                 }
                 modified = true;
             }
-
-            $('a', $element).on("click", callLink);
         });
     };
-
-    function callLink(e){
-        let target = $(e.target);
-        console.log("clicked on Card", target);
-        if(target.attr("url"))
-            bios.AppState.goToUrl(target.attr("url"));
-        else if(target.attr("state"))
-            bios.AppState.goToState(target.attr("state"));
-    }
+    this.clickOnItem = (item=>{
+        if (item.buttonUrl) bios.AppState.goToUrl(item.buttonUrl);
+    });
 
     function prepareData(data) {
         for (let i = 0; i < data.length; i++) {

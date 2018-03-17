@@ -13,9 +13,10 @@ defineComp("therapy-queue",  function (bios, template, args) {
     update();
     // this.data;
     this.onLoad = function () {
+        componentHandler.upgradeElements($element);
         bios.departments.ready.subscribe(function(rxData) {
             if (rxData.department === department) {
-                data = bios.departments.global.treatmentQueue;
+                data = bios.departments.global.treatmentQueue.queue;
                 self.data.items = data;
                 // let c = 0;
                 // $('#bios-queue')
@@ -40,9 +41,10 @@ defineComp("therapy-queue",  function (bios, template, args) {
     this.getNext = function(){
         return data[0];
     };
+    this.goTo = function (item) {
+        bios.AppState.goToUrl("/treatment/" + item.id);
+    };
     function update() {
         bios.departments.load(department);
     }
-}, {
-    templatePath: "/component/departments/therapyQueue/therapyQueue.html"
 });

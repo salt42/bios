@@ -1,0 +1,6 @@
+<ul #for="item of list" #on="click:li:onItemClick(item)">
+    <li class="cl-item" #data="id:item.id">
+        <!--<a class="mdl-button mdl-button&#45;&#45;colored mdl-js-button mdl-js-ripple-effect">{{item.description}}</a>-->
+        {{item.description}}
+    </li>
+</ul>
