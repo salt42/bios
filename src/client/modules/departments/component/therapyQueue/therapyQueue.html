@@ -1,1 +1,15 @@
-<div id="bios-queue"></div>
+<div id="bios-queue" #for="item of items">
+    <div class="mdl-card mdl-shadow--2dp bios-queue-item" #data="id:item.animal_id">
+        <div class="mdl-card__title mdl-card--expand">
+            <h4>
+                <span class="name">{{item.name}}, {{item.first_name}}</span><br>
+                <span class="animal">{{item.animal}}</span><br>
+                <span class="reason">{{item.reason}}</span>
+            </h4>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" #appstate="url:item.url">{{item.buttonText}}</a>
+            <div class="mdl-layout-spacer"></div>
+        </div>
+    </div>
+</div>

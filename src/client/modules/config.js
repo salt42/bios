@@ -26,6 +26,13 @@ define("Config", function(g) {
             ],
         },{
             name: "therapy session",
+            url: "/therapySession/dashboard",//string, regex, function
+            skip: false,
+            sections: [
+                ["main-content", "therapy-session"],
+            ],
+        },{
+            name: "therapy session",
             url: "/therapySession",//string, regex, function
             skip: false,
             sections: [

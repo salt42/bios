@@ -109,9 +109,17 @@ define("departments", function(bios) {
      */
     function _load_treatmentQueue(){
         return new Promise(function (resolve, reject){
-            module.global.treatmentQueue = dummy.queue;
+            let raw = [];
+            let res = [];
             // load Queue
-            resolve();
+            raw = dummy.queue;
+            for (let i = 0; i < raw.length; i++) {
+                raw[i].buttonText = (i === 0) ? bios.trans.late("next treatment") : bios.trans.late("later treatments");
+                raw[i].url = "/therapySession/treatment/" + raw[i].animal_id;
+                res.push(raw[i]);
+            }
+            module.global.treatmentQueue = res;
+            resolve(module.global.treatmentQueue);
         });
     }
 
@@ -126,6 +134,7 @@ define("departments", function(bios) {
             therapySessionCustomerDataView: _load_therapySessionCustomerDataView,
             therapySessionAnimalOverview:   _load_therapySessionAnimalOverview,
             therapySessionTreatment:        _load_therapySessionTreatment,
+            dashboard:                      _load_dashboard,
         },
         reception: {},
         office: {},
@@ -164,7 +173,7 @@ define("departments", function(bios) {
      * @returns {Promise}
      * @private
      */
-    function _load_therapySessionTreatment(iniData, resolve) {
+    function _load_therapySessionTreatment(iniData) {
         return new Promise(function (resolve, reject){
             let a = [];
             a.push( _load_therapySessionCustomerDataView(iniData));
@@ -175,6 +184,59 @@ define("departments", function(bios) {
                     resolve();
                 });
         });
+    }
+    function _load_dashboard(inidata) {
+        return new Promise(function (resolve, reject){
+            let dash_defaults = [{
+                type: "element::text",
+                element: 'therapy-queue',
+                text: "therapy-queue",
+                buttonUrl: "/therapySession/queue"
+            },{
+                type: "html::text",
+                text: "<div class='settings-icon'></div>",
+                buttonText: "Settings",
+                buttonUrl: "/therapySession/settings"
+            },];
+            module.therapySession.dashboard = {};
+            module.therapySession.cards = [];
+            //load data
+            // module.therapySession.cards = dashDummy(2, data);
+            module.therapySession.cards = [{
+                type: "text::text",
+                text: "next treatment",
+                buttonText: "next treatment",
+                buttonUrl: "/therapySession/treatment",
+                variables: true,
+            }];
+            module.therapySession.cards = module.therapySession.cards.concat(dash_defaults);
+            resolve();
+        });
+    }
+    function dashDummy (count, data) {
+        let i = 0;
+        while (i < count) {
+            i++;
+            data.push({
+                type: "text::text",
+                text: "type text::text",
+                buttonText: "type text::text",
+                buttonUrl: ""
+            });
+            data.push({
+                type: "html::text",
+                text: "<div style='background: blue; width: 30px; height:30px;'></div>",
+                buttonText: "Settings (type html::text)",
+                buttonUrl: ""
+            });
+            data.push({
+                type: "img::html",
+                text: "/img/ui-kit/default/employ_male.png",
+                buttonText: "<span>type img::html</span>",
+                buttonUrl: ""
+            });
+        }
+        return data;
     }
 
     function _load_TS_cases(id) {

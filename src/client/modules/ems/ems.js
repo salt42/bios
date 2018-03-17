@@ -4,10 +4,32 @@
 define("ems", function(bios) {
     "use strict";
 
+    /**
+     * Event Management System
+     * @namespace Global
+     * @property {object} ems
+     */
     // Event Management System
+    // console.log ('loading Event Management System');
 
     // register needed events
-    this.onStateChange = new Rx.ReplaySubject(1);
+    /**
+     * @memberOf Global.ems
+     * @type {{queue: Rx.ReplaySubject, ts: {}, office: {}, reception: {}}}
+     */
+    this.departments = {
+        queue: new Rx.ReplaySubject(),
+        ts: {},
+        office:{},
+        reception: {},
+    };
+    /**
+     * @memberOf Global.ems.departments.ts
+     * @type {Rx.ReplaySubject}
+     */
+    this.departments.ts.stream = new Rx.ReplaySubject();
+
+        this.onStateChange = new Rx.ReplaySubject(1);
     this.infoFeed = new Rx.ReplaySubject();
     this.flashcard = new Rx.ReplaySubject();
 

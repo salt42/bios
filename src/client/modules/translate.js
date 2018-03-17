@@ -1,11 +1,14 @@
 define("trans", function(bios){
     "use strict";
+    /**
+     * @namespace Global
+     * @property {object} trans
+     */
 
     let self = this;
-    let transStrings = window.trans;
+    let transStrings = window.translationData;
     let speciesList;
     let userRolesList;
-    let file = _translate("bios_language");
     bios.needTranslation = {};
     let logTriggered = false;
 
@@ -29,11 +32,14 @@ define("trans", function(bios){
     /*endregion*/
 
     /* region get translation */
-    this.language = translate;
+    /**
+     * @memberOf Global.trans
+     * @type {translate}
+     */
     this.late = translate;
+    bios.T = translate;
 
     function translate (str) {
-        logList();
         return _translate(str);
     }
     function _translate (str) {
@@ -45,6 +51,11 @@ define("trans", function(bios){
     }
     /*endregion*/
 
+    /**
+     * @memberOf Global.trans
+     * @param birthday
+     * @returns {*}
+     */
     this.age = function (birthday){
         return calculateAge(birthday);
     };
@@ -76,6 +87,10 @@ define("trans", function(bios){
         };
     }
     /* region enum */
+    /**
+     * @memberOf Global.trans
+     * @type {{gender: ((value?)), userRole: ((value?)), species: ((value?))}}
+     */
     this.enum = {
         gender(value){
             return Enum("gender", value);
@@ -99,6 +114,10 @@ define("trans", function(bios){
 
     /* region decode */
     // decode holds querys from other tables
+    /**
+     * @memberOf Global.trans
+     * @type {{species: ((value?)), userRoles: ((value?))}}
+     */
     this.decode = {
         species(value){
             return _Decode(speciesList, value);
@@ -116,8 +135,7 @@ define("trans", function(bios){
         return translate(list[value])
     }
     /*endregion*/
-
-    window.trans = this.language;
+    bios.trans = this.language;
 
     /* region error handling */
     function errorCheck(funcName, data){
@@ -137,19 +155,8 @@ define("trans", function(bios){
     }
     /* endregion*/
 
-    function logList(){
-        if(jQuery.isEmptyObject(bios.needTranslation)) return;
-        if(!logTriggered){
-            logTriggered = true;
-            setTimeout(function(){
-                let obj = {
-                    language_file: file,
-                    phrases: bios.needTranslation,
-                };
-                console.log('needs translation: ', obj);
-                logTriggered = false;
-            }, 2000);
-        }
-    }
-    this.log = logList;
+    bios.onPageLoaded.subscribe(function(){
+        if(jQuery.isEmptyObject(bios.needTranslation))
+            console.log("translation file", _translate("bios_language"), bios.needTranslation);
+    });
 });

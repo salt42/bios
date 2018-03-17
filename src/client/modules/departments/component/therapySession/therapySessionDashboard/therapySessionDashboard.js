@@ -3,90 +3,64 @@
  */
 defineComp("therapy-session-dashboard",  function (bios, template, args) {
     "use strict";
-
+/* region init */
+    /* region vars */
     let $element = this.$ele;
-    // let department = "therapy-session";
-    // bios.departments.load(department);
-    let data = [];
-    let dashboardDefaults = [{
-        type: "element::text",
-        element: 'therapy-queue',
-        text: "ts dashboard queue",
-        buttonUrl: "/therapySession/queue"
-    },{
-        type: "html::text",
-        text: "<div class='settings-icon'></div>",
-        buttonText: "Settings",
-        buttonUrl: "/therapySession/settings"
-    },];
-
-    /* region dummy data */
-    function dummy (count, data) {
-        let i = 0;
-        while (i < count) {
-            i++;
-            data.push({
-                type: "text::text",
-                text: "type text::text",
-                buttonText: "type text::text",
-                buttonUrl: ""
-            });
-            data.push({
-                type: "html::text",
-                text: "<div style='background: blue; width: 30px; height:30px;'></div>",
-                buttonText: "Settings (type html::text)",
-                buttonUrl: ""
-            });
-            data.push({
-                type: "img::html",
-                text: "/img/ui-kit/default/employ_male.png",
-                buttonText: "<span>type img::html</span>",
-                buttonUrl: ""
-            });
-        }
-        return data;
-    }
-    // data = dummy(2, data);
-
-    data = [{
-        type: "text::text",
-        text: "next treatment",
-        buttonText: "next treatment",
-        buttonUrl: "/therapySession/treatment",
-        variables: true,
-    }];
+    let department = "therapy-session";
+    let comp = "dashboard";
+    let self = this;
     /*endregion*/
+    /* region internal notification*/
+    this.ready = new Rx.ReplaySubject();
+    let loader = new Rx.ReplaySubject();
+    let queueLoaded = false;
+    let dataLoaded = false;
+    let stream = bios.ems.departments.ts.stream;
+    /*endregion*/
+    /* region data handling */
+    this.data.cards = [];
+    /*endregion*/
+    /* region post modification */
+    let modified = false;
+    /*endregion*/
+    update();
+/*endregion*/
+
+/*region get external component/data */
+    bios.ems.departments.queue.subscribe(function(rxData){
+        if (rxData === "ready") loader.next("queue ready");
+    });
+/*endregion*/
+/* region manage ready state */
+    loader.subscribe(function(rxData){
+        if (rxData === "queue ready") queueLoaded = true;
+        if (rxData === "data ready" ) dataLoaded  = true;
+
+        if (queueLoaded === true && dataLoaded === true) self.ready.next("ready");
+    });
+/*endregion*/
 
     this.onLoad = function (){
-        data = data.concat(dashboardDefaults);
-        data = prepareData (data);
-        $('#ts-dash-cards', $element)
-            // append items
-            .appendTemplate("#template-therapy-session-cards", data, function (fragment, value){
-                if(value.element){
-                    $('div.mdl-card__title', fragment)
-                        .empty()
-                        .append($(value.element, $element));
-                    $('a.mdl-js-button', fragment)
-                        .html(bios.trans.late(value.text))
-                        .attr("url", value.buttonUrl);
-                } else {
-                    let url = value.buttonUrl;
-                    if(value.variables){
-                        let nextTreat = $($('.mdl-card')[0]);
-                        url += "/" + nextTreat.data("id");
-                    }
-                    $('span.top', fragment).html(value.top);
+        // get component data
+        bios.departments.ready.subscribe(function(rxData) {
+            if (rxData.department === department) {
+                self.data.cards = prepareData(bios.departments.therapySession.cards);
+                loader.next("data ready");
+            }
+        });
 
-                    $('a.mdl-js-button', fragment)
-                        .html(value.bottom)
-                        .attr("url", url);
+        self.ready.subscribe(function(rxData){
+            if(!modified){
+                let $modify = $().add($('[data-type="element::text"]', $element)).add($('[data-type="html::text"]', $element));
+                for (let i = 0; i < $modify.length; i++) {
+                    let inside = $('span.top', $modify[i]).text();
+                    $('span.top', $modify[i]).html($(inside));
                 }
-            })
-        ;
-        $('.mdl-card').hover(turnOnSettingsHovered, turnOffSettingsHovered);
+                modified = true;
+            }
 
-        $('a', $element).on("click", callLink);
+            $('a', $element).on("click", callLink);
+        });
     };
 
     function callLink(e){
@@ -94,19 +68,8 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
         console.log("clicked on Card", target);
         if(target.attr("url"))
             bios.AppState.goToUrl(target.attr("url"));
-        // if(target.attr("state"))
-        //     bios.AppState.goToState(target.attr("state"));
-    }
-
-    function turnOnSettingsHovered(e) {
-        if($(e.target).has("div.settings-icon")) {
-            $("div.settings-icon", $(e.target)).not("hovered").addClass("hovered");
-        }
-    }
-    function turnOffSettingsHovered(e) {
-        if($(e.target).has("div.settings-icon")) {
-            $("div.settings-icon", $(e.target)).removeClass("hovered");
-        }
+        else if(target.attr("state"))
+            bios.AppState.goToState(target.attr("state"));
     }
 
     function prepareData(data) {
@@ -126,6 +89,10 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
             return objData;
     }
 
+    function update() {
+        bios.departments.load(department, comp);
+        modified = false;
+    }
 }, {
-    templatePath: "/component/departments/therapySession/therapySessionDashboard/therapySessionDashboard.html"
+    templatePath: "/component/departments/therapySession/dashboard/dashboard.html"
 });
