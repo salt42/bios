@@ -1,13 +1,25 @@
-defineComp("company-name", function(bios, $element, args) {
+defineComp("company-name", function(bios, template, args) {
     "use strict";
+    let self = this;
+    let $element = this.$ele;
+    this.data.c = {};
 
     this.onLoad = function () {
-        $('c-name p').html(bios.settings.company.name);
-        $('c-data p.line-one').html(bios.settings.company.lineOne);
-        $('c-data p.line-two').html(bios.settings.company.lineTwo);
-        $('c-data p.line-three').html(bios.settings.company.lineThree);
-        $('c-data p.line-four').html(bios.settings.company.lineFour);
+        bios.settings.settingsFeed.subscribe(function(rxData){
+            if(rxData === "company"){
+                self.data.c = bios.settings.company
+            }
+            postProcessing();
+        });
     };
+    function postProcessing () {
+        let lines = $('p', $element);
+        for (let i = 0; i < lines.length; i++) {
+            let text = $(lines[i]).text();
+            $(lines[i]).html(text);
+
+        }
+    }
 
 }, {
     templatePath:"/component/ci/companyName/companyName.html"
