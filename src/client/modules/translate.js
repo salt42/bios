@@ -1,4 +1,7 @@
-define("trans", function(bios){
+define({
+    name: "trans",
+    dependencies: ["search"],
+}, function(bios){
     "use strict";
     /**
      * @namespace Global

@@ -1,12 +1,30 @@
 /**
  * Created by Fry on 19.02.2018.
  */
-define("settings", function(bios) {
+define({
+    name: "settings",
+    dependencies: ["dataService", "dummy"]
+}, function(bios) {
     "use strict";
+    /**
+     * @memberOf Global
+     * @property {object} settings
+     */
+
+    let self = this;
 
     let company = {};
     let companyLogoPath = "";
 
+    /**
+     * @memberOf Global.settings
+     * @type {Rx.ReplaySubject}
+     */
+    this.settingsFeed = new Rx.ReplaySubject();
+    /**
+     * @memberOf Global.settings
+     * @type {{}}
+     */
     this.settings = {};
 
     /* region company */
@@ -23,6 +41,7 @@ define("settings", function(bios) {
         let dummyData = bios.dummy.settings();
         company = dummyData.company;
         companyLogoPath = dummyData.companyLogoPath;
+        self.settingsFeed.next("company");
     }
 
     getCompanyDataFromServer();

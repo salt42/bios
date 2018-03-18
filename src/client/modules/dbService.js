@@ -1,4 +1,7 @@
-define("dbService", function(bios){
+define({
+    name: "dbService",
+    dependencies: ["ems"]
+}, function(bios){
     "use strict";
     /**
      * @namespace Global

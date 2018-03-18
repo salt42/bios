@@ -1,7 +1,10 @@
 /**
  * Created by Fry on 25.02.2018.
  */
-define("departments", function(bios) {
+define({
+    name: "departments",
+    dependencies: ["ems", "dataService", "dummy"],
+}, function(bios) {
     "use strict";
     /**
      * @namespace Global
@@ -18,6 +21,7 @@ define("departments", function(bios) {
         other:  new Rx.ReplaySubject(),
     };
 
+    this.events = {};
     this.settings = {};
     this.global = {};
     this.therapySession = {};
@@ -113,27 +117,49 @@ define("departments", function(bios) {
      * @private
      */
     function _load_treatmentQueue(){
-        return new Promise(function (resolve, reject){
-            let raw = [];
-            let res = [];
-            // load Queue
-            raw = dummy.queue;
-            for (let i = 0; i < raw.length; i++) {
-                raw[i].buttonText = (i === 0) ? bios.trans.late("next treatment") : bios.trans.late("later treatments");
-                raw[i].url = "/therapySession/treatment/" + raw[i].animal_id;
-                res.push(raw[i]);
-            }
-            module.global.treatmentQueue = {
-                queue: res,
-                next:  res[0],
-            };
-            resolve(module.global.treatmentQueue);
-            initialized.other.next({
-                type: "ts-queue",
-                data: module.global.treatmentQueue.next,
+        if (!initialized.queue){
+            return new Promise(function (resolve, reject){
+                module.events.queue = new Rx.ReplaySubject();
+                console.log('adsdas', bios.dataService.getMemory("ts-queue"));
+
+                let res = modifyQueue(bios.dataService.getMemory("ts-queue"));
+                module.global.treatmentQueue = {
+                    queue: res,
+                    next:  res[0],
+                };
+                resolve(module.global.treatmentQueue);
+                initialized.other.next({
+                    type: "ts-queue",
+                    data: module.global.treatmentQueue.next,
+                });
             });
-        });
+        }
+
     }
+    function modifyQueue (data){
+        let res = [];
+        for (let i = 0; i < data.length; i++) {
+            data[i].buttonText = (i === 0) ? bios.trans.late("next treatment") : bios.trans.late("later treatments");
+            data[i].url = "/therapySession/treatment/" + data[i].animal_id;
+            res.push(data[i]);
+        }
+        return res;
+    }
+    //
+    // console.log(bios.pushService["ts-queue"]);
+    bios.pushService["ts-queue"].subscribe(function(rxData){
+        if (rxData === "update"){
+            if(!initialized.queue){
+                _load_treatmentQueue();
+            } else {
+                let res = modifyQueue(bios.dataService.getMemory("ts-queue"));
+                module.global.treatmentQueue = {
+                    queue: res,
+                    next:  res[0],
+                };
+            }
+        }
+    });
 
     /* region Therapy Session */
     /**

@@ -1,7 +1,10 @@
 /**
  * Created by Fry on 26.02.2018.
  */
-define("dummy", function(bios){
+define({
+    name: "dummy",
+    dependencies: ["dataService"]
+}, function(bios){
     "use strict";
     /**
      * @namespace Global
@@ -41,7 +44,8 @@ define("dummy", function(bios){
         /* region departments.js Module */
         a = {};
         /* region queue */
-        bios.dataService.saveMemory("queue", [
+        bios.pushService.api.add("ts-queue");
+        bios.dataService.saveMemory("ts-queue", [
             {
                 name: "Söllner",
                 first_name: "Hans",
