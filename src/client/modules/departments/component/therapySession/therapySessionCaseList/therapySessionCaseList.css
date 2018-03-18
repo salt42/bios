@@ -1,0 +1,5 @@
+therapy-session-case-list .cl-item:hover,
+therapy-session-case-list .cl-item.selected {
+    background-color: var(--color-one-dark);
+    color: whitesmoke;
+}

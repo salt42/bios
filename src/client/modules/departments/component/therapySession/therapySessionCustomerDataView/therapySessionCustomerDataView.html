@@ -1,20 +1,19 @@
 <ul>
     <li id="cdv-owners" class="owner fa fa-user">
-        <ul #for="owner of owners">
-            <li class="cdv-owner">
-                <div>{{owner.id}}<br>{{owner.first_name}} {{owner.name}} <br>
-                    ????? hä?
+        <ul #for="owner of owners" #on="click:li:clickOwnerAction(owner)">
+            <li class="cdv-owner list-item" #data="id:owner.id">
+                <div>{{owner.first_name}} {{owner.name}} <br>
                 </div>
             </li>
         </ul>
     </li>
     <li id="cdv-animals" class="animal fa fa-paw">
-        <ul #for="animal of animals">
-            <li class="cdv-animal" #data="id:animal.id">
+        <ul #for="animal of animals" #on="click:li:clickAnimalAction(animal)">
+            <li class="cdv-animal list-item" #data="id:animal.id">
                 <div #data="id:animal.id">
-                    {{animal.species_id}} art <br>
-                    {{animal.name}} name <br>
-                    {{animal.birthday}} geb <br>
+                    {{animal.species_id}}<br>
+                    {{animal.name}}<br>
+                    {{animal.birthday}}<br>
                 </div>
             </li>
         </ul>

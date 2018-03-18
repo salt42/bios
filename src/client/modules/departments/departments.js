@@ -13,27 +13,82 @@ define({
 
     // data service for sub components
     let dummy = false;
-    let module = this;
-    let therapySessionData = {};
+    let self = this;
+    let _data = {};
     let initialized = {
         module: false,
-        queue:  false,
         other:  new Rx.ReplaySubject(),
     };
 
     this.events = {};
     this.settings = {};
     this.global = {};
-    this.therapySession = {};
-    this.reception = {};
-    this.office = {};
+    /**
+     * @memberOf Global.departments
+     * ready
+     * @type {Rx.ReplaySubject}
+     */
+    this.ready = new Rx.ReplaySubject();
+
+    init();
+    function init(){
+        /*region tsQueue*/
+        initialized.tsQueue = false;
+        self.events.tsQueue = new Rx.ReplaySubject();
+        self.global.tsQueue = {
+            queue: [],
+            next: {}
+        };
+        bios.pushService.api.add("tsQueue");
+        _load_treatmentQueue();
+        /*endregion*/
+        /*region therapy session*/
+        _data.therapySessionData = {};
+        /**
+         * @memberOf Global.departments
+         * @type {{selection: {owner: number, animal: number, case: number, treat: number}}}
+         */
+        self.therapySession = {};
+
+        bios.pushService.api.add("caseList");
+        bios.pushService.api.add("treatList");
+        bios.pushService.api.add("tsOverviewSelections");
+        bios.dataService.saveMemory("tsOverviewSelections",{
+            owner: 0,
+            animal: 0,
+            case: 0,
+            treat: 0
+        });
+        /*endregion*/
+
+        self.reception = {};
+        self.office = {};
+    }
+
 
     /**
      * @memberOf Global.departments
-     * ready ...
-     * @type {Rx.ReplaySubject}
+     * @param id
+     * @param idType
+     * @returns {*}
      */
-    this.ready = new Rx.ReplaySubject(10);
+    this.customerData = function (id, idType) {
+        return bios.dataService.customerData(id, idType);
+    };
+    /**
+     * @memberOf Global.departments
+     * @param animalId
+     */
+    this.caseList = (animalId)=>{
+        return bios.dataService.caseList(animalId)
+    };
+    /**
+     * @memberOf Global.departments
+     * @param caseId
+     */
+    this.treatList = (caseId)=>{
+        return bios.dataService.treatList(caseId)
+    };
 
     /**
      * @memberOf Global.departments
@@ -54,7 +109,7 @@ define({
         a.push( _load_module(iniData) );
         a.push( _load(iniData) );
         Promise.all(a).then ( function() {
-            module.ready.next(iniData);
+            self.ready.next(iniData);
         });
     };
 
@@ -67,7 +122,7 @@ define({
         return new Promise(function (resolve, reject){
             if (!initialized.module){
                 // load settings
-                // module.settings = ??
+                // self.settings = ??
                 initialized.module = true;
                 initialized.other.next({
                     type: "module",
@@ -93,7 +148,7 @@ define({
                     a.push( _load_treatmentQueue() );
                     break;
                 case "therapy-session":
-                    therapySessionData = dummy.ts;
+                    _data.therapySessionData = dummy.ts;
                     /* usage of _load_TS_dispatcher is not so nice reading, but leads to direct (pseudo dynamic) function calls instead of multiple ifs
                        & reduces this switch to default + special cases (departments with dash)*/
                     if(_load_dispatcher["ts"][iniData.comp]){
@@ -117,25 +172,15 @@ define({
      * @private
      */
     function _load_treatmentQueue(){
-        if (!initialized.queue){
+        if (!initialized.tsQueue){
             return new Promise(function (resolve, reject){
-                module.events.queue = new Rx.ReplaySubject();
-                console.log('adsdas', bios.dataService.getMemory("ts-queue"));
-
-                let res = modifyQueue(bios.dataService.getMemory("ts-queue"));
-                module.global.treatmentQueue = {
-                    queue: res,
-                    next:  res[0],
-                };
-                resolve(module.global.treatmentQueue);
-                initialized.other.next({
-                    type: "ts-queue",
-                    data: module.global.treatmentQueue.next,
-                });
+                initialized.tsQueue = true;
+                bios.dataService.load("tsQueue");
+                resolve(self.global.tsQueue);
             });
         }
-
     }
+
     function modifyQueue (data){
         let res = [];
         for (let i = 0; i < data.length; i++) {
@@ -145,26 +190,18 @@ define({
         }
         return res;
     }
-    //
-    // console.log(bios.pushService["ts-queue"]);
-    bios.pushService["ts-queue"].subscribe(function(rxData){
+    
+    bios.pushService.events.tsQueue.subscribe(function(rxData){
         if (rxData === "update"){
-            if(!initialized.queue){
-                _load_treatmentQueue();
-            } else {
-                let res = modifyQueue(bios.dataService.getMemory("ts-queue"));
-                module.global.treatmentQueue = {
-                    queue: res,
-                    next:  res[0],
-                };
-            }
+            self.global.tsQueue.queue = modifyQueue(bios.dataService.getMemory("tsQueue"));
+            self.global.tsQueue.next =  self.global.tsQueue.queue[0];
         }
     });
 
     /* region Therapy Session */
     /**
      *
-     * @type {{therapySessionAnimalOverview: _load_therapySessionAnimalOverview, therapySessionTreatment: _load_therapySessionTreatment}}
+     * @type {{ts: {therapySessionCustomerDataView: _load_therapySessionCustomerDataView, therapySessionAnimalOverview: _load_therapySessionAnimalOverview, therapySessionTreatment: _load_therapySessionTreatment, dashboard: _load_dashboard}, reception: {}, office: {}}}
      * @private
      */
     let _load_dispatcher = {
@@ -180,7 +217,7 @@ define({
 
     function _load_therapySessionCustomerDataView(iniData) {
         return _get_customerData(iniData).then(function(){
-            module._createAPI['ts']['customerData']();
+            self._createAPI['ts']['customerData']();
         });
     }
     /**
@@ -217,7 +254,7 @@ define({
             a.push( _load_therapySessionCustomerDataView(iniData));
             Promise.all(a)
                 .then(function(){
-                    // module._createAPI["ts"][iniData.comp];
+                    // self._createAPI["ts"][iniData.comp];
                     initialized.therapySession = iniData;
                     resolve();
                 });
@@ -225,37 +262,34 @@ define({
     }
     function _load_dashboard(inidata) {
         return new Promise(function (resolve, reject){
-            _load_treatmentQueue().then(function(){
-                let dash_defaults = [{
-                    type: "element::text",
-                    element: 'therapy-queue',
-                    text: "therapy-queue",
-                    buttonUrl: "/therapySession/queue"
-                },{
-                    type: "html::text",
-                    text: "<div class='settings-icon'></div>",
-                    buttonText: "Settings",
-                    buttonUrl: "/therapySession/settings"
-                },];
+            let dash_defaults = [{
+                type: "element::text",
+                element: 'therapy-queue',
+                text: "therapy-queue",
+                buttonUrl: "/therapySession/queue"
+            },{
+                type: "html::text",
+                text: "<div class='settings-icon'></div>",
+                buttonText: "Settings",
+                buttonUrl: "/therapySession/settings"
+            },];
 
-                module.therapySession.dashboard = {};
-                module.therapySession.cards = [];
-                //load data
-                // module.therapySession.cards = dashDummy(2, data);
-                console.log(module.global.treatmentQueue.next);
-                let next = module.global.treatmentQueue.next;
-                module.therapySession.cards = [{
-                    type: "html::text",
-                    text: '<div>' + next.first_name + ' ' + next.name + '<br>' +
-                            next.animal + '<br>' +
-                            next.reason + '<br></div>',
-                    buttonText: next.animal,
-                    buttonUrl: "/therapySession/treatment/" + next.animal_id,
-                    variables: true,
-                }];
-                module.therapySession.cards = module.therapySession.cards.concat(dash_defaults);
-                resolve();
-            });
+            self.therapySession.dashboard = {};
+            self.therapySession.cards = [];
+            //load data
+            // self.therapySession.cards = dashDummy(2, data);
+            let next = self.global.tsQueue.next;
+            self.therapySession.cards = [{
+                type: "html::text",
+                text: '<div>' + next.first_name + ' ' + next.name + '<br>' +
+                        next.animal + '<br>' +
+                        next.reason + '<br></div>',
+                buttonText: next.animal,
+                buttonUrl: "/therapySession/treatment/" + next.animal_id,
+                variables: true,
+            }];
+            self.therapySession.cards = self.therapySession.cards.concat(dash_defaults);
+            resolve();
         });
     }
     function dashDummy (count, data) {
@@ -286,7 +320,7 @@ define({
 
     function _load_TS_cases(id) {
         return new Promise(function (resolve, reject){
-            module.therapySession.cases = sortArrayByDate(dummy.ts.cases);
+            self.therapySession.cases = sortArrayByDate(dummy.ts.cases);
             //@todo real load
             resolve();
         });
@@ -296,27 +330,27 @@ define({
             let customerData;
             bios.dataService.customerData(iniData.idType, iniData.id).then(function(data){
                 customerData = data;
-                therapySessionData.customerData = customerData;
+                _data.therapySessionData.customerData = customerData;
                 resolve();
             });
         });
     }
-    module._createAPI = {
+    self._createAPI = {
         common: (sub)=>{
             if(sub === "ts"){
-                if(!module.therapySession.get) module.therapySession.get = {};
+                if(!self.therapySession.get) self.therapySession.get = {};
             }
         },
         ts: {
             customerData: ()=>{
-                module._createAPI.common("ts");
-                module.therapySession.get.customerData = ()=>{
-                    return therapySessionData.customerData
+                self._createAPI.common("ts");
+                self.therapySession.get.customerData = ()=>{
+                    return _data.therapySessionData.customerData
                 }
             },
             therapySessionTreatment: ()=>{
-                module._createAPI.common("ts");
-                module.therapySession.get = {
+                self._createAPI.common("ts");
+                self.therapySession.get = {
                     treatment: {
                         filterButtons: ()=>{ return therapySessionData.filterButtons },
                         buttonBars: ()=>{ return therapySessionData.buttonBars },

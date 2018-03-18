@@ -15,6 +15,7 @@ define({
     // console.log("loading dummy");
     let departmentsDummyData = {};
     let settingsDummyData = {};
+    this.queue = [];
 
     setDummies();
 
@@ -44,8 +45,7 @@ define({
         /* region departments.js Module */
         a = {};
         /* region queue */
-        bios.pushService.api.add("ts-queue");
-        bios.dataService.saveMemory("ts-queue", [
+        bios.dataService.saveMemory("tsQueue", [
             {
                 name: "Söllner",
                 first_name: "Hans",
@@ -55,15 +55,15 @@ define({
             },
             {
                 name: "Söllner",
-                first_name: "Hans",
-                animal: "Charly",
+                first_name: "Hanse",
+                animal: "Charly 2",
                 animal_id: 234,
                 reason: "Smoke comes out"
             },
             {
                 name: "Söllner",
-                first_name: "Hans",
-                animal: "Charly",
+                first_name: "Hansines",
+                animal: "Charlynes",
                 animal_id: 345,
                 reason: "Smoke comes out"
             }
@@ -225,6 +225,32 @@ define({
         };
         /*endregion*/
         departmentsDummyData = a;
+        /*endregion*/
+        /*region caseList*/
+        function caseListDummy (count){
+            let res = [];
+            for (let i = 0; i < count; i++) {
+                res.push({
+                    id: i,
+                    description: "case " + i
+                })
+            }
+            return res;
+        }
+        bios.dataService.saveMemory("caseList", caseListDummy(5));
+        /*endregion*/
+        /*region treatList*/
+        function treatListDummy (count){
+            let res = [];
+            for (let i = 0; i < count; i++) {
+                res.push({
+                    id: i,
+                    description: "treat " + i
+                })
+            }
+            return res;
+        }
+        bios.dataService.saveMemory("treatList", treatListDummy(5));
         /*endregion*/
     }
 });

@@ -15,21 +15,22 @@ define("ems", function(bios) {
     // register needed events
     /**
      * @memberOf Global.ems
-     * @type {{queue: Rx.ReplaySubject, ts: {}, office: {}, reception: {}}}
+     * @type {{queue: Rx.ReplaySubject, ts: {stream: Rx.ReplaySubject}, office: {stream: Rx.ReplaySubject}, reception: {stream: Rx.ReplaySubject}}}
      */
     this.departments = {
         queue: new Rx.ReplaySubject(),
-        ts: {},
-        office:{},
-        reception: {},
+        ts: {
+            stream: new Rx.ReplaySubject(),
+        },
+        office:{
+            stream: new Rx.ReplaySubject(),
+        },
+        reception: {
+            stream: new Rx.ReplaySubject(),
+        },
     };
-    /**
-     * @memberOf Global.ems.departments.ts
-     * @type {Rx.ReplaySubject}
-     */
-    this.departments.ts.stream = new Rx.ReplaySubject();
 
-        this.onStateChange = new Rx.ReplaySubject(1);
+    this.onStateChange = new Rx.ReplaySubject(1);
     this.infoFeed = new Rx.ReplaySubject();
     this.flashcard = new Rx.ReplaySubject();
 

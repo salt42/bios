@@ -50,7 +50,7 @@ defineComp("live-search-result", function(bios, template, args) {
                             .addClass("fa-paw")
                             .attr("type", type)
                             .attr(type + "-id", value.id)
-                            .html(value.name + ", " + trans(denumS(value.species_id)))
+                            .html(value.name + ", " + trans.decode.species(value.species_id))
                         ;
                     });
                     break;

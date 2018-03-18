@@ -3,37 +3,44 @@
  */
 defineComp("therapy-session-case-list", function (bios, template, args) {
     "use strict";
-    let $element = this.$ele;
+
+    const SELECTION = "tsOverviewSelections";
+    const MEMORY = "caseList";
     let self = this;
+    let $element = this.$ele;
     let stream = bios.ems.departments.ts.stream;
-    let department = "therapy-session";
-    let comp = "therapySessionCaseList";
-
-    this.data.list = caseListDummy(5);
-
-    function caseListDummy (count){
-        let res = [];
-        for (let i = 0; i < count; i++) {
-            res.push({
-                id: i,
-                description: "case " + i
-            })
+    let selection = bios.dataService.getMemory("tsSelections");
+    bios.pushService.events[SELECTION].subscribe(function (rxData) {
+        if(rxData === "update"){
+            selection = bios.dataService.getMemory(SELECTION);
+            postProcessing();
         }
-        return res;
+    });
+
+    this.data.list = [];
+    this.onLoad = function () {
+        bios.pushService.events[MEMORY].subscribe(function(rxData){
+            if(rxData === "update"){
+                self.data.list = bios.dataService.getMemory(MEMORY);
+                postProcessing();
+            }
+        });
+    };
+
+    function postProcessing(){
+        if (selection.case > -1){
+            $('li.selected', $element).removeClass("selected");
+            $('[data-id="' + selection.case + '"]', $element).addClass("selected");
+        }
     }
 
-    this.onLoad = function () {
-        $('.cl-item', $element).on("click", clickAction)
-    };
     this.onItemClick = function (item) {
         stream.next({
             type: "caseList::selectedCase",
             data: item,
         });
+        selection.case = item.id;
+        bios.dataService.saveMemory(SELECTION, selection);
+        bios.departments.treatList(item.id);
     };
-    function clickAction(e){
-    }
-
-}, {
-    templatePath: "/component/departments/therapySession/therapySessionCaseList/therapySessionCaseList.html"
 });

@@ -4,6 +4,7 @@
 defineComp("therapy-session-customer-data-view", function (bios, template, args) {
     "use strict";
 
+    const SELECTION = "tsOverviewSelections";
     let $element = this.$ele;
     let self = this;
     let department = "therapy-session";
@@ -14,6 +15,13 @@ defineComp("therapy-session-customer-data-view", function (bios, template, args)
     // let type = $element.data("type");
     let id = 123;
     let type = "animal";
+    let selection = bios.dataService.getMemory(SELECTION);
+    bios.pushService.events[SELECTION].subscribe(function (rxData) {
+        if(rxData === "update"){
+            selection = bios.dataService.getMemory(SELECTION);
+            postProcessing();
+        }
+    });
     this.model({
         owners: [],
         animals: [],
@@ -27,19 +35,41 @@ defineComp("therapy-session-customer-data-view", function (bios, template, args)
                 let customerData = bios.departments.therapySession.get.customerData();
                 self.data.owners = customerData.owner;
                 self.data.animals = customerData.animal;
-                // console.log(customerData.owner);
-                // console.log(customerData.animal);
-
-                $('.cdv-animal').on("click", clickAction);
+                selection.owner = customerData.owner[0].id;
+                selection.animal = customerData.animal[0].id;
+                bios.dataService.saveMemory(SELECTION, selection);
             }
         });
     };
 
-    function clickAction(e) {
-        stream.next({
+    function postProcessing(){
+        if(self.data.owners && self.data.owners.length > 1 && selection.owner > -1){
+            $('li.cdv-owner', $element).removeClass("selected");
+            $('li.cdv-owner[data-id="' + selection.owner + '"]', $element).addClass("selected");
+        }
+        if (self.data.animal && self.data.animals.length > 1 && selection.animal > -1){
+            $('li.cdv-animal', $element).removeClass("selected");
+            $('li.cdv-animal[data-id="' + selection.animal + '"]', $element).addClass("selected");
+        }
+    }
+
+    this.clickAnimalAction = (item)=>{
+        let rxFeed = {
             type: "customerDataView::selectedAnimal",
-            data: $(e.target).data("id"),
-        });
+            data: item,
+        };
+        bios.departments.caseList(item.id);
+    };
+    this.clickOwnerAction = (item)=>{
+        let rxFeed = {
+            type: "customerDataView::selectedOwner",
+            data: item,
+        };
+        bios.departments.caseList(item.id);
+    };
+    function clickAction (rxFeed){
+        stream.next(rxFeed);
+        postProcessing();
     }
 }, {
     templatePath: "/component/departments/therapySession/therapySessionCustomerDataView/therapySessionCustomerDataView.html"

@@ -11,3 +11,9 @@ therapy-session-customer-data-view ul.animal
     margin-bottom: 5px;
     border-bottom: solid 1px black;
 }
+therapy-session-customer-data-view .list-item:hover,
+therapy-session-customer-data-view .list-item.selected
+{
+    background-color: var(--color-one-dark);
+    color: whitesmoke;
+}

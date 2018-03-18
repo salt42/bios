@@ -43,7 +43,7 @@ defineComp("therapy-session-dashboard",  function (bios, template, args) {
     this.onLoad = function (){
         // get component data
         bios.departments.ready.subscribe(function(rxData) {
-            if (rxData.department === department) {
+            if (rxData.department === department && rxData.comp === comp) {
                 self.data.cards = prepareData(bios.departments.therapySession.cards);
                 loader.next("data ready");
             }

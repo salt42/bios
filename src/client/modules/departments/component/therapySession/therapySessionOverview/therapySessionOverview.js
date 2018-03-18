@@ -20,12 +20,17 @@ defineComp("therapy-session-overview",  function (bios, template, args) {
         owner:{
             id: id,
             type: type,
+            button: "edit owner"
         },
         case: {
             animalID: id,
+            call: "call case",
+            button: "new case"
         },
         treatment: {
             caseID: 1,
+            call: "call treatment",
+            button: "new treatment"
         }
     });
 
@@ -37,9 +42,22 @@ defineComp("therapy-session-overview",  function (bios, template, args) {
             if (rxData.type && rxData.type === "caseList::selectedCase"){
                 self.data.case.animalID = rxData.data;
             }
-            console.log('RX Data', rxData);
         });
     };
+
+    this.onButtonClick = (data)=>{
+        if(data === "edit owner"){
+            //goto State Edit Owner
+        }
+        let parts = data.split(" ");
+        if( parts[0] === "call"){
+
+        }
+        if( parts[0] === "new"){
+
+        }
+        console.log(parts);
+    }
 }, {
     templatePath: "/component/departments/therapySession/therapySessionAnimalOverview/therapySessionAnimalOverview.html"
 });

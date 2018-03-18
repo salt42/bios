@@ -11,7 +11,7 @@
         <therapy-session-customer-data-view #data="id:owner.id"></therapy-session-customer-data-view>
     </div>
     <div class="mdl-card__actions mdl-card--border">
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">edit owner</a>
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" #on="click:onButtonClick(owner.button)">{{owner.button}}</button>
     </div>
 </div>
 <div id="case-data" class="mdl-card mdl-shadow--2dp">
@@ -27,8 +27,8 @@
         <therapy-session-case-list></therapy-session-case-list>
     </div>
     <div class="mdl-card__actions mdl-card--border">
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">call</a>
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">new case</a>
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" #on="click:onButtonClick(case.call)">{{case.call}}</button>
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" #on="click:onButtonClick(case.button)">{{case.button}}</button>
     </div>
 </div>
 <div id="treatment-data" class="mdl-card mdl-shadow--2dp">
@@ -40,10 +40,12 @@
     <div class="mdl-card__title">
         <h2 class="mdl-card__title-text">Treatments</h2>
     </div>
-    <div class="mdl-card__supporting-text"></div>
+    <div class="mdl-card__supporting-text">
+        <therapy-session-treat-list></therapy-session-treat-list>
+    </div>
     <div class="mdl-card__actions mdl-card--border">
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">call</a>
-        <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">new treatment</a>
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" #on="click:onButtonClick(treatment.call)">{{treatment.call}}</button>
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" #on="click:onButtonClick(treatment.button)">{{treatment.button}}</button>
     </div>
 </div>
 <therapy-queue></therapy-queue>

@@ -1,0 +1,6 @@
+therapy-session-treat-list .tl-item:hover,
+therapy-session-treat-list .tl-item.selected
+{
+    background-color: var(--color-one-dark);
+    color: whitesmoke;
+}
