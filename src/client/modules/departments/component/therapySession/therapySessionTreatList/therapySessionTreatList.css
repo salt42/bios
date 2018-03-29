@@ -1,3 +1,7 @@
+therapy-session-treat-list .tl-item
+{
+    padding: 3px;
+}
 therapy-session-treat-list .tl-item:hover,
 therapy-session-treat-list .tl-item.selected
 {

@@ -6,7 +6,7 @@ defineComp("therapy-session-overview",  function (bios, template, args) {
 
     let $element = this.$ele;
     let self = this;
-    let id = 123;
+    let id = 1040;
     let type = "animal";
     // bios.appState.onAppStateChanged.subscribe()
     //console.log('#####',args);

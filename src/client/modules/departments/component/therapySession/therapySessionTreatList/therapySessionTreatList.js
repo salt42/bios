@@ -28,10 +28,10 @@ defineComp("therapy-session-treat-list", function (bios, template, args) {
     };
 
     function postProcessing(){
+        let selectedClass = "selected fa fa-arrow-alt-circle-right";
         if (selection.treat > -1){
-            let a = '[data-id="' + selection.treat + '"]';
-            $('li.selected', $element).removeClass("selected");
-            $(a, $element).addClass("selected");
+            $('li.selected', $element).removeClass(selectedClass);
+            $('[data-id="' + selection.treat + '"]', $element).addClass(selectedClass);
         }
     }
 

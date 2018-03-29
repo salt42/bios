@@ -40,6 +40,8 @@ define({
         }
     };
 
+    this.PS = {};
+    this.PS.workaround = (key)=>{};
     /**
      * @memberOf Global.dataService
      * @param id
@@ -56,7 +58,7 @@ define({
     this.caseList = (animalId)=>{
         // get case list
         // save to memory (until implementation of Server set from Dummy)
-        PS.events.caseList.next(UPDATE); // done with save when dummy is bypassed
+        this.PS.workaround("caseList");
         return self.getMemory("caseList");
     };
     /**
@@ -66,7 +68,7 @@ define({
     this.treatList = (caseId)=>{
         // get treat list
         // save to memory (until implementation of Server set from Dummy)
-        PS.events.treatList.next(UPDATE); // done with save when dummy is bypassed
+        this.PS.workaround("treatList");
         return self.getMemory("treatList");
     };
 
@@ -83,7 +85,7 @@ define({
     this.saveMemory = (key, data, singleCall = false)=>{
         _storage[key] = data;
         _singleCall[key] = (singleCall === true);
-        PS.pushItem(key, UPDATE);
+        self._pushService_saveMemory(key, data, singleCall);
     };
 
     /**
@@ -92,14 +94,13 @@ define({
      * @returns {null}
      */
     this.getMemory = (key)=>{
+        let result = null;
         if (_storage[key]){
-            let result = _storage[key];
-            // @todo streaming read, too
-            // PS.pushItem(key, READ);
+            result = _storage[key];
             if (_singleCall[key]) self.resetMemory(key);
-            return result;
         }
-        return null;
+        self._pushService_getMemory(key);
+        return result;
     };
     /**
      * @memberOf Global.dataService
@@ -107,15 +108,19 @@ define({
      */
     this.resetMemory = (key = null)=>{
         if (key === null){
-            PS.reset();
             _storage = {};
             _singleCall = {};
         } else {
-            if(PS.api.check(key)) PS.api.remove(key);
             delete _storage[key];
             delete _singleCall[key];
         }
+        self._pushService_resetMemory(key);
     };
+    /* region push service injection */
+    this._pushService_saveMemory = (key, data, singleCall)=>{};
+    this._pushService_getMemory = (key)=>{};
+    this._pushService_resetMemory = (key)=>{};
+    /*endregion*/
     /**
      * @memberOf Global.dataService
      * @param key
@@ -124,63 +129,5 @@ define({
     this.gotMemory = (key)=>{
         return !!_storage[key];
     }
-    /*endregion*/
-    /* region push service */
-
-    /**
-     *
-     * @returns {{api: {}, keys: {memoryKey: string}, events: {}, reset: (function())}}
-     */
-    function psObject () {
-        return {
-            api: {},
-            keys: {},
-            events: {},
-            reset:  ()=>{
-                PS = psObject;
-            }
-        };
-    }
-    let PS = psObject();
-
-    PS.api.check = (key)=>{
-        return !!PS.keys[key];
-    };
-    PS.api.add = (key)=>{
-        if(!PS.api.check(key)){
-            PS.keys[key] = key;
-            PS.events[key] = new Rx.ReplaySubject(1); //@todo check behavior with ...ReplaySubject(1) when streaming "read";
-            // @todo...                                         ((..ySubject(2) worked so far 1= read ((from using DUMMY that reads)) 2= udate** that could be the reason it will be tricky^^
-            if (bios.dataService.gotMemory(key))
-                PS.events[key].next(UPDATE);
-        }
-    };
-    PS.api.remove = (key)=>{
-        if (PS.api.check(key)) {
-            delete PS.events[key];
-            delete PS.keys[key]
-        }
-    };
-    /**
-     *
-     * @param key
-     * @param feedData
-     */
-    PS.pushItem = (key, feedData)=>{
-        if(PS.api.check(key))
-            PS.events[key].next(feedData);
-    };
-    PS.reset = ()=>{
-        PS = psObject();
-    };
-    /**
-     * @namespace Global
-     * @property {object} pushService
-     * @type {{events: {}, api: {}}}
-     */
-    bios.pushService = {
-        events: PS.events,
-        api: PS.api
-    };
     /*endregion*/
 });

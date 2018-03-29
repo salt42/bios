@@ -10,46 +10,49 @@ defineComp("therapy-session-customer-data-view", function (bios, template, args)
     let department = "therapy-session";
     let comp = "therapySessionCustomerDataView";
     let stream = bios.ems.departments.ts.stream;
-    // console.log($element);
-    // let id = $element.data("id");
-    // let type = $element.data("type");
-    let id = 123;
+    let customerData = {};
+    let id;
     let type = "animal";
     let selection = bios.dataService.getMemory(SELECTION);
-    bios.pushService.events[SELECTION].subscribe(function (rxData) {
-        if(rxData === "update"){
-            selection = bios.dataService.getMemory(SELECTION);
-            postProcessing();
-        }
-    });
     this.model({
         owners: [],
         animals: [],
     });
+    bios.AppState.onAppStateChanged.subscribe((rxData)=>{
+        if(rxData.name === "therapy session treatment"){
+            id = rxData.args.id;
+            bios.departments.load(department, comp, id, type);
+        }
+    });
 
-    bios.departments.load(department, comp, id, type);
 
     this.onLoad = function () {
         bios.departments.ready.subscribe(function(rxData){
             if (rxData.department === department && rxData.comp === comp){
-                let customerData = bios.departments.therapySession.get.customerData();
-                self.data.owners = customerData.owner;
-                self.data.animals = customerData.animal;
-                selection.owner = customerData.owner[0].id;
-                selection.animal = customerData.animal[0].id;
-                bios.dataService.saveMemory(SELECTION, selection);
+                let a = [];
+                customerData = bios.departments.therapySession.get.customerData(id, type);
+                a.push(customerData);
+                Promise.all(a).then(function(){
+                    self.data.owners = customerData.owner;
+                    self.data.animals = customerData.animal;
+                    selection.owner = customerData.owner[0].id;
+                    selection.animal = customerData.animal[0].id;
+                    bios.dataService.saveMemory(SELECTION, selection);
+                });
             }
         });
     };
 
     function postProcessing(){
-        if(self.data.owners && self.data.owners.length > 1 && selection.owner > -1){
-            $('li.cdv-owner', $element).removeClass("selected");
-            $('li.cdv-owner[data-id="' + selection.owner + '"]', $element).addClass("selected");
+        let selectedClass = "selected fa fa-arrow-alt-circle-right";
+        // console.log('a', customerData.owner && customerData.owner > 1 && selection.owner > -1);
+        if(customerData.owner && customerData.owner.length > 1 && selection.owner > -1){
+            $('li.cdv-owner', $element).removeClass(selectedClass);
+            $('li.cdv-owner[data-id="' + selection.owner + '"]', $element).addClass(selectedClass);
         }
-        if (self.data.animal && self.data.animals.length > 1 && selection.animal > -1){
-            $('li.cdv-animal', $element).removeClass("selected");
-            $('li.cdv-animal[data-id="' + selection.animal + '"]', $element).addClass("selected");
+        if (customerData.animal && customerData.animal.length > 1 && selection.animal > -1){
+            $('li.cdv-animal', $element).removeClass(selectedClass);
+            $('li.cdv-animal[data-id="' + selection.animal + '"]', $element).addClass(selectedClass);
         }
     }
 
@@ -59,18 +62,22 @@ defineComp("therapy-session-customer-data-view", function (bios, template, args)
             data: item,
         };
         bios.departments.caseList(item.id);
+        stream.next(rxFeed);
     };
     this.clickOwnerAction = (item)=>{
         let rxFeed = {
             type: "customerDataView::selectedOwner",
             data: item,
         };
-        bios.departments.caseList(item.id);
-    };
-    function clickAction (rxFeed){
+        console.log(item, rxFeed)
         stream.next(rxFeed);
-        postProcessing();
-    }
+    };
+    bios.pushService.events[SELECTION].subscribe(function (rxData) {
+        if(rxData === "update"){
+            selection = bios.dataService.getMemory(SELECTION);
+            postProcessing();
+        }
+    });
 }, {
     templatePath: "/component/departments/therapySession/therapySessionCustomerDataView/therapySessionCustomerDataView.html"
 });

@@ -28,9 +28,10 @@ defineComp("therapy-session-case-list", function (bios, template, args) {
     };
 
     function postProcessing(){
+        let selectedClass = "selected fa fa-arrow-alt-circle-right";
         if (selection.case > -1){
-            $('li.selected', $element).removeClass("selected");
-            $('[data-id="' + selection.case + '"]', $element).addClass("selected");
+            $('li.selected', $element).removeClass(selectedClass);
+            $('[data-id="' + selection.case + '"]', $element).addClass(selectedClass);
         }
     }
 

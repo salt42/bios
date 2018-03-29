@@ -3,7 +3,7 @@
  */
 define({
     name: "departments",
-    dependencies: ["ems", "dataService", "dummy"],
+    dependencies: ["ems", "pushService", "dummy"],
 }, function(bios) {
     "use strict";
     /**
@@ -166,13 +166,14 @@ define({
         });
     }
 
+    /* region TS Queue */
     /**
-     * _load_treatmentQueue ... loads/ refreshes data for treatment queue
+     * _load_treatmentQueue ... loads data for treatment queue
      * @returns {Promise}
      * @private
      */
     function _load_treatmentQueue(){
-        if (!initialized.tsQueue){
+        if (!initialized.tsQueue && !bios.pushService.api.check("tsQueue")){
             return new Promise(function (resolve, reject){
                 initialized.tsQueue = true;
                 bios.dataService.load("tsQueue");
@@ -181,7 +182,7 @@ define({
         }
     }
 
-    function modifyQueue (data){
+    function tsQueue_modifyData (data){
         let res = [];
         for (let i = 0; i < data.length; i++) {
             data[i].buttonText = (i === 0) ? bios.trans.late("next treatment") : bios.trans.late("later treatments");
@@ -190,13 +191,22 @@ define({
         }
         return res;
     }
+    function tsQueue_setData(data){
+        return new Promise(function (resolve, reject){
+            self.global.tsQueue.queue = tsQueue_modifyData(data);
+            self.global.tsQueue.next =  self.global.tsQueue.queue[0];
+            resolve();
+        });
+    }
     
     bios.pushService.events.tsQueue.subscribe(function(rxData){
         if (rxData === "update"){
-            self.global.tsQueue.queue = modifyQueue(bios.dataService.getMemory("tsQueue"));
-            self.global.tsQueue.next =  self.global.tsQueue.queue[0];
+            tsQueue_setData(bios.dataService.getMemory("tsQueue")).then(function (){
+                bios.pushService.events.tsQueue.next("updated");
+            });
         }
     });
+    /*endregion*/
 
     /* region Therapy Session */
     /**
@@ -393,4 +403,21 @@ define({
         return (da > db) ? 1 : (da === db) ? 0 : -1;
     }
     /*endregion*/
+    /*region ts stream listener*/
+    bios.ems.departments.ts.stream.subscribe(function(rxData){
+        let parts = rxData.type.split("::");
+        if(parts[0] = "customerDataView"){
+            if(parts[1] === "selectedOwner"){
+                console.log('owner clicked');
+                let a = bios.dataService.getMemory("tsOverviewSelections");
+                a.owner = rxData.data.id;
+                bios.dataService.saveMemory("tsOverviewSelections", a );
+            }
+            if(parts[1] === "selectedAnimal"){
+                let a = bios.dataService.getMemory("tsOverviewSelections");
+                a.animal = rxData.data.id;
+                bios.dataService.saveMemory("tsOverviewSelections", a );
+            }
+        }
+    });
 });

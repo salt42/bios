@@ -1,15 +1,31 @@
-therapy-session-customer-data-view {}
 
-therapy-session-customer-data-view li.owner,
-therapy-session-customer-data-view li.animal
-{
-    display: block;
+therapy-session-customer-data-view {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
-therapy-session-customer-data-view ul.owner,
-therapy-session-customer-data-view ul.animal
+therapy-session-customer-data-view > div {
+    padding-bottom: 3px;
+}
+therapy-session-customer-data-view > div.fa{
+    border-bottom: solid 1px var(--color-normal);
+}
+therapy-session-customer-data-view > div[data-type="owner"] {
+    display: block;
+    /*max-height: 20vh;*/
+    overflow: auto;
+    flex: 0;
+    flex-basis: 72px;
+}
+therapy-session-customer-data-view > div[data-type="animal"]{
+    display: block;
+    overflow: auto;
+    flex: auto;
+    flex-basis: 36px;
+}
+therapy-session-customer-data-view .list-item
 {
-    margin-bottom: 5px;
-    border-bottom: solid 1px black;
+    padding: 3px;
 }
 therapy-session-customer-data-view .list-item:hover,
 therapy-session-customer-data-view .list-item.selected

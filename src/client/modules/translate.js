@@ -15,7 +15,6 @@ define({
     bios.needTranslation = {};
     let logTriggered = false;
 
-
     let error = false;
 
     /* region get lists */

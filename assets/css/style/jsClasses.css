@@ -16,3 +16,7 @@ img.flex-img-left {
 .float-right {
     float: right;
 }
+.cursor-pointer,
+button{
+    cursor: pointer;
+}

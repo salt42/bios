@@ -54,11 +54,11 @@ define({
                 reason: "Smoke comes out"
             },
             {
-                name: "Söllner",
-                first_name: "Hanse",
-                animal: "Charly 2",
-                animal_id: 234,
-                reason: "Smoke comes out"
+                name: "Polizei",
+                first_name: "Bundes",
+                animal: "xray",
+                animal_id: 1040,
+                reason: "Smoking hot"
             },
             {
                 name: "Söllner",

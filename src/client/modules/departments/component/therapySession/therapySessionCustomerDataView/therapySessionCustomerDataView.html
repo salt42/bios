@@ -1,21 +1,29 @@
-<ul>
-    <li id="cdv-owners" class="owner fa fa-user">
-        <ul #for="owner of owners" #on="click:li:clickOwnerAction(owner)">
-            <li class="cdv-owner list-item" #data="id:owner.id">
-                <div>{{owner.first_name}} {{owner.name}} <br>
-                </div>
-            </li>
-        </ul>
-    </li>
-    <li id="cdv-animals" class="animal fa fa-paw">
-        <ul #for="animal of animals" #on="click:li:clickAnimalAction(animal)">
-            <li class="cdv-animal list-item" #data="id:animal.id">
-                <div #data="id:animal.id">
-                    {{animal.species_id}}<br>
-                    {{animal.name}}<br>
-                    {{animal.birthday}}<br>
-                </div>
-            </li>
-        </ul>
-    </li>
-</ul>
+<div class="fa fa-user"></div>
+<div data-type = "owner">
+    <ul>
+        <li id="cdv-owners" class="owner">
+            <ul #for="owner of owners" #on="click:li:clickOwnerAction(owner)">
+                <li class="cdv-owner list-item cursor-pointer" #data="id:owner.id">
+                    <div>{{owner.first_name}} {{owner.name}} <br>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<div class="fa fa-paw"></div>
+<div data-type = "animal">
+    <ul>
+        <li id="cdv-animals">
+            <ul #for="animal of animals" #on="click:li:clickAnimalAction(animal)">
+                <li class="cdv-animal list-item cursor-pointer" #data="id:animal.id">
+                    <div #data="id:animal.id">
+                        {{animal.species_id}}<br>
+                        {{animal.name}}<br>
+                        {{animal.birthday}}<br>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

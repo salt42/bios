@@ -14,8 +14,9 @@ defineComp("therapy-queue",  function (bios, template, args) {
     this.onLoad = function () {
         componentHandler.upgradeElements($element);
         bios.pushService.events.tsQueue.subscribe(function(rxData) {
-
-            if (rxData === "update") {
+            //caution!  "update"  === updated Push service;
+            //          "updated" === updated departments.js data!
+            if (rxData === "updated") {
                 update().then(()=>{
                     bios.ems.departments.queue.next("ready");
                 })
@@ -26,11 +27,11 @@ defineComp("therapy-queue",  function (bios, template, args) {
         return new Promise(function (resolve, reject){
             data = bios.departments.global.tsQueue.queue;
             self.data.items = data;
-
             resolve();
         });
     }
     this.goTo = function (item) {
-        bios.AppState.goToUrl("/treatment/" + item.id);
+        console.log(item);
+        bios.AppState.goToUrl("/therapySession/treatment/" + item.animal_id);
     };
 });

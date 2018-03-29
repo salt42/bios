@@ -1,5 +1,5 @@
 <ul #for="item of list" #on="click:li:onItemClick(item)">
-    <li class="cl-item" #data="id:item.id">
+    <li class="cl-item cursor-pointer" #data="id:item.id">
         {{item.description}}
     </li>
 </ul>
